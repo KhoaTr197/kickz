@@ -7,11 +7,11 @@
 [Document](https://docs.google.com/document/d/1WyaRHsycSNl09t2ojQ9UzbgJNRToELBc2ZgA6LAhuVU/edit?usp=sharing)
 
 ## Cấu Trúc Thư Mục
-***bash
+```
 kickz/
 ├───public -- Chứa các nội dung tĩnh như CSS, JS, Hình Ảnh, Fonts
 └───src -- Chứa Source Code
     ├───controllers -- Chứa các file xử lý routes và logic
     ├───models -- Chứa các file xử lý CSDL
     └───views -- Chứa các file trang (HTML hoặc PHP)
-***
+```
