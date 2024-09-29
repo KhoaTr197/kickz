@@ -4,4 +4,4 @@
 * Trần Hoàng Minh Khoa - 0306231298
 
 ## Định Hướng
-[Doc](https://docs.google.com/document/d/1WyaRHsycSNl09t2ojQ9UzbgJNRToELBc2ZgA6LAhuVU/edit?usp=sharing)
+[Document](https://docs.google.com/document/d/1WyaRHsycSNl09t2ojQ9UzbgJNRToELBc2ZgA6LAhuVU/edit?usp=sharing)
