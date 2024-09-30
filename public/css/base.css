@@ -18,5 +18,14 @@
   max-width: 100vw;
   max-height: 100vh;
   margin: 0 auto;
-  border: 1px solid black;
+}
+
+input {
+  background: none;
+  border: none;
+  outline: none;
+}
+
+li {
+  list-style-type: none;
 }
