@@ -11,8 +11,8 @@
 kickz/
 ├───public -- Chứa các nội dung tĩnh như CSS, JS, Hình Ảnh, Fonts
 └───src -- Chứa Source Code
-    ├───components -- Chứa các file thành phần của web có giá trị sử dụng lại như Header, Footer, Thẻ Sản Phẩm, ...
     ├───controllers -- Chứa các file xử lý routes và logic
     ├───models -- Chứa các file xử lý CSDL
     └───views -- Chứa các file trang (HTML hoặc PHP)
+        └───components -- Chứa các file thành phần của web có giá trị sử dụng lại như Header, Footer, Thẻ Sản Phẩm, ...
 ```
