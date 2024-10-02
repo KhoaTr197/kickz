@@ -8,7 +8,8 @@ header {
   display: flex;
   align-items: center;
   gap: 2rem;
-  height: 6.25rem;
+  height: 6rem;
+  max-height: 10vh;
   padding: 1rem;
 }
 
@@ -95,6 +96,69 @@ header {
 }
 
 /* LANDING PAGE */
-.landing-page {
-  background-color: blueviolet;
+.landing-page-wrap {
+  height: 90vh;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5rem;
+}
+
+.landing-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  flex: 0 0 30%;
+}
+
+.landing-text__title {
+  font-size: 3rem;
+  font-weight: 600;
+}
+
+.landing-text__detail {}
+
+.landing-text__btn {
+  width: fit-content;
+  font-weight: 600;
+  padding: 1rem;
+}
+
+#landing-img {
+  flex: 1;
+}
+
+.trust-badge-list {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.trust-badge-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+}
+
+.trust-badge-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.trust-badge-text__title {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.trust-badge-text__detail {
+  font-size: 0.875rem;
 }

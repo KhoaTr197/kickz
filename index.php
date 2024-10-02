@@ -9,11 +9,13 @@
   <link rel="stylesheet" href="public/css/base.css">
   <link rel="stylesheet" href="public/css/grid.css">
   <link rel="stylesheet" href="public/css/main.css">
+  <script src="public/js/jquery-3.7.1.min.js"></script>
   <title>Kickz</title>
 </head>
 <body>
   <div id="app">
     <?php include 'src/views/homepage.php'?>
   </div>
+  <script src="public/js/app.js"></script>
 </body>
 </html>

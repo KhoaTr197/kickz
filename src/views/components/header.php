@@ -1,4 +1,4 @@
-<header class="grid">
+<header class="header grid">
   <div class="header-wrap grid-wrap">
     <div class="logo">
       <img class="logo__icon" src="public/img/logo_icon.svg" alt="Kickz Logo">
