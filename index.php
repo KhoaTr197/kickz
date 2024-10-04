@@ -13,7 +13,7 @@
   <title>Kickz</title>
 </head>
 <body>
-  <div id="app">
+  <div id="app" class="grid">
     <?php include 'src/views/homepage.php'?>
   </div>
   <script src="public/js/app.js"></script>

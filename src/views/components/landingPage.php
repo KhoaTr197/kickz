@@ -1,5 +1,5 @@
-<div class="landing-page grid wide">
-  <div class="landing-page-wrap">
+<div class="landing-page">
+  <div class="landing-page-wrap wide">
     <div class="landing-text">
       <div class="landing-text__title">Tìm Đôi Giày Mơ Ước Của Bạn</div>
       <div class="landing-text__detail">Cửa hàng chúng tôi cung cấp nhiều loại giày đáp ứng được yêu cầu của bạn</div>
