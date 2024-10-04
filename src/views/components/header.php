@@ -1,5 +1,5 @@
-<header class="header grid">
-  <div class="header-wrap grid-wrap">
+<header class="header">
+  <div class="header-wrap grid wide">
     <div class="logo">
       <img class="logo__icon" src="public/img/logo_icon.svg" alt="Kickz Logo">
       <span class="logo__brand">Kickz</span>
