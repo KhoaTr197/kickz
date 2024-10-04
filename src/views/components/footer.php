@@ -1,5 +1,5 @@
-<footer class="footer grid">
-    <div class="footer-contact grid-wrap">
+<footer class="footer">
+    <div class="footer-contact wide">
         <div class="footer-text">
             <div class="footer-text__title">
             CĐTH23D - Dự Án Web Bán Giày
@@ -51,7 +51,9 @@
             </div>
         </div>
     </div>
-    <div class="footer-copyright grid-wrap">
-        <div class="footer-copyright__text">©2024 Kickz. All Rights Reserved.</div>
+    <div class="footer-copyright">
+        <div class="footer-copyright-wrap wide">
+            <div class="footer-copyright__text">©2024 Kickz. All Rights Reserved.</div>
+        </div>
     </div>
 </footer>
