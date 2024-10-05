@@ -1,15 +1,27 @@
 <?php
   include 'menuBtn.php';
-  include 'searchBar.php';
-  include 'cartBtn.php';
-  include 'userBtn.php';
-  
-  function header_render($mode) {
+
+function header_render($mode) {
 
     $menuBtn = menuBtn_render();
-    $searchBar = searchBar_render();
-    $cartBtn = cartBtn_render();
-    $userBtn = userBtn_render();
+    $searchBar = "
+      <div class='search-bar'>
+        <label class='search-bar__label' for='search-bar-input'>
+          <img class='search-bar__icon' src='public/img/search_icon.svg' alt='Search Bar'>
+        </label>
+        <input type='text' name='search' id='search-bar-input' placeholder='Tìm Kiếm'/>
+      </div>
+    ";
+    $cartBtn = "
+      <a class='cartBtn' id='cart' href='src/views/detail.php'>
+        <img src='public/img/cart_icon.svg' alt='Cart Button'>
+      </a>
+    ";
+    $userBtn = "
+      <div class='userBtn'>
+        <img src='public/img/user_icon.svg' alt='User Button'>
+      </div>
+    ";
 
     return
       "<header class='header'>
