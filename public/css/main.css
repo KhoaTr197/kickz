@@ -212,6 +212,19 @@
   top: 1rem;
   right: 1rem;
 }
+.showmore {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+.showmore-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10rem;
+  height: 3rem;
+  font-weight: 600;
+}
 /* FOOTER */
 footer {
   background-color: #242424;
