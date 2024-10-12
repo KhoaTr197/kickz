@@ -9,7 +9,7 @@
 :root {
   font-family: "Inter", system-ui;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 16px;
   line-height: normal;
 
@@ -39,9 +39,27 @@ a {
 }
 
 /* COMMON CLASS */
-.btn {
+.no-border {
+  border: none;
+}
+
+.btn,
+.btn-primary {
   border-radius: 1rem;
+}
+
+.btn-primary {
   background: #FFF9BC;
+}
+
+.flex,
+.flex-center {
+  display: flex;
+}
+
+.flex-center {
+  align-items: center;
+  justify-content: center;
 }
 
 /* CHECKBOX */
