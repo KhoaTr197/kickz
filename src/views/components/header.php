@@ -2,7 +2,7 @@
 function header_render($mode) {
 
     $menuBtn = "
-      <div class='menu-btn' id='menu'>
+      <div class='menu-btn btn flex-center' id='menu'>
         <img class='menu-btn__icon' src='../../public/img/menu_icon.svg' alt='Menu Button'>
         <span class='menu-btn__txt'>Danh Mục</span>
       </div>
@@ -60,8 +60,8 @@ function header_render($mode) {
       </div>
     ";
     $searchBar = "
-      <div class='search-bar'>
-        <label class='search-bar__label' for='search-bar-input'>
+      <div class='search-bar rounded'>
+        <label class='search-bar__label flex-center' for='search-bar-input'>
           <img class='search-bar__icon' src='../../public/img/search_icon.svg' alt='Search Bar'>
         </label>
         <input type='text' name='search' id='search-bar-input' placeholder='Tìm Kiếm'/>
@@ -86,8 +86,8 @@ function header_render($mode) {
     switch($mode) {
       case 'navbar':
         return
-          "<header class='header'>
-            <div class='header-wrap wide'>
+          "<header class='header-container'>
+            <div class='header-wrap wide flex-center'>
               <a href='#' class='logo flex-center'>
                 <img class='logo__icon' src='../../public/img/logo_icon.svg' alt='Kickz Logo'>
               </a>
@@ -99,8 +99,8 @@ function header_render($mode) {
           </header>";
       case 'breadcrumb':
         return "
-          <header class='header'>
-            <div class='header-wrap wide'>
+          <header class='header-container'>
+            <div class='header-wrap wide flex-center'>
             <a class='returnBtn' href='homepage.php'>
               <img class='return__icon' src='../../public/img/arrow-left_icon.svg' alt='Back to previous page'>
             </a>
@@ -109,7 +109,7 @@ function header_render($mode) {
         ";
       case 'login':
         return "
-        <header class='header'>
+        <header class='header-container'>
           <div class='header-wrap wide flex-center'>
           <a class='flex-center' href='homepage.php'>
             <img src='../../public/img/logo_icon.svg' alt='Back to Homepage'>
