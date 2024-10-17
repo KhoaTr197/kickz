@@ -32,7 +32,9 @@
   margin: 0 auto;
 }
 
+button,
 input {
+  font-family: inherit;
   background: none;
   border: none;
   outline: none;
