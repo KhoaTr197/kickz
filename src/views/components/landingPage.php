@@ -7,7 +7,7 @@ function landingPage_render() {
         <div class='landing-text'>
           <div class='landing-text__title'>Tìm Đôi Giày Mơ Ước Của Bạn</div>
           <div class='landing-text__detail'>Cửa hàng chúng tôi cung cấp nhiều loại giày đáp ứng được yêu cầu của bạn</div>
-          <p class='landing-text__btn btn-smooth btn-primary'>
+          <p class='landing-text__btn rounded-lg btn-primary'>
             <a href='#'>Tìm Hiểu Thêm</a>
           </p>
         </div>
@@ -16,7 +16,7 @@ function landingPage_render() {
     
         <ul class='trust-badge-list'>
           <li class='trust-badge'>
-            <div class='trust-badge-icon-wrap flex-center btn-smooth btn-primary'>
+            <div class='trust-badge-icon-wrap flex-center rounded-lg'>
               <img src='../../public/img/verify_icon.svg' alt='Verification Icon'>
             </div>
             <div class='trust-badge-text'>
@@ -25,7 +25,7 @@ function landingPage_render() {
             </div>
           </li>
           <li class='trust-badge'>
-            <div class='trust-badge-icon-wrap flex-center btn-smooth btn-primary'>
+            <div class='trust-badge-icon-wrap flex-center rounded-lg'>
               <img src='../../public/img/clock_icon.svg' alt='Verification Icon'>
             </div>
             <div class='trust-badge-text'>
@@ -34,7 +34,7 @@ function landingPage_render() {
             </div>
           </li>
           <li class='trust-badge'>
-            <div class='trust-badge-icon-wrap flex-center btn-smooth btn-primary'>
+            <div class='trust-badge-icon-wrap flex-center rounded-lg'>
               <img src='../../public/img/delivery_icon.svg' alt='Verification Icon'>
             </div>
             <div class='trust-badge-text'>

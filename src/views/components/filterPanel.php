@@ -4,7 +4,7 @@
       <div id='filter-panel' class='col l-2 c-12 no-gutter'>
         <div class='filter-panel-wrap'>
           <ul class='filter-list' id='brand'>
-            <h3 class='filter-list__title'>Nhãn Hàng</h3>
+            <h3 class='filter-list__title font-medium'>Nhãn Hàng</h3>
             <li class='filter-list__item'>
               <label class='checkbox'>
                 <div class='checkbox-wrap'>
@@ -43,7 +43,7 @@
             </li>
           </ul>
           <ul class='filter-list' id='type'>
-            <h3 class='filter-list__title'>Loại</h3>
+            <h3 class='filter-list__title font-medium'>Loại</h3>
             <li class='filter-list__item'>
               <label class='checkbox'>
                 <div class='checkbox-wrap'>
@@ -73,7 +73,7 @@
             </li>
           </ul>
           <ul class='filter-list' id='price'>
-            <h3 class='filter-list__title'>Giá Tiền</h3>
+            <h3 class='filter-list__title font-medium'>Giá Tiền</h3>
             <li class='filter-list__item'>
               <label class='checkbox'>
                 <div class='checkbox-wrap'>
