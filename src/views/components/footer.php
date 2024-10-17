@@ -13,17 +13,17 @@
                         <div class='footer-link'>
                             <div class='footer-link__icon'>
                                 <a href='#' target='_blank'>
-                                    <img src='./public/img/facebook_icon.svg' alt='Verification Icon'>
+                                    <img src='../../public/img/facebook_icon.svg' alt='Verification Icon'>
                                 </a>
                             </div>
                             <div class='footer-link__icon'>
                                 <a href='#' target='_blank'>
-                                    <img src='./public/img/zalo_icon.svg' alt='Verification Icon'>
+                                    <img src='../../public/img/zalo_icon.svg' alt='Verification Icon'>
                                 </a>
                             </div>
                             <div class='footer-link__icon'>
                                 <a href='#' target='_blank'>
-                                    <img src='./public/img/mail_icon.svg' alt='Verification Icon'>
+                                    <img src='../../public/img/mail_icon.svg' alt='Verification Icon'>
                                 </a>
                             </div>
                         </div>
@@ -33,22 +33,22 @@
                         <div class='footer-link'>
                             <div class='footer-link__icon'>
                                 <a href='#' target='_blank'>
-                                    <img src='./public/img/facebook_icon.svg' alt='Verification Icon'>
+                                    <img src='../../public/img/facebook_icon.svg' alt='Verification Icon'>
                                 </a>
                             </div>
                             <div class='footer-link__icon'>
                                 <a href='#' target='_blank'>
-                                    <img src='./public/img/zalo_icon.svg' alt='Verification Icon'>
+                                    <img src='../../public/img/zalo_icon.svg' alt='Verification Icon'>
                                 </a>
                             </div>
                             <div class='footer-link__icon'>
                                 <a href='#' target='_blank'>
-                                    <img src='./public/img/mail_icon.svg' alt='Verification Icon'>
+                                    <img src='../../public/img/mail_icon.svg' alt='Verification Icon'>
                                 </a>
                             </div>
                             <div class='footer-link__icon'>
                                 <a href='#' target='_blank'>
-                                    <img src='./public/img/linkedin_icon.svg' alt='Verification Icon'>
+                                    <img src='../../public/img/linkedin_icon.svg' alt='Verification Icon'>
                                 </a>
                             </div>
                         </div>
