@@ -14,7 +14,16 @@
   line-height: normal;
 
   /* CSS VARIABLE */
-  --thirdThemeColor: #FFF9BC;
+  --headerHeight: 100px;
+
+  --primaryColor: #FFFFFF;
+  --secondColor: #000000;
+  --accentColor: #D2FF50;
+  --footerBgColor: #242424;
+
+  --primaryTextColor: #000000;
+  --secondTextColor: #ffffff;
+  --accentTextColor: #BCBCBC;
 }
 
 #app {
