@@ -105,6 +105,22 @@ h2 {
   background: #FFF;
 }
 
+.form > * {
+  width: 100%;
+}
+
+.form-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.form-control-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .input-group {
   display: flex;
   flex-direction: column;
