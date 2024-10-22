@@ -17,14 +17,14 @@
   --headerHeight: 100px;
 
   --primaryColor: #FFFFFF;
-  --secondColor: #000000;
+  --secondaryColor: #000000;
   --accentColor: #D2FF50;
   --footerBgColor: #242424;
   --errorColor: #E97676;
 
-  --primaryTextColor: #000000;
-  --secondTextColor: #ffffff;
-  --accentTextColor: #BCBCBC;
+  --primaryText: #000000;
+  --secondaryText: #BCBCBC;
+  --accentText: #ffffff;
 }
 
 #app {
