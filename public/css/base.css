@@ -170,8 +170,8 @@ h2 {
 .checkbox-wrap {
   display: block;
   position: relative;
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .checkbox input {
@@ -183,8 +183,8 @@ h2 {
 
 .checkmark {
   display: inline-block;
-  height: 2rem;
-  width: 2rem;
+  height: 1.5rem;
+  width: 1.5rem;
   background-color: #fff;
   border-radius: 8px;
   border: 1px solid rgba(0, 0, 0, 0.50);
@@ -208,8 +208,8 @@ h2 {
   left: 50%;
   top: 40%;
   transform: translate(-50%, -45%) rotate(45deg);
-  width: 8px;
-  height: 16px;
+  width: 4px;
+  height: 8px;
   border: solid #000;
   border-width: 0 2px 2px 0;
 }
