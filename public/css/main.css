@@ -62,6 +62,50 @@
 #search-bar-input::placeholder {
   color: #bcbcbc;
 }
+
+.loginBtn {
+  height: 100%;
+  padding: 0px 2rem;
+  font-size: 1.25rem;
+}
+
+/* LOGIN FORM */
+
+.access-toggle {
+  gap: 2px;
+  width: 100%;
+}
+
+.access-toggle__option {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--greyText);
+  color: var(--greyText);
+}
+
+.access-toggle__option--active {
+  color: var(--blackText);
+  border-color: var(--blackText);
+}
+
+#signup-form {
+  display: none;
+}
+
+.other-cta-container {
+  width: 100%;
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  padding: 16px 0px;
+  border-top: 1px solid #000;
+}
+
+.other-cta__link {
+  color: #BCBCBC;
+  text-decoration: underline;
+}
+
 /* LANDING PAGE */
 .landing-page {
   height: 924px;
