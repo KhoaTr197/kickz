@@ -338,33 +338,29 @@
 }
 /* FOOTER */
 footer {
-  background-color: var(--footerBgColor);
   color: var(--accentText);
 }
-.footer-contact {
-  padding: 1rem;
+.main-footer {
+  background-color: var(--footerBgColor);
 }
-.footer-text {
-  width: 296px;
-  height: 27px;
-  padding-bottom: 0.5px;
+.sub-footer {
+  background-color: var(--secondaryColor);
+}
+.footer-contact {
+  margin: 1rem 0 2rem;
+}
+.footer-contact__text {
+  padding-bottom: 4px;
   border-bottom: 1px solid var(--accentText);
 }
 .footer-info__name {
   font-size: 0.875rem;
-  margin: 1rem 0 0.5rem 0;
+  margin: 16px 0 8px 0;
 }
 .footer-link {
-  display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 .footer-copyright {
-  background-color: var(--secondaryColor);
-}
-.footer-copyright-wrap {
-  height: 2rem;
-  display: flex;
-  align-items: center;
+  height: 32px;
   justify-content: flex-end;
-  padding: 0 1rem;
 }
