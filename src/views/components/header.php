@@ -100,7 +100,7 @@ function header_render($mode) {
       case 'breadcrumb':
         return "
           <header class='header-container'>
-            <div class='header-wrap wide flex-center'>
+            <div class='header-wrap wide'>
             <a class='returnBtn' href='homepage.php'>
               <img class='return__icon' src='../../public/img/arrow-left_icon.svg' alt='Back to previous page'>
             </a>
