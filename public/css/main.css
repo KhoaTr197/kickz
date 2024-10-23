@@ -107,9 +107,6 @@
 }
 
 /* LANDING PAGE */
-.landing-page {
-  height: 924px;
-}
 .landing-page-wrap {
   height: 90vh;
   display: flex;
