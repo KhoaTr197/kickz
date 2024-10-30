@@ -1,5 +1,5 @@
 <?php
-  include("components/components.php");
+  include_once("components/components.php");
 
   $header_html = header_render("navbar");
   $footer_html = footer_render();
@@ -22,7 +22,7 @@
 </head>
 <body>
   <div id="app" class="grid">
-    <?php echo $header_html?>
+    <?php echo $header_html;?>
       <main class='main'>
         <div class='wide'>
           <div class='row'>

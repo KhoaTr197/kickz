@@ -1,5 +1,5 @@
 <?php
-  include("components/components.php");
+  include_once("components/components.php");
 
   $header_html = header_render("navbar");
   $filterPanel = filterPanel_render();

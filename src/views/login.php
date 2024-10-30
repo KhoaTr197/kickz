@@ -1,5 +1,5 @@
 <?php
-  include("components/components.php");
+  include_once("components/components.php");
   session_start();
 
   $header_html = header_render("login");
@@ -26,15 +26,13 @@
   <title>Kickz</title>
 </head>
 <body>
-  <?php
-    echo "
-      $header_html
+  <?php echo $header_html; ?>
       <main class='main'>
         <div class='wide'>
           <div class='row'>
             <div class='c-12 flex-center'>
                 <form class='form' id='login-form' action='../controllers/loginController.php' method='post'>
-                  $error
+                  <?php echo $error;?>
                   <div class='form-control-wrap'>
                     <h2 class='form-title font-medium'>Đăng Nhập</h2>
                     <div class='input-group'>
@@ -60,8 +58,6 @@
           </div>
         </div>
       </main>
-    ";
-    unset($_SESSION['LOGIN_ERROR_PROMPT']);
-  ?>
+  <?php unset($_SESSION['LOGIN_ERROR_PROMPT']);?>
 </body>
 </html>

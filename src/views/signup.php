@@ -1,5 +1,5 @@
 <?php
-  include("components/components.php");
+  include_once("components/components.php");
   session_start();
 
   $header_html = header_render("login");
@@ -25,20 +25,18 @@
   <title>Kickz</title>
 </head>
 <body>
-  <?php
-    echo "
-      $header_html
+  <?php echo $header_html; ?>
       <main class='main'>
         <div class='wide'>
           <div class='row'>
             <div class='c-12 flex-center'>
-
               <form class='form' action='../controllers/signupController.php' method='post'>
-                $error
+                <?php echo $error;?>
                 <div class='form-control-wrap'>
                   <h2 class='form-title font-medium'>Đăng Ký</h2>
                   <div class='input-group'>
                     <input class='form-input' type='text' placeholder='Tên Tài Khoản' name='username'/>
+                    <input class='form-input' type='tel' placeholder='Số Điện Thoại' name='phone_num'/>
                     <input class='form-input' type='password' placeholder='Mật Khẩu' name='password'/>
                     <input class='form-input' type='password' placeholder='Xác Nhận Mật Khẩu' name='confirm_password'/>
                     <div class='form-reminder'>Mật khẩu dài ít nhất 8 ký tự, chứa số, chữ cái in hoa, không chứa khoảng trắng, ký tự đặc biệt</div>
@@ -55,8 +53,6 @@
           </div>
         </div>
       </main>
-    ";
-    unset($_SESSION['SIGNUP_ERROR_PROMPT']);
-  ?>
+  <?php unset($_SESSION['SIGNUP_ERROR_PROMPT']);?>
 </body>
 </html>

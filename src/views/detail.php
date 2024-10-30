@@ -1,5 +1,5 @@
 <?php 
-  include "components/components.php";
+  include_once("components/components.php");
       
   $header_html = header_render("breadcrumb");
   $footer_html = footer_render();
@@ -66,9 +66,6 @@
               <div class='add-cart-btn btn btn-primary flex-center font-semibold'>
                 <img src='../../public/img/add-cart_icon.svg'>
                 <span>Thêm Vào Giỏ Hàng</span>
-              </div>
-              <div class='wishlist-btn btn flex-center'>
-                <img src='../../public/img/heart_icon.svg'>
               </div>
             </div>
           </div>
