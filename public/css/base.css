@@ -114,7 +114,7 @@ h2 {
   align-items: flex-start;
   gap: 32px;
   width: 400px;
-  padding: 16px 16px 0;
+  padding: 16px;
   border-radius: 1rem;
   border: 1px solid #BCBCBC;
   background: #FFF;
