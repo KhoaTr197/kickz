@@ -5,8 +5,8 @@
   $header_html = header_render("login");
   $error='';
 
-  if(!empty($_SESSION) && !empty($_SESSION['LOGIN_ERROR_PROMPT'])) {
-    $error="<div class='form-error flex rounded'>".$_SESSION['LOGIN_ERROR_PROMPT']."</div>";
+  if(!empty($_SESSION) && !empty($_SESSION['LOGIN']['ERROR_PROMPT'])) {
+    $error="<div class='form-error flex rounded'>".$_SESSION['LOGIN']['ERROR_PROMPT']."</div>";
   }
 ?>
 
@@ -58,6 +58,6 @@
           </div>
         </div>
       </main>
-  <?php unset($_SESSION['LOGIN_ERROR_PROMPT']);?>
+  <?php unset($_SESSION['LOGIN']['ERROR_PROMPT']);?>
 </body>
 </html>

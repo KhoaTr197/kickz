@@ -5,8 +5,8 @@
   $header_html = header_render("login");
   $error='';
 
-  if(!empty($_SESSION) && !empty($_SESSION['SIGNUP_ERROR_PROMPT'])) {
-    $error="<div class='form-error flex rounded'>".$_SESSION['SIGNUP_ERROR_PROMPT']."</div>";
+  if(!empty($_SESSION) && !empty($_SESSION['SIGNUP']['ERROR_PROMPT'])) {
+    $error="<div class='form-error flex rounded'>".$_SESSION['SIGNUP']['ERROR_PROMPT']."</div>";
   }
 ?>
 
@@ -36,7 +36,9 @@
                   <h2 class='form-title font-medium'>Đăng Ký</h2>
                   <div class='input-group'>
                     <input class='form-input' type='text' placeholder='Tên Tài Khoản' name='username'/>
-                    <input class='form-input' type='tel' placeholder='Số Điện Thoại' name='phone_num'/>
+                    <input class='form-input' type='text' placeholder='Họ Tên' name='fullname'/>
+                    <input class='form-input' type='email' placeholder='Email' name='email'/>
+                    <input class='form-input' type='tel' placeholder='Số Điện Thoại' name='phone'/>
                     <input class='form-input' type='password' placeholder='Mật Khẩu' name='password'/>
                     <input class='form-input' type='password' placeholder='Xác Nhận Mật Khẩu' name='confirm_password'/>
                     <div class='form-reminder'>Mật khẩu dài ít nhất 8 ký tự, chứa số, chữ cái in hoa, không chứa khoảng trắng, ký tự đặc biệt</div>
@@ -53,6 +55,6 @@
           </div>
         </div>
       </main>
-  <?php unset($_SESSION['SIGNUP_ERROR_PROMPT']);?>
+  <?php unset($_SESSION['SIGNUP']['ERROR_PROMPT']);?>
 </body>
 </html>
