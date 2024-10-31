@@ -1,5 +1,5 @@
 <?php
-function header_render($mode) {
+function header_render($mode, $hasLogon=false, $prev_link="homepage.php") {
 
     $menuBtn = "
       <div class='menu-btn btn flex-center' id='menu'>
@@ -70,12 +70,12 @@ function header_render($mode) {
     $cartBtn = "
       <a class='cartBtn' id='cart' href='cart.php'>
         <img src='../../public/img/cart_icon.svg' alt='Cart Button'>
-      </a>
+      </a>  
     ";
     $userBtn = "
-      <div class='userBtn'>
+      <a class='userBtn' id='user' href='user.php'>
         <img src='../../public/img/user_icon.svg' alt='User Button'>
-      </div>
+      </a>
     ";
     $loginBtn = "
       <a href='./login.php' class='loginBtn btn btn-primary flex-center'>
@@ -93,15 +93,15 @@ function header_render($mode) {
               </a>
               $menuBtn
               $searchBar
-              $cartBtn
-              $loginBtn
-            </div>
+              $cartBtn".
+              ($hasLogon ? $userBtn : $loginBtn)
+            ."</div>
           </header>";
       case 'breadcrumb':
         return "
           <header class='header-container'>
             <div class='header-wrap wide'>
-            <a class='returnBtn' href='homepage.php'>
+            <a class='returnBtn' href='$prev_link'>
               <img class='return__icon' src='../../public/img/arrow-left_icon.svg' alt='Back to previous page'>
             </a>
             </div>
@@ -111,7 +111,7 @@ function header_render($mode) {
         return "
         <header class='header-container'>
           <div class='header-wrap wide flex-center'>
-          <a class='flex-center' href='homepage.php'>
+          <a class='flex-center' href='http://localhost/kickz/src/views/homepage.php'>
             <img src='../../public/img/logo_icon.svg' alt='Back to Homepage'>
           </a>
           </div>
