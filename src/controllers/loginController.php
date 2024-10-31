@@ -5,22 +5,31 @@
   if($_SERVER['REQUEST_METHOD'] != 'POST') 
     header("location: ../views/login.php");
 
+  $username = $_POST['username'];
+  $password = md5($_POST['password']);
+
   $db = new Database();
   $sql = "
-    select username, password
+    select *
     from user
-    where role = 'admin'
+    where username = '$username' and
+          password = '$password'
   ";
   $result = $db->fetch($db->query($sql));
-
-  $username = $_POST['username'];
-  $password = $_POST['password'];
   
-  if($username != $result['username'] || $password != $result['password']) {
-    $_SESSION['LOGIN_ERROR_PROMPT']='Tên Tài Khoản Hoặc Mật Khẩu không chính xác';
+  $_SESSION['LOGIN'] = [];
+  
+  if($result == 0) {
+    $_SESSION['LOGIN'] = [
+      'ERROR_PROMPT' => 'Tên Tài Khoản Hoặc Mật Khẩu không chính xác'
+    ];
     header("location: ../views/login.php");
   } else {
-    $_SESSION['HAS_LOGON']=true;
+    $_SESSION['LOGIN'] += [
+      'HAS_LOGON' => true,
+      'INFO' => $result
+    ];
+
     header("location: ../views/homepage.php");
   }
 ?>
