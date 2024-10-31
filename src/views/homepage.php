@@ -1,7 +1,8 @@
 <?php
   include_once("components/components.php");
+  session_start();
 
-  $header_html = header_render("navbar");
+  $header_html = header_render("navbar", isset($_SESSION['LOGIN']['HAS_LOGON']) ? $_SESSION['LOGIN']['HAS_LOGON'] : false);
   $footer_html = footer_render();
 ?>
 
@@ -31,9 +32,7 @@
                 <div class='landing-text'>
                     <div class='landing-text__title'>Tìm Đôi Giày Mơ Ước Của Bạn</div>
                     <div class='landing-text__detail'>Cửa hàng chúng tôi cung cấp nhiều loại giày đáp ứng được yêu cầu của bạn</div>
-                    <p class='landing-text__btn rounded-lg btn-primary'>
-                      <a href='browse.php'>Tìm Hiểu Thêm</a>
-                    </p>
+                    <a class=" landing-text__btn rounded-lg btn btn-primary" href='browse.php'>Tìm Hiểu Thêm</a>
                 </div>
                   
                 <img id='landing-img' src='../../public/img/landing_img.png' alt='Landing Image'>
