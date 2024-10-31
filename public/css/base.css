@@ -34,11 +34,20 @@
 }
 
 button,
-input {
+input {  
   font-family: inherit;
   background: none;
   border: none;
   outline: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none;
 }
 
 li {
