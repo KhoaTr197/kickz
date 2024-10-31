@@ -16,9 +16,6 @@
           </div>
           <div class='product-card__price--old'>4.999.999đ</div>
           <div class='font-bold product-card__price--new'>3.699.999đ</div>
-          <div class='product-card__wishlist-btn'>
-            <img src='../../public/img/heart_icon.svg' alt='Add to Wishlist'>
-          </div>
         </div>
       </div>
     ";
