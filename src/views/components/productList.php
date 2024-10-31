@@ -10,11 +10,6 @@
           $productCard_html
           $productCard_html
           $productCard_html
-          <div class='showmore flex-center c-12'>
-            <div class='showmore-btn flex-center rounded-lg btn-primary'>
-              Xem Thêm
-            </div>
-          </div>
         </div>
       </div>
     ";
