@@ -14,10 +14,15 @@ $(document).ready(function() {
   })
 
   $('.quantity-btn__minus').click(function() {
-    this.parentNode.querySelector(".quantity-btn__input").stepDown();
+    let element = $(this).siblings('.quantity-btn__input')[0];
+    element.stepDown();
+    element.dispatchEvent(new Event('change'));
   })
 
   $('.quantity-btn__add').click(function() {
-    this.parentNode.querySelector(".quantity-btn__input").stepUp();
+    let element = $(this).siblings('.quantity-btn__input')[0];
+    element.stepUp();
+    element.dispatchEvent(new Event('change'));
   })
 })
+
