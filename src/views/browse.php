@@ -1,10 +1,17 @@
 <?php
+  require_once("../models/Database.php");
   include_once("components/components.php");
 
   $header_html = header_render("navbar");
   $filterPanel = filterPanel_render();
-  $productList = productList_render();
   $footer_html = footer_render();
+
+  $db = new Database();
+  $sql = "
+      select *
+      from product
+    ";
+  $result = $db->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -27,9 +34,17 @@
     <?php echo $header_html; ?>
         <main class='main'>
           <div class='wide'>
-            <div class='row'>
+            <div class='row' id="browse">
               <?php echo $filterPanel; ?>
-              <?php echo $productList; ?>
+              <div id='product-list' class='col l-10 c-12'>
+                <div class='row no-gutter'>
+                  <?php
+                    while ($row = $db->fetch($result)) {
+                      echo productCard_render($row);
+                    }
+                  ?>
+                </div>
+              </div>
             </div>
           </div>
         </main>
