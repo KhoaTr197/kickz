@@ -49,7 +49,7 @@
                   <div class="personal-info-wrap">
                     <h2 class="personal-info__title flex">
                       Thông Tin Cá Nhân
-                      <a href="edit.php" class="personal-title__edit-btn rounded font-medium flex-center">Sửa</a>
+                      <a href="edit.php?mode=info" class="personal-title__edit-btn rounded font-medium flex-center">Sửa</a>
                     </h2>
                     <ul class="personal-info__list">
                       <li class="personal-list__item">
@@ -70,7 +70,7 @@
                       </li>
                       <li class="personal-list__item">
                         <div class="personal-list-item__key">Mật Khẩu:</div>
-                        <a href="changePass.php" class="personal-list-item__change-pass-btn btn rounded-lg font-medium">Đổi Mật Khẩu</a>
+                        <a href="edit.php?mode=password" class="personal-list-item__change-pass-btn btn rounded-lg font-medium">Đổi Mật Khẩu</a>
                       </li>
                     </ul>
                   </div>
