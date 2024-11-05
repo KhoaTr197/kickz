@@ -95,6 +95,7 @@ h2 {
 }
 
 .btn {
+  display: block;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
 }
@@ -103,8 +104,41 @@ h2 {
   background: var(--accentColor);
 }
 
+.table {
+  border-collapse: collapse;
+}
+
+.table tr {
+  text-align: center;
+  min-height: 80px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.table-bordered th,
+.table-bordered td{
+  border: 1px solid rgb(180, 180, 180);
+}
+
+.table-striped tr:nth-child(even){
+  background-color: #d2ff508c;
+}
+
+.table-action-btn {
+  width: 80px;
+}
+
+.table tr:first-child {
+  height: 40px;
+}
+
+.table td,
+.table th {
+  padding: 16px 8px;
+}
+
 .main {
-  margin-top: var(--headerHeight);
+  margin-top: calc(var(--headerHeight) + 16px);
   min-height: 924px;
 }
 
