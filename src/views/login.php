@@ -30,9 +30,12 @@
       <main class='main'>
         <div class='wide'>
           <div class='row'>
-            <div class='c-12 flex-center'>
+            <div class='col c-12 flex-center'>
                 <form class='form' id='login-form' action='../controllers/loginController.php' method='post'>
-                  <?php echo $error;?>
+                  <?php 
+                    echo $error;
+                    unset($_SESSION['LOGIN']['ERROR_PROMPT']);
+                  ?>
                   <div class='form-control-wrap'>
                     <h2 class='form-title font-medium'>Đăng Nhập</h2>
                     <div class='input-group'>
@@ -58,6 +61,5 @@
           </div>
         </div>
       </main>
-  <?php unset($_SESSION['LOGIN']['ERROR_PROMPT']);?>
 </body>
 </html>
