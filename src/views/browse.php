@@ -1,8 +1,9 @@
 <?php
   require_once("../models/Database.php");
   include_once("components/components.php");
+  session_start();
 
-  $header_html = header_render("navbar");
+  $header_html = header_render("navbar", isset($_SESSION['LOGIN']['HAS_LOGON']) ? $_SESSION['LOGIN']['HAS_LOGON'] : false);
   $filterPanel = filterPanel_render();
   $footer_html = footer_render();
 
