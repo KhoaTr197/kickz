@@ -88,7 +88,7 @@ function header_render($mode, $hasLogon=false, $prev_link="homepage.php") {
         return
           "<header class='header-container'>
             <div class='header-wrap wide flex-center'>
-              <a href='#' class='logo flex-center'>
+              <a href='homepage.php' class='logo flex-center'>
                 <img class='logo__icon' src='../../public/img/logo_icon.svg' alt='Kickz Logo'>
               </a>
               $menuBtn

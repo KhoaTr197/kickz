@@ -13,6 +13,13 @@
       from product
     ";
   $result = $db->query($sql);
+
+  $current_page = isset($_GET["page"]) ? $_GET["page"] : 1;
+  $limit = 16;
+  $paging = paging($db->rows_count($result), $current_page, $limit);
+
+  $sql = $paging['sql'];
+  $result = $db->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -38,12 +45,15 @@
             <div class='row' id="browse">
               <?php echo $filterPanel; ?>
               <div id='product-list' class='col l-10 c-12'>
-                <div class='row no-gutter'>
-                  <?php
+              <div class='row no-gutter'>
+                  <?php                         
                     while ($row = $db->fetch($result)) {
                       echo productCard_render($row);
                     }
                   ?>
+                </div>
+                <div class="flex-center" id="pagination">
+                  <?=$paging['html'];?>
                 </div>
               </div>
             </div>
@@ -53,3 +63,47 @@
   </div>
 </body>
 </html>
+
+<?php
+function paging($total_records, $current_page, $limit)
+{    
+    $total_page = ceil($total_records / $limit);
+
+    if ($current_page > $total_page){
+      $current_page = $total_page;
+    }
+    else if ($current_page < 1){
+      $current_page = 1;
+    }
+     
+    $start = ($current_page - 1) * $limit;
+    $sql = "SELECT * FROM product LIMIT $start, $limit";
+
+    echo $start;
+    echo $limit;
+
+    $html = '';
+     
+    if ($current_page > 1 && $total_page > 1){
+      $html .= "<a class='pagination__btn btn flex-center' href='?page=".($current_page-1)."'>Prev</a>";
+    }
+ 
+    for ($i = 1; $i <= $total_page; $i++) {
+        if ($i == $current_page){
+          $html .= "<span class='pagination__btn btn btn-primary flex-center'>".$i."</span>";
+        }
+        else{
+          $html .= "<a class='pagination__btn btn flex-center' href='?page=".$i."'>".$i."</a>";
+        }
+    }
+ 
+    if ($current_page < $total_page && $total_page > 1) {
+        $html .= "<a class='pagination__btn btn flex-center' href='?page=".($current_page+1)."'>Next</a>";
+    }
+     
+    return [
+      'sql' => $sql,
+      'html' => $html
+    ];
+}
+?>

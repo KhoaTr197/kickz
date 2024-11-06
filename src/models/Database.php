@@ -33,6 +33,10 @@ class Database {
   public function fetch($result) {
     return mysqli_fetch_assoc($result);
   }
+
+  public function rows_count($result) {
+    return mysqli_num_rows($result);
+  }
 }
 
 ?>
