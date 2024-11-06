@@ -32,10 +32,10 @@ function paging($url, $total_records, $current_page, $limit)
         // Nếu là trang hiện tại thì hiển thị thẻ span
         // ngược lại hiển thị thẻ a
         if ($i == $current_page){
-            $html .= '<span class="page-btn btn btn__disable flex-center ">'.$i.'</span>';
+            $html .= '<span class="page-btn btn btn__disable flex-center">'.$i.'</span>';
         }
         else{
-            $html .= '<a class="page-btn btn btn-primary flex-center" href="'.str_replace('{page}', $i, $url).'">'.$i.'</a>';
+            $html .= '<a class="page-btn btn btn-primary flex-center" href="'.str_replace($current_page, $i, $url).'">'.$i.'</a>';
         }
     }
  
