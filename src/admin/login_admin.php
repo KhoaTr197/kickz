@@ -65,7 +65,7 @@
                   <?php echo $error;?>
                   <div class='form-control-wrap'>
                     <h2 class='form-title font-medium'>Đăng Nhập Quản Trị Viên</h2>
-                    <div class='input-group'>
+                    <div class='form-control'>
                       <input class='form-input' type='text' placeholder='Tên Tài Khoản' name='username'/>
                       <input class='form-input' type='password' placeholder='Mật Khẩu' name='password'/>
                     </div>
