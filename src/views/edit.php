@@ -2,7 +2,6 @@
   if(empty($_GET['mode'])) 
     header('location: index.php');
 
-  require_once("../models/Database.php");
   include_once("../views/components/components.php");
   session_start();
 
@@ -71,9 +70,9 @@
                   echo $error;
                   unset($_SESSION['EDIT']['PROMPT']);
                 ?>
+                <h2 class='form-title font-medium'><?php echo $formTitle;?></h2>
                 <div class='form-control-wrap'>
-                    <h2 class='form-title font-medium'><?php echo $formTitle;?></h2>
-                    <div class='input-group'>
+                    <div class='form-control'>
                       <?php
                         foreach($formInputs as $input) {
                           echo $input;

@@ -35,9 +35,9 @@
                   echo $error;
                   unset($_SESSION['SIGNUP']['ERROR_PROMPT']);
                 ?>
+                <h2 class='form-title font-medium'>Đăng Ký</h2>
                 <div class='form-control-wrap'>
-                  <h2 class='form-title font-medium'>Đăng Ký</h2>
-                  <div class='input-group'>
+                  <div class='form-control'>
                     <input class='form-input' type='text' placeholder='Tên Tài Khoản' name='username'/>
                     <input class='form-input' type='text' placeholder='Họ Tên' name='fullname'/>
                     <input class='form-input' type='email' placeholder='Email' name='email'/>
