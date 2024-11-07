@@ -37,6 +37,18 @@ class Database {
   public function rows_count($result) {
     return mysqli_num_rows($result);
   }
+
+  public function prepare($query) {
+    return mysqli_prepare($this->conn, $query);
+  }
+
+  public function stmt_execute($stmt) {
+    return mysqli_stmt_execute($stmt);
+  }
+
+  public function	get_last_id() {
+    return mysqli_insert_id($this->conn);
+  }
 }
 
 ?>
