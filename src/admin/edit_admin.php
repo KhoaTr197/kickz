@@ -62,7 +62,7 @@
       <main class='main'>
         <div class='wide'>
           <div class='row'>
-            <div class="col c-o-3 c-6 flex-center">
+            <div class="col c-12 flex-center">
               <form class='form' id='edit-form' action='../controllers/editController.php' method='post'>
                 <?php 
                   echo $error;
@@ -70,7 +70,7 @@
                 ?>
                 <div class='form-control-wrap'>
                     <h2 class='form-title font-medium'><?php echo $formTitle;?></h2>
-                    <div class='input-group'>
+                    <div class='form-control'>
                       <?php
                         foreach($formInputs as $input) {
                           echo $input;
