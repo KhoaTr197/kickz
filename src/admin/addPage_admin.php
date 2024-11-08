@@ -57,27 +57,6 @@
                 <div class="form-control">
                   <h3 class='form-title font-medium'>Kích Cỡ & Số Lượng</h3>
                   <div class="size-list">
-                  <div class="size-option flex">
-                    <label for="size-34">Size 34:</label>
-                    <input class='size-option__input form-input' type="number" id="size-34" name='size-34' min="0" value="12">
-                    <button class="size-option__delete-btn" type="button">
-                      <img src="../../public/img/trashcan_icon.svg">
-                    </button>
-                  </div>
-                  <div class="size-option flex">
-                    <label for="size-35">Size 35:</label>
-                    <input class='size-option__input form-input' type="number" id="size-35" name='size-35' min="0" value="24">
-                    <button class="size-option__delete-btn" type="button">
-                      <img src="../../public/img/trashcan_icon.svg">
-                    </button>
-                  </div>
-                  <div class="size-option flex">
-                    <label for="size-36">Size 36:</label>
-                    <input class='size-option__input form-input' type="number" id="size-36" name='size-36' min="0" value="21">
-                    <button class="size-option__delete-btn" type="button">
-                      <img src="../../public/img/trashcan_icon.svg">
-                    </button>
-                  </div>
                   </div>
                   <div class="add-size flex">
                     <input class='add-size__input form-input' type="number" min="32" max="43">
