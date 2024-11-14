@@ -3,7 +3,7 @@ class Database {
   const DB_SERVERNAME = 'localhost';
   const DB_USERNAME = 'root';
   const DB_PASSWORD = '';
-  const DB_DBNAME = 'test';
+  const DB_DBNAME = 'kickz';
 
   private $conn;
 
@@ -48,6 +48,10 @@ class Database {
 
   public function	get_last_id() {
     return mysqli_insert_id($this->conn);
+  }
+
+  public function escape_str($str) {
+    return mysqli_real_escape_string($this->conn, $str);
   }
 }
 
