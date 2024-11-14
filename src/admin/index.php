@@ -7,21 +7,21 @@ if(empty($_SESSION['ADMIN']) && empty($_SESSION['ADMIN']['HAS_LOGON'])) {
 
 $db = new Database();
 $productListSQL = "
-  select product.*, manufacturer.name as manufacturer_name
-  from product inner join manufacturer
-  on manufacturer_id = manufacturer.id
+  select SANPHAM.*, HANGSANXUAT.TENHSX
+  from SANPHAM inner join HANGSANXUAT
+  on SANPHAM.MAHSX = HANGSANXUAT.MAHSX
 ";
 $manufacturerListSQL = "
   select *
-  from manufacturer
+  from HANGSANXUAT
 ";
 $receiptListSQL = "
   select *
-  from product
+  from SANPHAM
 ";
 $userListSQL = "
   select *
-  from product
+  from SANPHAM
 ";
 
 if(isset($_GET['search']) && isset($_GET['mode'])) {
@@ -30,21 +30,20 @@ if(isset($_GET['search']) && isset($_GET['mode'])) {
     switch($_GET['mode']) {
       case 'product':
         $productListSQL .= "
-        where name like '%$search%' or
-              description like '%$search%' or
-              id like $search";
+        where TENSP like '%$search%' or
+              MOTA like '%$search%' or
+              MASP like $search";
         break;
       case 'receipt':
         $receiptListSQL .= "
-        where name like '%$search%' or
-              description like '%$search%' or
-              id like $search";
+        where HOTENKH like '%$search%' or
+              MAHD like $search";
         break;
       case 'user':
         $userListSQL .= "
-        where username like '%$search%' or
-              fullname like '%$search%' or
-              id like $search";
+        where TENTK like '%$search%' or
+              HOTEN like '%$search%' or
+              MATK like $search";
         break;
     }
 }
@@ -79,8 +78,17 @@ if(isset($_GET['search']) && isset($_GET['mode'])) {
               <li class="sidebar__item <?php echo (isset($_GET['mode']) && $_GET['mode']=='product') ? 'active' : '';?>" id="product-list_sidebar">
                 Danh Sách Sản Phẩm
               </li>
+              <li class="sidebar__item <?php echo (isset($_GET['mode']) && $_GET['mode']=='size') ? 'active' : '';?>" id="size-list_sidebar">
+                Danh Sách Kích Cỡ
+              </li>
               <li class="sidebar__item <?php echo (isset($_GET['mode']) && $_GET['mode']=='manufacturer') ? 'active' : '';?>" id="manufacturer-list_sidebar">
                 Danh Sách Hãng
+              </li>
+              <li class="sidebar__item <?php echo (isset($_GET['mode']) && $_GET['mode']=='category') ? 'active' : '';?>" id="category-list_sidebar">
+                Danh Sách Danh Mục
+              </li>
+              <li class="sidebar__item <?php echo (isset($_GET['mode']) && $_GET['mode']=='image') ? 'active' : '';?>" id="image-list_sidebar">
+                Danh Sách Hình Ảnh 
               </li>
               <li class="sidebar__item <?php echo (isset($_GET['mode']) && $_GET['mode']=='receipt') ? 'active' : '';?>" id="receipt-list_sidebar">
                 Danh Sách Đơn Hàng
@@ -105,7 +113,7 @@ if(isset($_GET['search']) && isset($_GET['mode'])) {
                   <ul class="personal-info__list">
                     <li class="personal-list__item">
                       <div class="personal-list-item__key">Tên Tài Khoản:</div>
-                      <div class="personal-list-item__value"><?php echo $_SESSION['ADMIN']['INFO']['username'];?></div>
+                      <div class="personal-list-item__value"><?php echo $_SESSION['ADMIN']['INFO']['TENTK'];?></div>
                     </li>
                     <li class="personal-list__item">
                       <div class="personal-list-item__key">Mật Khẩu:</div>
@@ -117,11 +125,11 @@ if(isset($_GET['search']) && isset($_GET['mode'])) {
               <div class="user-panel__item <?php echo (isset($_GET['mode']) && $_GET['mode']=='product') ? 'active' : '';?>" id="product-list_modal">
                 <div class="user-panel__header flex">
                   <div class="user-panel-header__action flex">
-                    <a class="user-panel__add-btn btn btn-primary flex-center" href="addPage_admin.php?mode=single">
+                    <a class="user-panel__add-btn btn btn-primary flex-center" href="addPage_admin.php">
                       <img src='../../public/img/plus_icon.svg'>
                       Thêm
                     </a>
-                    <a class="user-panel__add-list-btn btn flex-center" href="addPage_admin.php?mode=multiple">Thêm Danh Sách</a>
+                    <a class="user-panel__add-list-btn btn flex-center" href="importPage_admin.php?mode=product">Thêm Danh Sách</a>
                   </div>
                   <form class='search-bar rounded'>
                     <label class='search-bar__label flex-center' for='search-bar-input'>
@@ -137,35 +145,35 @@ if(isset($_GET['search']) && isset($_GET['mode'])) {
 
                     echo
                       "<tr>
-                        <th>id</th>
-                        <th>name</th>
-                        <th>price</th>
-                        <th>description</th>
-                        <th>rating</th>
-                        <th>manufacturer</th>
-                        <th>manufactured date</th>
-                        <th colspan='2'>action</th>
+                        <th>Mã</th>
+                        <th>Tên</th>
+                        <th>Giá</th>
+                        <th>Mô Tả</th>
+                        <th>Đánh Giá</th>
+                        <th>Hãng Sản Xuất</th>
+                        <th>Ngày Sản Xuất</th>
+                        <th colspan='2'>Thao Tác</th>
                       </tr>";
 
                     while($row = $db->fetch($result)) {
-                      $price=number_format($row['price'], 0, '', '.')."đ";
+                      $price=number_format($row['GIA'], 0, '', '.')."đ";
 
                       echo
                       "<tr>
-                        <td>{$row['id']}</td>
-                        <td>{$row['name']}</td>
+                        <td>{$row['MASP']}</td>
+                        <td>{$row['TENSP']}</td>
                         <td>$price</td>
-                        <td>{$row['description']}</td>
-                        <td>{$row['rating']}</td>
-                        <td>{$row['manufacturer_name']}</td>
-                        <td>{$row['manufactured_date']}</td>
+                        <td>{$row['MOTA']}</td>
+                        <td>{$row['SOSAO']}</td>
+                        <td>{$row['TENHSX']}</td>
+                        <td>{$row['NGLAPSP']}</td>
                         <td class='table-action'>
                           <div class='table-action-wrap flex-center'>
                             <form class='table-action' action='#' method='post'>
-                              <button class='btn' name='id' value='{$row['id']}'>Sửa</button>
+                              <button class='btn' name='id' value='{$row['MASP']}'>Sửa</button>
                             </form>
                             <form class='table-action' action='#' method='post'>
-                              <button class='btn' name='id' value='{$row['id']}'>Xóa</button>
+                              <button class='btn' name='id' value='{$row['MASP']}'>Xóa</button>
                             </form>
                           </div>
                         </td>
@@ -174,6 +182,8 @@ if(isset($_GET['search']) && isset($_GET['mode'])) {
                   ?>           
                 </table>
               </div>
+              <div class="user-panel__item <?php echo (isset($_GET['mode']) && $_GET['mode']=='size') ? 'active' : '';?>" id="size-list_modal">
+              </div>
               <div class="user-panel__item <?php echo (isset($_GET['mode']) && $_GET['mode']=='manufacturer') ? 'active' : '';?>" id="manufacturer-list_modal">
                 <div class="user-panel__header flex">
                   <div class="user-panel-header__action flex">
@@ -181,7 +191,7 @@ if(isset($_GET['search']) && isset($_GET['mode'])) {
                       <img src='../../public/img/plus_icon.svg'>
                       Thêm
                     </a>
-                    <a class="user-panel__add-list-btn btn flex-center" href="">Thêm Danh Sách</a>
+                    <a class="user-panel__add-list-btn btn flex-center" href="importPage_admin.php?mode=manufacturer">Thêm Danh Sách</a>
                   </div>
                   <form class='search-bar rounded'>
                     <label class='search-bar__label flex-center' for='search-bar-input'>
@@ -197,23 +207,23 @@ if(isset($_GET['search']) && isset($_GET['mode'])) {
 
                     echo
                       "<tr>
-                        <th>id</th>
-                        <th>name</th>
-                        <th colspan='2'>action</th>
+                        <th>Mã</th>
+                        <th>Tên</th>
+                        <th colspan='2'>Thao Tác</th>
                       </tr>";
 
                     while($row = $db->fetch($result)) {
                       echo
                       "<tr>
-                        <td>{$row['id']}</td>
-                        <td>{$row['name']}</td>
+                        <td>{$row['MAHSX']}</td>
+                        <td>{$row['TENHSX']}</td>
                         <td class='table-action'>
                           <div class='table-action-wrap flex-center'>
                             <form class='table-action' action='#' method='post'>
-                              <button class='btn' name='id' value='{$row['id']}'>Sửa</button>
+                              <button class='btn' name='id' value='{$row['MAHSX']}'>Sửa</button>
                             </form>
                             <form class='table-action' action='#' method='post'>
-                              <button class='btn' name='id' value='{$row['id']}'>Xóa</button>
+                              <button class='btn' name='id' value='{$row['MAHSX']}'>Xóa</button>
                             </form>
                           </div>
                         </td>
@@ -221,6 +231,26 @@ if(isset($_GET['search']) && isset($_GET['mode'])) {
                     }    
                   ?>           
                 </table>
+              </div>          
+              <div class="user-panel__item <?php echo (isset($_GET['mode']) && $_GET['mode']=='category') ? 'active' : '';?>" id="category-list_modal">
+              </div>
+              <div class="user-panel__item <?php echo (isset($_GET['mode']) && $_GET['mode']=='image') ? 'active' : '';?>" id="image-list_modal">
+                <div class="user-panel__header flex">
+                  <div class="user-panel-header__action flex">
+                    <a class="user-panel__add-btn btn btn-primary flex-center" href="addPage_admin.php?mode=image">
+                      <img src='../../public/img/plus_icon.svg'>
+                      Thêm
+                    </a>
+                    <a class="user-panel__add-list-btn btn flex-center" href="importPage_admin.php?mode=image">Thêm Danh Sách</a>
+                  </div>
+                  <form class='search-bar rounded'>
+                    <label class='search-bar__label flex-center' for='search-bar-input'>
+                      <img class='search-bar__icon' src='../../public/img/search_icon.svg' alt='Search Bar'>
+                    </label>
+                    <input type='text' name='search' id='search-bar-input' placeholder='Tìm Kiếm'/>
+                    <input type='hidden' name='mode' value='product'/>
+                  </form>
+                </div>
               </div>
               <div class="user-panel__item <?php echo (isset($_GET['mode']) && $_GET['mode']=='receipt') ? 'active' : '';?>" id="receipt-list_modal">
                 <div class="user-panel__header flex">

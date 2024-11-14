@@ -9,13 +9,13 @@
     $_SESSION['ADMIN'] = [];
     require_once("../models/Database.php");
     $username = $_POST['username'];
-    $password = $_POST['password'];
+    $password = md5($_POST['password']);
     $db = new Database();
     $sql = "
       select *
-      from admin
-      where username = '$username' and
-            password = '$password'
+      from QUANTRIVIEN
+      where TENTK = '$username' and
+            MATKHAU = '$password'
     ";
     $result = $db->fetch($db->query($sql));
 
