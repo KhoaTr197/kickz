@@ -24,7 +24,7 @@
         'HAS_LOGON' => true,
         'INFO' => $result
       ];
-      header('location: index.php');
+      header('location: index.php?mode=admin-info');
     }
     else {
       $_SESSION['ADMIN'] = [
