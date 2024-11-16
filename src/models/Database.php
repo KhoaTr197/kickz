@@ -34,6 +34,10 @@ class Database {
     return mysqli_fetch_assoc($result);
   }
 
+  public function fetch_field($result) {
+    return mysqli_fetch_field($result);
+  }
+
   public function rows_count($result) {
     return mysqli_num_rows($result);
   }
