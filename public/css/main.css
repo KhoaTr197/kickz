@@ -558,6 +558,7 @@
 
 .personal-list-item__change-pass-btn {
   display: block;
+  width: fit-content;
   font-size: 0.875rem;
   color: var(--accentText);
   background-color: var(--primaryText);
@@ -637,17 +638,17 @@ footer {
   /* padding: 1rem; */
 }
 
-#admin .user-panel__item {
-  position: relative;
-  padding: 0 1rem;
-}
-
 #admin .user-panel__header {
   position: sticky;
+  z-index: 999;
   top: 0;
   background-color: var(--primaryColor);
-  padding: 1rem 0;
+  padding: 1rem;
   justify-content: space-between;
+}
+
+#admin .user-panel__content {
+  padding: 0 1rem;
 }
 
 #admin .user-panel-header__action {
@@ -666,7 +667,6 @@ footer {
 
 #admin .list-table {
   width: 100%;
-  padding-top: 100px;
 }
 
 #admin .table-action-wrap {
@@ -690,33 +690,12 @@ footer {
   flex-direction: row;
 }
 
-#admin .form-control {
-  min-width: 400px;
-  height: 500px;
-  max-height: 500px;
-  justify-content: space-between;
-}
-
-#admin .size-list {
+#admin .category-list {
   overflow-y: auto;
   max-height: 100%;
   flex-direction: column;
 }
 
-#admin .size-option {
+#admin .category-list__item {
   margin: 8px 0;
-  align-items: center;
-}
-
-#admin .size-option__input {
-  flex: 1;
-}
-
-#admin .add-size {
-  margin-top: auto;
-  gap: 8px;
-}
-
-#admin .add-size__btn {
-  flex: 1;
 }
