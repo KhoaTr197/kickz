@@ -1,93 +1,81 @@
 <?php
-  require_once("../controllers/csvController.php");
-  require_once("../controllers/imageController.php");
-  require_once("../models/Database.php");
+  include_once("../views/components/components.php");
+  ini_set('max_file_uploads', '200');
   session_start();
 
-  $supportedModes = [
-    'product',
-    'manufacturer',
-    'size',
-    'category',
-    'image'
+  $formTitles = [
+    'product' => 'Danh Sách Sản Phẩm',
+    'manufacturer' => 'Danh Sách Hãng',
+    'size' => 'Danh Sách Kích Cỡ & Số Lượng',
+    'category' => 'Danh Sách Danh Mục',
+    'image' => 'Danh Sách Hình Ảnh'
   ];
 
-  if(!isset($_POST['mode']) || !in_array($_POST['mode'], $supportedModes)) {
-    $_SESSION['UPLOAD']['ERROR_PROMPT']="Đã xảy ra lỗi, vui lòng thử lại sau!";
-    header("location: importPage_admin.php?mode={$_POST['mode']}");
-  }
-  switch($_POST['mode']) {
-    case 'product':
-    case 'manufacturer':
-    case 'size':
-    case 'category':
-      if(!str_contains($_FILES['data']['name'], '.csv')) {
-        $_SESSION['UPLOAD']['ERROR_PROMPT']="File không hợp lệ!";
-        header("location: importPage_admin.php?mode={$_POST['mode']}");
-      }
-      break;
-    case 'image':
-      if(!checkImages($_FILES['image']['tmp_name'])) {
-        $_SESSION['UPLOAD']['ERROR_PROMPT']="File hình ảnh không hợp lệ!";
-        header("location: importPage_admin.php?mode={$_POST['mode']}");
-      }
-      break;
-    default:
-      header("location: importPage_admin.php?mode={$_POST['mode']}");
-      break;
-  }
+  if(!isset($_GET['mode']) || !array_key_exists($_GET['mode'], $formTitles))
+    header("location: index.php");
 
-  $db = new Database();
-  $mode = ucfirst($_POST['mode']);
+  $header_html = header_render("breadcrumb", false, "index.php?mode={$_GET['mode']}");
+  $error='';
 
-  switch($_POST['mode']) {
-    case 'product':
-    case 'manufacturer':
-    case 'size':
-    case 'category':
-      $handler = handleCSV($_FILES['data']['tmp_name']);
-      readCSV($handler, "add$mode");
-      break;
-    case 'image':
-      insertImages($db, $_FILES['image']);
-      break;
-    default:
-      break;
-  }
-
-  //header("location: index.php");
-
-  function errorPrompt() {
-    $_SESSION['UPLOAD']['ERROR_PROMPT']="Đã xảy ra lỗi, vui lòng thử lại sau!";
-    header("location: importPage_admin.php?mode={$_POST['mode']}");
-  }
-
-  function addProduct($row, $columns) {
-    global $db;
-
-    $newName = $db->escape_str($row[$columns['TENSP']]);
-    $newDescription = $db->escape_str($row[$columns['MOTA']]);
-
-    $productSQL = "insert ignore into SANPHAM (MASP,TENSP,GIA,KHUYENMAI,MOTA,SOSAO,NGLAPSP,MAHSX,TRANGTHAI) values({$row[$columns['MASP']]}, '$newName', {$row[$columns['GIA']]}, {$row[$columns['KHUYENMAI']]}, '$newDescription', {$row[$columns['SOSAO']]}, '{$row[$columns['NGLAPSP']]}', {$row[$columns['MAHSX']]}, {$row[$columns['TRANGTHAI']]})";
-
-    echo $result = $db->query($productSQL);
-    if(!$result) errorPrompt();
-  }
-
-  function addManufacturer($row, $columns) {
-    global $db;
-
-    $manufacturerSQL = "insert ignore into HANGSANXUAT (MAHSX, TENHSX, LOGO) values({$row[$columns['MAHSX']]}, '{$row[$columns['TENHSX']]}', NULL)";
-
-    echo $result = $db->query($manufacturerSQL);
-    if(!$result) errorPrompt();
-  }
-
-  function addSize($row, $columns) {
-    global $db;
-  }
-
-  function addCategory($row, $columns) {
-    global $db;
+  if(!empty($_SESSION) && !empty($_SESSION['UPLOAD']['ERROR_PROMPT'])) {
+    $error="<div class='form-error flex rounded'>".$_SESSION['UPLOAD']['ERROR_PROMPT']."</div>";
   }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../public/css/base.css">
+  <link rel="stylesheet" href="../../public/css/grid.css">
+  <link rel="stylesheet" href="../../public/css/main.css">
+  <script src="../../public/js/jquery-3.7.1.min.js"></script>
+  <script src="../../public/js/app.js"></script>
+  <title>Kickz</title>
+</head>
+<body>
+  <div id="app" class="grid">
+    <?php echo $header_html;?>
+    <main class='main' id="admin">
+      <div class='wide'>
+        <div class='row'>
+          <div class="col c-12 flex-center">
+            <form id='importFormAdmin' class="form" action="../controllers/importController.php" method="post" enctype="multipart/form-data">
+              <?php 
+                echo $error;
+                unset($_SESSION['UPLOAD']['ERROR_PROMPT']);
+              ?>
+              <h2 class='form-title font-medium'>Thêm <?php echo $formTitles[$_GET['mode']]?></h2>
+              <div class='form-control-wrap'>
+                <div class="form-control">
+                  <?php
+                    if($_GET['mode'] === 'image') {
+                      echo "
+                        <div class='form-reminder'>Tải {$formTitles[$_GET['mode']]} (Chỉ hỗ trợ file JPG, Tối đa 100 file mỗi lượt)</div>
+                        <div class='form-reminder'>Cần đặt tền file theo đúng định dạng:</div>
+                        <div class='form-reminder'>+ Sản Phẩm: product-[MASP]-[BEN].jpg</div>
+                        <div class='form-reminder'>+ Hãng: manufacturer-[MAHSX].jpg</div>                        
+                        <input class='form-input flex-center' type='file' name='image[]' multiple>
+                      ";
+                    } else {
+                      echo "
+                        <div class='form-reminder'>Tải file chứa thông tin {$formTitles[$_GET['mode']]} (Chỉ hỗ trợ file CSV)</div>
+                        <input class='form-input flex-center' type='file' name='data'>
+                      ";
+                    }
+                  ?>
+                </div>
+              </div>
+              <button class='form-submit-btn btn btn-primary font-medium' name="mode" value=<?php echo $_GET['mode'];?> type='submit'>Thêm</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
