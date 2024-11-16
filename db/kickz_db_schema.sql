@@ -34,10 +34,11 @@ CREATE TABLE `SANPHAM` (
 );
 
 CREATE TABLE `KICHCO` (
-  `MAKC` int PRIMARY KEY AUTO_INCREMENT,
-  `MASP` int,
+  `MAKC` int,
+  `MASP` int ,
   `COGIAY` float,
-  `SOLUONG` int
+  `SOLUONG` int,
+  PRIMARY KEY(`MAKC`, `MASP`)
 );
 
 CREATE TABLE `HINHANH` (
