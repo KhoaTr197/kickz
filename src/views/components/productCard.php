@@ -1,11 +1,11 @@
 <?php
-  include_once('utils.php');
+  include_once('../utils/utils.php');
   function productCard_render($data, $mode='browse') {
     switch($mode) {
       case 'browse':
-        $id = $data['id'];
-        $name = $data['name'];
-        $price = formatPrice($data['price']);
+        $id = $data['MASP'];
+        $name = $data['TENSP'];
+        $price = formatPrice($data['GIA']);
 
         return "
           <div class='col l-3 c-6'>
