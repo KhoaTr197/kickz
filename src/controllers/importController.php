@@ -46,23 +46,23 @@
     case 'size':
     case 'category':
       $handler = handleCSV($_FILES['data']['tmp_name']);
-      readCSV($handler, "add$mode");
+      readCSV($handler, "insert$mode");
       break;
     case 'image':
-      addImage($_FILES['image']);
+      insertImage($_FILES['image']);
       break;
     default:
       break;
   }
 
-  //header("location: ../admin/index.php");
+  header("location: ../admin/index.php");
 
   function errorPrompt() {
     $_SESSION['UPLOAD']['ERROR_PROMPT']="Đã xảy ra lỗi, vui lòng thử lại sau!";
     header("location: ../admin/import_admin.php?mode={$_POST['mode']}");
   }
 
-  function addProduct($row, $columns) {
+  function insertProduct($row, $columns) {
     global $db;
 
     $newName = $db->escape_str($row[$columns['TENSP']]);
@@ -74,7 +74,7 @@
     if(!$result) errorPrompt();
   }
 
-  function addManufacturer($row, $columns) {
+  function insertManufacturer($row, $columns) {
     global $db;
 
     $manufacturerSQL = "insert ignore into HANGSANXUAT (MAHSX, TENHSX, LOGO) values({$row[$columns['MAHSX']]}, '{$row[$columns['TENHSX']]}', NULL)";
@@ -83,7 +83,7 @@
     if(!$result) errorPrompt();
   }
 
-  function addSize($row, $columns) {
+  function insertSize($row, $columns) {
     global $db;
 
     $sizeSQL = "insert ignore into KICHCO (MASP,MAKC,COGIAY,SOLUONG) values({$row[$columns['MASP']]}, {$row[$columns['MAKC']]}, {$row[$columns['COGIAY']]}, {$row[$columns['SOLUONG']]})";
@@ -92,11 +92,16 @@
     if(!$result) errorPrompt();
   }
 
-  function addCategory($row, $columns) {
+  function insertCategory($row, $columns) {
     global $db;
+
+    $categorySQL = "insert ignore into DANHMUC (MADM,TENDM) values({$row[$columns['MADM']]}, '{$row[$columns['TENDM']]}')";
+
+    $result = $db->query($categorySQL);
+    if(!$result) errorPrompt();
   }
 
-  function addImage($arrayImg) {
+  function insertImage($arrayImg) {
     global $db;
 
     foreach($arrayImg['tmp_name'] as $i => $name) {
