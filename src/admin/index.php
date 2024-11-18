@@ -37,7 +37,7 @@ $sql = [
     from HOADON
   ',
   'user' => '
-    select *
+    select MATK,TENTK,HOTEN,EMAIL,SDT,NGLAPTK,TRANGTHAI	
     from NGUOIDUNG
   '
 ];
@@ -91,7 +91,7 @@ $userPanelHtml = userPanel_render(isset($_GET['mode']) ? $_GET['mode'] : "admin-
           <a class="sidebar__item <?php echo (isset($_GET['mode']) && $_GET['mode'] == 'category') ? 'active' : ''; ?>" id="category-list_sidebar" href="?mode=category&page=1">
             Danh Sách Danh Mục
           </a>
-          <a class="sidebar__item <?php echo (isset($_GET['mode']) && $_GET['mode'] == 'image') ? 'active' : ''; ?>" id="image-list_sidebar" href="?mode=image">
+          <a class="sidebar__item <?php echo (isset($_GET['mode']) && $_GET['mode'] == 'image') ? 'active' : ''; ?>" id="image-list_sidebar" href="?mode=image&page=1">
             Danh Sách Hình Ảnh
           </a>
           <a class="sidebar__item <?php echo (isset($_GET['mode']) && $_GET['mode'] == 'receipt') ? 'active' : ''; ?>" id="receipt-list_sidebar" href="?mode=receipt&page=1">
@@ -241,7 +241,7 @@ function userPanelHeader_render($mode) {
     default:
       $addBtn = "
         <div class='user-panel-header__action flex'>
-          <a class='user-panel__add-btn btn btn-primary flex-center' href='add_admin.php?mode=$mode'>
+          <a class='user-panel__add-btn btn btn-primary flex-center' href='insert_admin.php?mode=$mode'>
             <img src='../../public/img/plus_icon.svg'>
             Thêm
           </a>
