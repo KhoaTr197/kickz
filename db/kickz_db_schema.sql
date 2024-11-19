@@ -28,7 +28,7 @@ CREATE TABLE `SANPHAM` (
   `KHUYENMAI` int,
   `MOTA` text,
   `SOSAO` int,
-  `NGLAPSP` date,
+  `NGSX` date,
   `MAHSX` int,
   `TRANGTHAI` bit(1)
 );
