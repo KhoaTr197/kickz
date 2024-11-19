@@ -9,105 +9,13 @@
   $formInputs = [];
   $formMode;
 
-  switch($_GET['mode']) {
-    case "product":
-      $db= new Database;
-
-      $manufactureSQL="select MAHSX, TENHSX from HANGSANXUAT";
-      $categorySQL="select MADM, TENDM from DANHMUC";
-
-      $manufactureInputs="";
-      $categoryInputs="";
-
-      $result = $db->query($manufactureSQL);
-
-      while($row = $db->fetch($result)) {
-        $manufactureInputs .= "<option value='{$row['MAHSX']}'>{$row['TENHSX']}</option>";
-      }
-
-      $result = $db->query($categorySQL);
-
-      while($row = $db->fetch($result)) {
-        $categoryInputs .= "
-          <label class='category-list__item checkbox'>
-            <div class='checkbox-wrap'>
-              <input type='checkbox' name='category[]' value='{$row['MADM']}'>
-              <span class='checkmark'></span>
-            </div>
-            <span class='checkbox-label'>{$row['TENDM']}</span>
-          </label>
-        ";
-      }
-
-      $formTitle="Thêm Sản Phẩm";
-      $formInputs = "
-        <div class='form-control'>
-          <h3 class='form-title font-medium'>Thông Tin Sản Phẩm</h3>
-          <input class='form-input' type='text' placeholder='Tên Sản Phẩm' name='name' value='' />
-          <input class='form-input' type='number' placeholder='Giá Tiền' name='price' value=''/>
-          <input class='form-input' type='number' placeholder='Khuyến Mãi' name='discount' value='' />
-          <textarea class='form-input' type='text' placeholder='Mô Tả Chi Tiết' name='description'></textarea>
-          <input class='form-input' type='number' min='0' max='5' placeholder='Đánh Giá' name='rating' value='' />
-          <select class='form-input' name='manufacturer'>
-            <option value='' disabled selected hidden>-- Chọn Hãng --</option>
-            $manufactureInputs
-          </select>
-        </div>
-        <div class='form-control'>
-          <h3 class='form-title font-medium'>Danh Mục</h3>
-          <div class='category-list'>
-            $categoryInputs
-          </div>
-        </div>";
-      break;
-    case "manufacturer":
-      $formTitle="Thêm Hãng";
-      $formInputs="
-        <div class='form-control'>
-          <input class='form-input' type='text' placeholder='Tên Hãng' name='name' value='' />
-        </div>";
-      break;
-    case "category":
-      $formTitle="Thêm Danh Mục";
-      $formInputs="
-        <div class='form-control'>
-          <input class='form-input' type='text' placeholder='Tên Danh Mục' name='name' value='' />
-        </div>";
-      break;
-    case "size":
-      $formTitle="Thêm Kích Cỡ & Số Lượng";
-      $formInputs="
-        <div class='form-control'>
-          <input class='form-input' type='text' placeholder='Kích Cỡ' name='size' value='' />
-          <input class='form-input' type='text' placeholder='Số Lượng' name='quantity' value='' />
-        </div>
-      ";
-      break;
-    case "image":
-      $formTitle="Thêm Hình Ảnh";
-      $formInputs="
-        <div class='form-control'>
-          <div class='form-reminder'>Tải Hình Ảnh (Chỉ hỗ trợ file JPG, Tối đa 100 file mỗi lượt)</div>
-          <div class='form-reminder'>Cần đặt tền file theo đúng định dạng:</div>
-          <div class='form-reminder'>+ Sản Phẩm: product-[MASP]-[BEN].jpg</div>
-          <div class='form-reminder'>+ Hãng: manufacturer-[MAHSX].jpg</div>
-          <input class='form-input flex-center' type='file' name='image[]' multiple>
-        </div>
-      ";
-      break;
-    default:
-      header("location: index.php");
-  }
+  getForm();
 
   $error='';
 
   if(!empty($_SESSION) && !empty($_SESSION['UPLOAD']['PROMPT'])) {
     $error="<div class='form-error flex rounded'>".$_SESSION['UPLOAD']['PROMPT']."</div>";
   }
-
-  $categoryList = "
-    select * from category
-  ";
 ?>
 
 <!DOCTYPE html>
@@ -150,3 +58,103 @@
   </div>
 </body>
 </html>
+
+<?php
+
+function getForm() {
+  global $formTitle,$formInputs,$formMode;
+
+  switch($_GET['mode']) {
+    case "product":
+      $db= new Database;
+
+      $manufactureSQL="select MAHSX, TENHSX from HANGSANXUAT";
+      $categorySQL="select MADM, TENDM from DANHMUC";
+
+      $manufactureInputs="";
+      $categoryInputs="";
+
+      $result = $db->query($manufactureSQL);
+
+      while($row = $db->fetch($result)) {
+        $manufactureInputs .= "<option value='{$row['MAHSX']}'>{$row['TENHSX']}</option>";
+      }
+
+      $result = $db->query($categorySQL);
+
+      while($row = $db->fetch($result)) {
+        $categoryInputs .= "
+          <label class='category-list__item checkbox'>
+            <div class='checkbox-wrap'>
+              <input type='checkbox' name='category[]' value='{$row['MADM']}'>
+              <span class='checkmark'></span>
+            </div>
+            <span class='checkbox-label'>{$row['TENDM']}</span>
+          </label>
+        ";
+      }
+
+      $formTitle="Thêm Sản Phẩm";
+      $formInputs = "
+        <div class='form-control'>
+          <h3 class='form-title font-medium'>Thông Tin Sản Phẩm</h3>
+          <input class='form-input' type='text' placeholder='Tên Sản Phẩm' name='name' required/>
+          <input class='form-input' type='number' placeholder='Giá Tiền' name='price' required/>
+          <input class='form-input' type='number' placeholder='Khuyến Mãi' name='discount' />
+          <textarea class='form-input' type='text' placeholder='Mô Tả Chi Tiết' name='description'></textarea>
+          <input class='form-input' type='number' min='0' max='5' placeholder='Đánh Giá' name='rating' />
+          <input class='form-input' type='date' placeholder='Ngày Sản Xuất' name='date'/>
+          <select class='form-input' name='manufacturer' required>
+            <option  disabled selected hidden>-- Chọn Hãng --</option>
+            $manufactureInputs
+          </select>
+        </div>
+        <div class='form-control'>
+          <h3 class='form-title font-medium'>Danh Mục</h3>
+          <div class='category-list'>
+            $categoryInputs
+          </div>
+        </div>";
+      break;
+    case "manufacturer":
+      $formTitle="Thêm Hãng";
+      $formInputs="
+        <div class='form-control'>
+          <input class='form-input' type='text' placeholder='Tên Hãng' name='name' required/>
+        </div>";
+      break;
+    case "category":
+      $formTitle="Thêm Danh Mục";
+      $formInputs="
+        <div class='form-control'>
+          <input class='form-input' type='text' placeholder='Tên Danh Mục' name='name' required/>
+        </div>";
+      break;
+    case "size":
+      $formTitle="Thêm Kích Cỡ & Số Lượng";
+      $formInputs="
+        <div class='form-control'>
+          <input class='form-input' type='number' placeholder='Mã Sản Phẩm' name='id' required/>
+          <input class='form-input' type='number' placeholder='Kích Cỡ' name='size' min=34 max=43 required/>
+          <input class='form-input' type='number' placeholder='Số Lượng' name='quantity' required/>
+        </div>
+      ";
+      break;
+    case "image":
+      $formTitle="Thêm Hình Ảnh";
+      $formInputs="
+        <div class='form-control'>
+          <div class='form-reminder'>Tải Hình Ảnh (Chỉ hỗ trợ file JPG)</div>
+          <div class='form-reminder'>Cần đặt tền file theo đúng định dạng:</div>
+          <div class='form-reminder'>+ Sản Phẩm: product-[MASP]-[BEN].jpg</div>
+          <div class='form-reminder'>+ Hãng: manufacturer-[MAHSX].jpg</div>
+          <input class='form-input flex-center' type='file' name='image[]' multiple>
+        </div>
+      ";
+      break;
+    default:
+      header("location: index.php");
+  }
+}
+
+?>
