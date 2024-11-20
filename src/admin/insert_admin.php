@@ -3,13 +3,14 @@
   require_once("../models/Database.php");
   session_start();
 
+  if(!isset($_GET['mode']) || !getForm())
+    header("location: index.php");
+
+
   $header_html = header_render("breadcrumb", false, "index.php?mode={$_GET['mode']}&page=1");
 
   $formTitle;
-  $formInputs = [];
-  $formMode;
-
-  getForm();
+  $formInputs;
 
   $error='';
 
@@ -62,7 +63,7 @@
 <?php
 
 function getForm() {
-  global $formTitle,$formInputs,$formMode;
+  global $formTitle, $formInputs;
 
   switch($_GET['mode']) {
     case "product":
@@ -121,6 +122,10 @@ function getForm() {
       $formInputs="
         <div class='form-control'>
           <input class='form-input' type='text' placeholder='Tên Hãng' name='name' required/>
+          <div class='form-reminder'>Tải Hình Ảnh Hãng (Chỉ hỗ trợ file JPG)</div>
+          <div class='form-reminder'>Cần đặt tền file theo đúng định dạng:</div>
+          <div class='form-reminder'>+ Hãng: manufacturer-[MAHSX].jpg</div>
+          <input class='form-input flex-center' type='file' name='image' required>
         </div>";
       break;
     case "category":
@@ -147,14 +152,14 @@ function getForm() {
           <div class='form-reminder'>Tải Hình Ảnh (Chỉ hỗ trợ file JPG)</div>
           <div class='form-reminder'>Cần đặt tền file theo đúng định dạng:</div>
           <div class='form-reminder'>+ Sản Phẩm: product-[MASP]-[BEN].jpg</div>
-          <div class='form-reminder'>+ Hãng: manufacturer-[MAHSX].jpg</div>
-          <input class='form-input flex-center' type='file' name='image[]' multiple>
+          <input class='form-input flex-center' type='file' name='image[]' multiple required>
         </div>
       ";
       break;
     default:
-      header("location: index.php");
+      return false;
   }
+  return true;
 }
 
 ?>

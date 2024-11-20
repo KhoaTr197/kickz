@@ -3,18 +3,14 @@
   ini_set('max_file_uploads', '200');
   session_start();
 
-  $formTitles = [
-    'product' => 'Danh Sách Sản Phẩm',
-    'manufacturer' => 'Danh Sách Hãng',
-    'size' => 'Danh Sách Kích Cỡ & Số Lượng',
-    'category' => 'Danh Sách Danh Mục',
-    'image' => 'Danh Sách Hình Ảnh'
-  ];
-
-  if(!isset($_GET['mode']) || !array_key_exists($_GET['mode'], $formTitles))
-    header("location: index.php");
+  if(!isset($_GET['mode']) || !getForm())
+    header("location: index.php?mode={$_GET['mode']}");
 
   $header_html = header_render("breadcrumb", false, "index.php?mode={$_GET['mode']}");
+
+  $formTitle;
+  $formInputs;
+
   $error='';
 
   if(!empty($_SESSION) && !empty($_SESSION['UPLOAD']['ERROR_PROMPT'])) {
@@ -49,26 +45,9 @@
                 echo $error;
                 unset($_SESSION['UPLOAD']['ERROR_PROMPT']);
               ?>
-              <h2 class='form-title font-medium'>Thêm <?php echo $formTitles[$_GET['mode']]?></h2>
+              <h2 class='form-title font-medium'><?php echo $formTitle;?></h2>
               <div class='form-control-wrap'>
-                <div class="form-control">
-                  <?php
-                    if($_GET['mode'] === 'image') {
-                      echo "
-                        <div class='form-reminder'>Tải {$formTitles[$_GET['mode']]} (Chỉ hỗ trợ file JPG, Tối đa 100 file mỗi lượt)</div>
-                        <div class='form-reminder'>Cần đặt tền file theo đúng định dạng:</div>
-                        <div class='form-reminder'>+ Sản Phẩm: product-[MASP]-[BEN].jpg</div>
-                        <div class='form-reminder'>+ Hãng: manufacturer-[MAHSX].jpg</div>                        
-                        <input class='form-input flex-center' type='file' name='image[]' multiple>
-                      ";
-                    } else {
-                      echo "
-                        <div class='form-reminder'>Tải file chứa thông tin {$formTitles[$_GET['mode']]} (Chỉ hỗ trợ file CSV)</div>
-                        <input class='form-input flex-center' type='file' name='data'>
-                      ";
-                    }
-                  ?>
-                </div>
+                <?php echo $formInputs; ?>
               </div>
               <button class='form-submit-btn btn btn-primary font-medium' name="mode" value=<?php echo $_GET['mode'];?> type='submit'>Thêm</button>
             </form>
@@ -79,3 +58,67 @@
   </div>
 </body>
 </html>
+
+<?php
+
+function getForm() {
+  global $formTitle, $formInputs;
+
+  switch($_GET['mode']) {
+    case 'product':
+      $formTitle = 'Thêm Danh Sách Sản Phẩm';
+      $formInputs = "
+        <div class='form-control'>
+          <div class='form-reminder'>Tải file chứa thông tin Danh Sách Sản Phẩm (Chỉ hỗ trợ file CSV)</div>
+          <input class='form-input flex-center' type='file' name='data'>
+        </div>
+      ";
+      break;
+    case 'size':
+      $formTitle = 'Thêm Danh Sách Kích Cỡ & Số Lượng';
+      $formInputs = "
+        <div class='form-control'>
+          <div class='form-reminder'>Tải file chứa thông tin Danh Sách Kích Cỡ & Số Lượng (Chỉ hỗ trợ file CSV)</div>
+          <input class='form-input flex-center' type='file' name='data'>
+        </div>
+      ";
+      break;
+    case 'category':
+      $formTitle = 'Thêm Danh Sách Danh Mục';
+      $formInputs = "
+        <div class='form-control'>
+          <div class='form-reminder'>Tải file chứa thông tin Danh Sách Danh Mục (Chỉ hỗ trợ file CSV)</div>
+          <input class='form-input flex-center' type='file' name='data'>
+        </div>
+      ";
+      break;
+    case 'manufacturer':
+      $formTitle = 'Thêm Danh Sách Hãng';
+      $formInputs = "
+        <div class='form-control'>
+          <div class='form-reminder'>Tải file chứa thông tin Danh Sách Hãng (Chỉ hỗ trợ file CSV)</div>
+          <input class='form-input flex-center' type='file' name='data'>
+          <div class='form-reminder'>Tải Danh Sách Hình Ảnh Hãng (Chỉ hỗ trợ file JPG, Tối đa 100 file mỗi lượt)</div>
+          <div class='form-reminder'>Cần đặt tền file theo đúng định dạng:</div>
+          <div class='form-reminder'>+ Hãng: manufacturer-[MAHSX].jpg</div>                        
+          <input class='form-input flex-center' type='file' name='image[]' multiple>
+        </div>
+      ";
+      break;
+    case 'image':
+      $formTitle='Thêm Danh Sách Hình Ảnh';
+      $formInputs = "
+        <div class='form-control'>
+          <div class='form-reminder'>Tải Danh Sách Hình Ảnh (Chỉ hỗ trợ file JPG, Tối đa 100 file mỗi lượt)</div>
+          <div class='form-reminder'>Cần đặt tền file theo đúng định dạng:</div>
+          <div class='form-reminder'>+ Sản Phẩm: product-[MASP]-[BEN].jpg</div>
+          <input class='form-input flex-center' type='file' name='image[]' multiple>
+        </div>
+      ";
+      break;
+    default:
+      return false;
+  }
+  return true;
+}
+?>
