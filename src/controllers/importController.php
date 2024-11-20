@@ -42,14 +42,18 @@ $mode = ucfirst($_POST['mode']);
 
 switch ($_POST['mode']) {
   case 'product':
-  case 'manufacturer':
-  case 'size':
   case 'category':
+  case 'size':
     $handler = handleCSV($_FILES['data']['tmp_name']);
     readCSV($handler, "insert$mode");
     break;
+  case 'manufacturer':
+    $handler = handleCSV($_FILES['data']['tmp_name']);
+    readCSV($handler, "insertManufacturer");
+    insertImage($_FILES['image'], 'manufacturer');
+    break;
   case 'image':
-    insertImage($_FILES['image']);
+    insertImage($_FILES['image'], 'product');
     break;
   default:
     break;
@@ -106,7 +110,7 @@ function insertCategory($row, $columns)
   if (!$result) errorPrompt();
 }
 
-function insertImage($arrayImg)
+function insertImage($arrayImg, $mode)
 {
   global $db;
 
@@ -125,7 +129,7 @@ function insertImage($arrayImg)
     $imageSQL = "";
     $stmt = null;
 
-    switch ($filename[0]) {
+    switch ($mode) {
       case 'product':
         $imageSQL = "
             insert ignore into HINHANH (MASP, MAHA, URL)

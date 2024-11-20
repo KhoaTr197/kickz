@@ -22,22 +22,27 @@ $mode = ucfirst($_POST['mode']);
 
 switch ($_POST['mode']) {
   case 'product':
-  case 'manufacturer':
-  case 'size':
   case 'category':
-  case 'image':
+  case 'size':
     "insert$mode"();
+    break;
+  case 'manufacturer':
+    insertManufacturer();
+    insertImage('manufacturer');
+    break;
+  case 'image':
+    "insert$mode"('product');
     break;
   default:
     break;
 }
 
-//header("location: ../admin/index.php?mode={$_POST['mode']}");
+header("location: ../admin/index.php?mode={$_POST['mode']}");
 
 function errorPrompt()
 {
   $_SESSION['UPLOAD']['ERROR_PROMPT'] = "Đã xảy ra lỗi, vui lòng thử lại sau!";
-  header("location: ../admin/import_admin.php?mode={$_POST['mode']}");
+  header("location: ../admin/insert_admin.php?mode={$_POST['mode']}");
 }
 
 function insertProduct()
@@ -86,18 +91,18 @@ function insertCategory()
 {
   global $db;
 
-  $categorySQL = "insert ignore into KICHCO (MADM, TENDM) values(NULL, {$_POST['name']})";
+  $categorySQL = "insert ignore into DANHMUC (MADM, TENDM) values(NULL, '{$_POST['name']}')";
 
   $result = $db->query($categorySQL);
   if (!$result) errorPrompt();
 }
 
-function insertImage()
+function insertImage($mode)
 {
   global $db;
 
-  $filename = explode('-', substr($_FILES['image']['name'][0], 0, -4));
-  $file = $_FILES['image']['tmp_name'][0];
+  $filename = explode('-', substr($_FILES['image']['name'], 0, -4));
+  $file = $_FILES['image']['tmp_name'];
   $image = file_get_contents($file);
 
   $idx = [
@@ -110,7 +115,7 @@ function insertImage()
   $imageSQL = "";
   $stmt = null;
 
-  switch ($filename[0]) {
+  switch ($mode) {
     case 'product':
       $imageSQL = "
         insert ignore into HINHANH (MASP, MAHA, URL)
