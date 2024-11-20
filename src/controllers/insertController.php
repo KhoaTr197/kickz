@@ -19,6 +19,7 @@ if (!isset($_POST['mode']) || !in_array($_POST['mode'], $supportedModes)) {
 
 $db = new Database();
 $mode = ucfirst($_POST['mode']);
+$errorFlag = false;
 
 switch ($_POST['mode']) {
   case 'product':
@@ -37,12 +38,16 @@ switch ($_POST['mode']) {
     break;
 }
 
-header("location: ../admin/index.php?mode={$_POST['mode']}");
+if($errorFlag) {
+  header("location: ../admin/import_admin.php?mode={$_POST['mode']}");
+} else {
+  header("location: ../admin/index.php?mode={$_POST['mode']}");
+}
 
 function errorPrompt()
 {
   $_SESSION['UPLOAD']['ERROR_PROMPT'] = "Đã xảy ra lỗi, vui lòng thử lại sau!";
-  header("location: ../admin/insert_admin.php?mode={$_POST['mode']}");
+  $errorFlag=true;
 }
 
 function insertProduct()
