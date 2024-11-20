@@ -11,35 +11,42 @@ if (empty($_SESSION['ADMIN']) && empty($_SESSION['ADMIN']['HAS_LOGON'])) {
 $db = new Database();
 
 $sql = [
-  'product' => '
-    select SANPHAM.*, HANGSANXUAT.TENHSX
-    from SANPHAM inner join HANGSANXUAT
+  'product' => "
+    select SANPHAM.*, HANGSANXUAT.TENHSX, GROUP_CONCAT(DANHMUC.TENDM SEPARATOR ', ') as DANHMUC
+    from SANPHAM
+    inner join HANGSANXUAT
     on SANPHAM.MAHSX = HANGSANXUAT.MAHSX
-  ',
-  'manufacturer' => '
+    left join PHANLOAI
+    on SANPHAM.MASP = PHANLOAI.MASP
+    left join DANHMUC
+    on PHANLOAI.MADM = DANHMUC.MADM
+    group by SANPHAM.MASP
+  ",
+  'manufacturer' => "
     select *
     from HANGSANXUAT
-  ',
-  'size' => '
+  ",
+  'size' => "
     select *
     from KICHCO
-  ',
-  'category' => '
+    order by MASP asc, MAKC asc
+  ",
+  'category' => "
     select *
     from DANHMUC
-  ',
-  'image' => '
+  ",
+  'image' => "
     select *
     from HINHANH
-  ',
-  'receipt' => '
+  ",
+  'receipt' => "
     select *
     from HOADON
-  ',
-  'user' => '
+  ",
+  'user' => "
     select MATK,TENTK,HOTEN,EMAIL,SDT,NGLAPTK,TRANGTHAI	
     from NGUOIDUNG
-  '
+  "
 ];
 
 if (isset($_GET['search']) && isset($_GET['mode'])) {
@@ -164,6 +171,10 @@ function userPanelContent_render($mode) {
       break;
     }
     case "image": {
+      $paging = paging($db, $sql[$mode], $current_page, 32);
+      $newSQL = $paging['sql'];
+      $result = $db->query($newSQL);  
+
       $html = "<div class='user-panel__content'><ul class='gallery-list flex flex-center'>";
 
       while ($row = $db->fetch($result)) {
@@ -201,6 +212,9 @@ function userPanelContent_render($mode) {
           if($key==='LOGO') {
             $imageData = base64_encode($value);
             $html .= "<td><img src='data:image/jpeg;base64,$imageData'></td>";
+          }
+          else if($key==='GIA') {
+            $html .= "<td>".formatPrice($value)."</td>";
           }
           else {
             $html .= "<td>$value</td>";
