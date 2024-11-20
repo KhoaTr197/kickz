@@ -8,7 +8,7 @@ function formatSQLColumnsName($col)
 {
   $ref = [
     //SANPHAM
-    'MASP' => 'Mã',
+    'MASP' => 'Mã Sản Phẩm',
     'TENSP' => 'Tên Sản Phẩm',
     'GIA' => 'Giá',
     'MOTA' => 'Mô Tả',
