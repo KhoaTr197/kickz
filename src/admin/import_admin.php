@@ -70,7 +70,9 @@ function getForm() {
       $formInputs = "
         <div class='form-control'>
           <div class='form-reminder'>Tải file chứa thông tin Danh Sách Sản Phẩm (Chỉ hỗ trợ file CSV)</div>
-          <input class='form-input flex-center' type='file' name='data'>
+          <input class='form-input flex-center' type='file' name='data[]'>
+          <div class='form-reminder'>Tải file chứa thông tin Danh Sách Phân Loại (Chỉ hỗ trợ file CSV)</div>
+          <input class='form-input flex-center' type='file' name='data[]'>
         </div>
       ";
       break;

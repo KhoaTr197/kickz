@@ -18,6 +18,11 @@ if (!isset($_POST['mode']) || !in_array($_POST['mode'], $supportedModes)) {
 }
 switch ($_POST['mode']) {
   case 'product':
+    if (!str_contains($_FILES['data']['name'][0], '.csv') || !str_contains($_FILES['data']['name'][1], '.csv')) {
+      $_SESSION['UPLOAD']['ERROR_PROMPT'] = "File không hợp lệ!";
+      header("location: ../admin/import_admin.php?mode={$_POST['mode']}");
+    }
+    break;
   case 'manufacturer':
   case 'size':
   case 'category':
@@ -39,9 +44,15 @@ switch ($_POST['mode']) {
 
 $db = new Database();
 $mode = ucfirst($_POST['mode']);
+$errorFlag = false;
 
 switch ($_POST['mode']) {
   case 'product':
+    $handler = handleCSV($_FILES['data']['tmp_name'][0]);
+    readCSV($handler, "insertProduct");
+    $handler = handleCSV($_FILES['data']['tmp_name'][1]);
+    readCSV($handler, "insertCategorize");
+    break;
   case 'category':
   case 'size':
     $handler = handleCSV($_FILES['data']['tmp_name']);
@@ -59,12 +70,16 @@ switch ($_POST['mode']) {
     break;
 }
 
-header("location: ../admin/index.php?mode={$_POST['mode']}");
+if($errorFlag) {
+  header("location: ../admin/import_admin.php?mode={$_POST['mode']}");
+} else {
+  header("location: ../admin/index.php?mode={$_POST['mode']}");
+}
 
 function errorPrompt()
 {
   $_SESSION['UPLOAD']['ERROR_PROMPT'] = "Đã xảy ra lỗi, vui lòng thử lại sau!";
-  header("location: ../admin/import_admin.php?mode={$_POST['mode']}");
+  $errorFlag=true;
 }
 
 function insertProduct($row, $columns)
@@ -77,6 +92,15 @@ function insertProduct($row, $columns)
   $productSQL = "insert ignore into SANPHAM (MASP,TENSP,GIA,KHUYENMAI,MOTA,SOSAO,NGSX,MAHSX,TRANGTHAI) values({$row[$columns['MASP']]}, '$newName', {$row[$columns['GIA']]}, {$row[$columns['KHUYENMAI']]}, '$newDescription', {$row[$columns['SOSAO']]}, '{$row[$columns['NGSX']]}', {$row[$columns['MAHSX']]}, {$row[$columns['TRANGTHAI']]})";
 
   $result = $db->query($productSQL);
+  if (!$result) errorPrompt();
+}
+
+function insertCategorize($row, $columns) {
+  global $db;
+
+  $categorizeSQL = "insert ignore into PHANLOAI (MASP,MADM) values({$row[$columns['MASP']]}, {$row[$columns['MADM']]})";
+
+  $result = $db->query($categorizeSQL);
   if (!$result) errorPrompt();
 }
 
