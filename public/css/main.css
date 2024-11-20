@@ -669,21 +669,9 @@ footer {
   width: 100%;
 }
 
-#admin .table-action-wrap {
-  gap: 4px;
-}
-
-#admin .table-action button {
+#admin .table-action {
   color: var(--accentText);
   font-size: 16px;
-}
-
-#admin .table-action-wrap .table-action button {
-  background-color: black;
-}
-
-#admin .table-action-wrap .table-action:last-child button {
-  background-color: var(--errorColor);
 }
 
 #admin .form-control-wrap {

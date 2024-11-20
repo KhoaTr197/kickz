@@ -113,6 +113,14 @@ h2 {
   background: var(--accentColor);
 }
 
+.btn-secondary {
+  background: var(--secondaryColor);
+}
+
+.btn-error {
+  background-color: var(--errorColor);
+}
+
 .table {
   border-collapse: collapse;
   border-spacing: 0 16px;
