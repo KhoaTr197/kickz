@@ -670,6 +670,10 @@ footer {
 }
 
 #admin .table-action {
+  gap: 4px;
+}
+
+#admin .table-action a {
   color: var(--accentText);
   font-size: 16px;
 }
