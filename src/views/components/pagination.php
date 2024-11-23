@@ -26,19 +26,19 @@ function paging(
   $html = '';
 
   if ($current_page > 1 && $total_page > 1) {
-    $html .= "<a class='pagination__btn btn flex-center' href='?{$newQueryStr}&page=" . ($current_page - 1) . "'>Prev</a>";
+    $html .= "<a class='pagination__btn btn flex-center' href='?{$newQueryStr}page=" . ($current_page - 1) . "'>Prev</a>";
   }
 
   for ($i = 1; $i <= $total_page; $i++) {
     if ($i == $current_page) {
       $html .= "<span class='pagination__btn btn btn-primary flex-center'>" . $i . "</span>";
     } else {
-      $html .= "<a class='pagination__btn btn flex-center' href='?{$newQueryStr}&page=" . $i . "'>" . $i . "</a>";
+      $html .= "<a class='pagination__btn btn flex-center' href='?{$newQueryStr}page=" . $i . "'>" . $i . "</a>";
     }
   }
 
   if ($current_page < $total_page && $total_page > 1) {
-    $html .= "<a class='pagination__btn btn flex-center' href='?{$newQueryStr}&page=" . ($current_page + 1) . "'>Next</a>";
+    $html .= "<a class='pagination__btn btn flex-center' href='?{$newQueryStr}page=" . ($current_page + 1) . "'>Next</a>";
   }
 
   return [
