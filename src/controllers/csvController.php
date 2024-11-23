@@ -1,4 +1,23 @@
 <?php
+  function isCSV($filenames) {
+    if(gettype($filenames) == 'array') {
+      foreach($filenames as $filename) {
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        
+        if ($extension !== 'csv') {
+          return false;
+        }
+      }
+    } else {
+      $extension = pathinfo($filenames, PATHINFO_EXTENSION);
+        
+      if ($extension !== 'csv') {
+        return false;
+      }
+    }
+
+    return true;
+  }
   function handleCSV($filepath) {
     return fopen($filepath, "r");
   }
