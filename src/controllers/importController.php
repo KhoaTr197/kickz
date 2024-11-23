@@ -59,7 +59,7 @@ switch ($_POST['mode']) {
   default:
     errorPrompt(
       'UPLOAD',
-      'File không đúng định dạng!',
+      'Đã xảy ra lỗi, vui lòng thử lại sau!',
       "../admin/import_admin.php?mode={$_POST['mode']}"
     );
     break;
@@ -127,8 +127,6 @@ function insertSize($data, $ref)
 
   $sizeSQL = "insert ignore into KICHCO (MASP,MAKC,COGIAY,SOLUONG) values({$data[$ref['MASP']]}, {$data[$ref['MAKC']]}, {$data[$ref['COGIAY']]}, {$data[$ref['SOLUONG']]})";
 
-  echo $sizeSQL;
-
   if($db->query($sizeSQL))
     successPrompt(
       'HOMEPAGE',
@@ -166,8 +164,6 @@ function insertCategory($data, $ref)
 function insertImage($arrayImg)
 {
   global $db;
-
-  print_r($arrayImg);
 
   foreach ($arrayImg['tmp_name'] as $i => $name) {
     $filename = explode('-', substr($arrayImg['name'][$i], 0, -4));

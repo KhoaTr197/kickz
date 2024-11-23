@@ -1,75 +1,85 @@
 <?php
-require_once("../models/Database.php");
 require_once("imageController.php");
+require_once("promptController.php");
+require_once("../models/Database.php");
 
 session_start();
 
-$supportedModes = [
-  'product',
-  'manufacturer',
-  'size',
-  'category',
-  'image'
-];
-
-if (!isset($_POST['mode']) || !in_array($_POST['mode'], $supportedModes)) {
-  $_SESSION['UPLOAD']['ERROR_PROMPT'] = "Đã xảy ra lỗi, vui lòng thử lại sau!";
-  header("location: ../admin/insert_admin.php?mode={$_POST['mode']}");
+if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+  errorPrompt(
+    'UPLOAD',
+    'Đã xảy ra lỗi, vui lòng thử lại sau!',
+    "../admin/insert_admin.php?mode={$_POST['mode']}"
+  );
 }
 
 $db = new Database();
-$mode = ucfirst($_POST['mode']);
-$errorFlag = false;
 
 switch ($_POST['mode']) {
   case 'product':
-  case 'category':
-  case 'size':
-    "insert$mode"();
+    insertProduct();
     break;
   case 'manufacturer':
     insertManufacturer();
     insertImage('manufacturer');
     break;
+  case 'category':
+    insertCategory();
+    break;
+  case 'size':
+    insertSize();
+    break;
   case 'image':
-    "insert$mode"('product');
+    insertImage($_FILES['image']);
     break;
   default:
+    errorPrompt(
+      'UPLOAD',
+      'Đã xảy ra lỗi, vui lòng thử lại sau!',
+      "../admin/import_admin.php?mode={$_POST['mode']}"
+    );
     break;
 }
 
-if($errorFlag) {
-  header("location: ../admin/import_admin.php?mode={$_POST['mode']}");
-} else {
-  header("location: ../admin/index.php?mode={$_POST['mode']}");
-}
-
-function errorPrompt()
-{
-  $_SESSION['UPLOAD']['ERROR_PROMPT'] = "Đã xảy ra lỗi, vui lòng thử lại sau!";
-  $errorFlag=true;
-}
 
 function insertProduct()
 {
   global $db;
 
-  $newName = $db->escape_str($_POST['TENSP']);
-  $newDescription = $db->escape_str($_POST['MOTA']);
+  $newName = $db->escape_str($_POST['name']);
+  $newDescription = $db->escape_str($_POST['description']);
+  $newManufacturer = isset($_POST['manufacturer']) ? $_POST['manufacturer'] : 'NULL';
 
-  $productSQL = "insert ignore into SANPHAM (MASP,TENSP,GIA,KHUYENMAI,MOTA,SOSAO,NGSX,MAHSX,TRANGTHAI) values(NULL, N'{$newName}',{$_POST['price']},{$_POST['discount']}, N'{$newDescription}',{$_POST['rating']}, '{$_POST['date']}', {$_POST['manufacturer']}, 1)";
+  $productSQL = "insert ignore into SANPHAM (MASP,TENSP,GIA,KHUYENMAI,MOTA,SOSAO,NGSX,MAHSX,TRANGTHAI) values(NULL, N'{$newName}',{$_POST['price']},{$_POST['discount']}, N'{$newDescription}',{$_POST['rating']}, '{$_POST['date']}', {$newManufacturer}, 1)";
 
-  $result = $db->query($productSQL);
-  if (!$result) errorPrompt();
+  echo $productSQL;
+  if (!$db->query($productSQL))
+    errorPrompt(
+      'UPLOAD',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/import_admin.php?mode={$_POST['mode']}"
+    );
 
   $lastestProductId = $db->get_last_id();
-
-  foreach($_POST['category'] as $categoryId) {
-    $categorizeSQL = "insert ignore into PHANLOAI (MADM, MASP) values($categoryId, $lastestProductId)";
-
-    $result = $db->query($categorizeSQL);
-    if (!$result) errorPrompt();
+  
+  if(empty($_POST)) {
+    foreach($_POST['category'] as $categoryId) {
+      $categorizeSQL = "insert ignore into PHANLOAI (MADM, MASP) values($categoryId, $lastestProductId)";
+  
+      if (!$db->query($categorizeSQL))
+        errorPrompt(
+          'UPLOAD',
+          'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+          "../admin/import_admin.php?mode={$_POST['mode']}"
+        );
+    }
   }
+
+  successPrompt(
+    'HOMEPAGE',
+    'Thêm thành công!',
+    "../admin/index.php?mode={$_POST['mode']}&page=1"  
+  );
 }
 
 function insertManufacturer()
@@ -78,8 +88,12 @@ function insertManufacturer()
 
   $manufacturerSQL = "insert ignore into HANGSANXUAT (MAHSX, TENHSX, LOGO) values(NULL, '{$_POST['name']}', NULL)";
 
-  $result = $db->query($manufacturerSQL);
-  if (!$result) errorPrompt();
+  if(!$db->query($manufacturerSQL))
+    errorPrompt(
+      'UPLOAD',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/import_admin.php?mode={$_POST['mode']}"
+    );
 }
 
 function insertSize()
@@ -88,8 +102,18 @@ function insertSize()
 
   $sizeSQL = "insert ignore into KICHCO (MAKC, MASP, COGIAY, SOLUONG) values(NULL, {$_POST['id']}, {$_POST['size']}, {$_POST['quantity']})";
 
-  $result = $db->query($sizeSQL);
-  if (!$result) errorPrompt();
+  if($db->query($sizeSQL))
+    successPrompt(
+      'HOMEPAGE',
+      'Thêm thành công!',
+      "../admin/index.php?mode={$_POST['mode']}&page=1"  
+    );
+  else
+    errorPrompt(
+      'UPLOAD',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/import_admin.php?mode={$_POST['mode']}"
+    );
 }
 
 function insertCategory()
@@ -98,8 +122,18 @@ function insertCategory()
 
   $categorySQL = "insert ignore into DANHMUC (MADM, TENDM) values(NULL, '{$_POST['name']}')";
 
-  $result = $db->query($categorySQL);
-  if (!$result) errorPrompt();
+  if($db->query($categorySQL))
+    successPrompt(
+      'HOMEPAGE',
+      'Thêm thành công!',
+      "../admin/index.php?mode={$_POST['mode']}&page=1"  
+    );
+  else
+    errorPrompt(
+      'UPLOAD',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/import_admin.php?mode={$_POST['mode']}"
+    );
 }
 
 function insertImage($mode)
@@ -120,22 +154,31 @@ function insertImage($mode)
   $imageSQL = "";
   $stmt = null;
 
-  switch ($mode) {
+  switch ($_POST['mode']) {
     case 'product':
       $imageSQL = "
-        insert ignore into HINHANH (MASP, MAHA, URL)
+        insert ignore into HINHANH (MASP, MAHA, FILE)
         values(?, ?, ?)
       ";
       $stmt = $db->prepare($imageSQL);
       mysqli_stmt_bind_param($stmt, 'iis', $id, $idx[$filename[2]], $image);
       $db->stmt_execute($stmt);
+
+      if($db->stmt_execute($stmt))
+          successPrompt(
+            'HOMEPAGE',
+            'Thêm thành công!',
+            "../admin/index.php?mode={$_POST['mode']}&page=1"  
+          );
+        else
+          errorPrompt(
+            'UPLOAD',
+            'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+            "../admin/import_admin.php?mode={$_POST['mode']}"
+          );
+
       break;
     case 'manufacturer':
-      $checkSQL = "select * from HANGSANXUAT where MAHSX = $id} limit 1";
-
-      $result = $db->query($checkSQL);
-      if(!$result || $db->rows_count($result) === 0) errorPrompt();
-
       $imageSQL = "
         update HANGSANXUAT
         set LOGO = ?
@@ -143,8 +186,19 @@ function insertImage($mode)
       ";
       $stmt = $db->prepare($imageSQL);
       mysqli_stmt_bind_param($stmt, 'si', $image, $id);
-      $result = $db->stmt_execute($stmt);
-      if (!$result) errorPrompt();
+      
+      if($db->stmt_execute($stmt))
+          successPrompt(
+            'HOMEPAGE',
+            'Thêm thành công!',
+            "../admin/index.php?mode={$_POST['mode']}&page=1"  
+          );
+        else
+          errorPrompt(
+            'UPLOAD',
+            'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+            "../admin/import_admin.php?mode={$_POST['mode']}"
+          );
 
       break;
   }
