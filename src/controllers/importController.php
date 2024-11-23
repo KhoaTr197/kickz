@@ -145,7 +145,7 @@ function insertCategory($data, $ref)
 {
   global $db;
 
-  $categorySQL = "insert ignore into DANHMUC (MADM,TENDM) values({$data[$ref['MADM']]}, N'{$data[$ref['TENDM']]}')";
+  $categorySQL = "insert ignore into DANHMUC (MADM,TENDM) values({$data[$ref['MADM']]}, '{$data[$ref['TENDM']]}')";
 
   if($db->query($categorySQL))
     successPrompt(
@@ -181,7 +181,7 @@ function insertImage($arrayImg)
     $stmt = null;
 
     switch ($_POST['mode']) {
-      case 'product':
+      case 'image':
         $imageSQL = "
             insert ignore into HINHANH (MASP, MAHA, FILE)
             values(?, ?, ?)
