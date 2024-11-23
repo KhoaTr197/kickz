@@ -6,15 +6,15 @@
   if(!isset($_GET['mode']) || !getForm())
     header("location: index.php?mode={$_GET['mode']}");
 
-  $header_html = header_render("breadcrumb", false, "index.php?mode={$_GET['mode']}");
+  $header_html = header_render("breadcrumb", false, "index.php?mode={$_GET['mode']}&page=1");
 
   $formTitle;
   $formInputs;
 
   $error='';
 
-  if(!empty($_SESSION) && !empty($_SESSION['UPLOAD']['ERROR_PROMPT'])) {
-    $error="<div class='form-error flex rounded'>".$_SESSION['UPLOAD']['ERROR_PROMPT']."</div>";
+  if(!empty($_SESSION) && !empty($_SESSION['UPLOAD']['PROMPT'])) {
+    $error="<div class='form-error flex rounded'>".$_SESSION['UPLOAD']['PROMPT']."</div>";
   }
 ?>
 
@@ -43,7 +43,7 @@
             <form id='importFormAdmin' class="form" action="../controllers/importController.php" method="post" enctype="multipart/form-data">
               <?php 
                 echo $error;
-                unset($_SESSION['UPLOAD']['ERROR_PROMPT']);
+                unset($_SESSION['UPLOAD']['PROMPT']);
               ?>
               <h2 class='form-title font-medium'><?php echo $formTitle;?></h2>
               <div class='form-control-wrap'>
