@@ -9,13 +9,13 @@
     $_SESSION['ADMIN'] = [];
     require_once("../models/Database.php");
     $username = $_POST['username'];
-    $password = $_POST['password'];
+    $password = md5($_POST['password']);
     $db = new Database();
     $sql = "
       select *
-      from admin
-      where username = '$username' and
-            password = '$password'
+      from QUANTRIVIEN
+      where TENTK = '$username' and
+            MATKHAU = '$password'
     ";
     $result = $db->fetch($db->query($sql));
 
@@ -24,7 +24,7 @@
         'HAS_LOGON' => true,
         'INFO' => $result
       ];
-      header('location: index.php');
+      header('location: index.php?mode=admin-info');
     }
     else {
       $_SESSION['ADMIN'] = [
@@ -65,7 +65,7 @@
                   <?php echo $error;?>
                   <div class='form-control-wrap'>
                     <h2 class='form-title font-medium'>Đăng Nhập Quản Trị Viên</h2>
-                    <div class='input-group'>
+                    <div class='form-control'>
                       <input class='form-input' type='text' placeholder='Tên Tài Khoản' name='username'/>
                       <input class='form-input' type='password' placeholder='Mật Khẩu' name='password'/>
                     </div>

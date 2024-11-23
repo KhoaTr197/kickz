@@ -5,8 +5,8 @@
   $header_html = header_render("login");
   $error='';
 
-  if(!empty($_SESSION) && !empty($_SESSION['LOGIN']['ERROR_PROMPT'])) {
-    $error="<div class='form-error flex rounded'>".$_SESSION['LOGIN']['ERROR_PROMPT']."</div>";
+  if(!empty($_SESSION) && !empty($_SESSION['LOGIN']['PROMPT'])) {
+    $error="<div class='form-error flex rounded'>".$_SESSION['LOGIN']['PROMPT']."</div>";
   }
 ?>
 
@@ -34,11 +34,11 @@
                 <form class='form' id='login-form' action='../controllers/loginController.php' method='post'>
                   <?php 
                     echo $error;
-                    unset($_SESSION['LOGIN']['ERROR_PROMPT']);
+                    unset($_SESSION['LOGIN']['PROMPT']);
                   ?>
+                  <h2 class='form-title font-medium'>Đăng Nhập</h2>
                   <div class='form-control-wrap'>
-                    <h2 class='form-title font-medium'>Đăng Nhập</h2>
-                    <div class='input-group'>
+                    <div class='form-control'>
                       <input class='form-input' type='text' placeholder='Tên Tài Khoản' name='username'/>
                       <input class='form-input' type='password' placeholder='Mật Khẩu' name='password'/>
                     </div>

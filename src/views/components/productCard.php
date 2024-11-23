@@ -1,20 +1,22 @@
 <?php
-  include_once('utils.php');
+  include_once('../utils/utils.php');
   function productCard_render($data, $mode='browse') {
     switch($mode) {
       case 'browse':
-        $id = $data['id'];
-        $name = $data['name'];
-        $price = formatPrice($data['price']);
+        $id = $data['MASP'];
+        $name = $data['TENSP'];
+        $price = formatPrice($data['GIA']);
+        $productImageData = base64_encode($data['FILE']);
+        $manufacturerImageData = base64_encode($data['LOGO']);
 
         return "
           <div class='col l-3 c-6'>
             <a class='product-card rounded' id='product-$id'>
-              <div class='product-card__img-wrap'>
-                <img height='144px' width='224px' src='https://images.stockx.com/images/Air-Jordan-3-Retro-OG-SP-A-Ma-Maniere-Black-Violet-Ore-Womens-Product.jpg?fit=fill&bg=FFFFFF&w=224&h=160&auto=compress&dpr=2&trim=color&updated_at=1724151308&fm=webp&q=60' alt='Shoes Img'>
+              <div class='product-card__img-wrap flex flex-center'>
+                <img src='data:image/jpeg;base64,$productImageData'>
               </div>
               <div class='product-card__brand'>
-                <img src='../../public/img/brand_test.png' alt='Shoes Img'>
+                <img src='data:image/jpeg;base64,$manufacturerImageData'>
               </div>
               <div class='product-card__name-wrap'>
                 <p class='product-card__name'>

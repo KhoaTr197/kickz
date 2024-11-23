@@ -2,7 +2,7 @@
   include_once("components/components.php");
   session_start();
 
-  $header_html = header_render("navbar", isset($_SESSION['LOGIN']['HAS_LOGON']) ? $_SESSION['LOGIN']['HAS_LOGON'] : false);
+  $header_html = header_render("navbar", isset($_SESSION['USER']['HAS_LOGON']) ? $_SESSION['USER']['HAS_LOGON'] : false);
   $footer_html = footer_render();
 ?>
 

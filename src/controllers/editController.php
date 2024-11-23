@@ -1,175 +1,423 @@
 <?php
-  require_once("../models/Database.php");
-  require_once("formValidation.php");
-  session_start();
+require_once("../models/Database.php");
+require_once("formValidation.php");
+require_once("promptController.php");
+require_once("imageController.php");
+require_once("../utils/utils.php");
+session_start();
 
-  if($_SERVER['REQUEST_METHOD'] != 'POST') 
-    header("location: ../views/edit.php");
+if ($_SERVER['REQUEST_METHOD'] != 'POST')
+  header("location: ../views/edit.php");
+
+$db = new Database();
+
+switch ($_POST['mode']) {
+  case 'info':
+    updateInfo();
+    break;
+  case 'password':
+    updatePassword();
+    break;
+  case 'admin-info':
+    updateAdminInfo();
+    break;
+  case 'admin-password':
+    updateAdminPassword();
+    break;
+  case 'product':
+    updateProduct();
+    break;
+  case 'manufacturer':
+    updateManufacturer();
+    updateImage();
+    break;
+  case 'category':
+    updateCategory();
+    break;
+  case 'size':
+    updateSize();
+    break;
+  case 'image':
+    updateImage();
+    break;
+  default:
+    errorPrompt(
+      'EDIT',
+      'Đã xảy ra lỗi, vui lòng thử lại sau!',
+      "../admin/edit_admin.php?{$_POST['queryStr']}"
+    );
+    break;
+}
+
+function updateProduct() {
+  global $db;
+
+  $updateProductSQL = "
+    update SANPHAM
+    set 
+      TENSP = '{$_POST['name']}',
+      GIA = {$_POST['price']},
+      KHUYENMAI = {$_POST['discount']},
+      MOTA = '{$_POST['description']}',
+      SOSAO = {$_POST['rating']},
+      NGSX = '{$_POST['date']}',
+      MAHSX = {$_POST['manufacturer']}
+    where MASP = {$_POST['id']}
+  ";
+  if(!$db->query($updateProductSQL))
+    errorPrompt(
+      'EDIT',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/edit_admin.php?{$_POST['queryStr']}"
+    );
+
+  $selectCategorizeSQL = "
+    select MADM
+    from PHANLOAI
+    where MASP = {$_POST['id']}
+    order by MADM asc
+  ";
+  $result = $db->query($selectCategorizeSQL);
   
-  $db = new Database();
-  $_SESSION['EDIT']=[];
-
-  switch($_POST['mode']) {
-    case 'info':
-      updateInfo($db);
-      break;
-    case 'password':
-      updatePassword($db);
-      break;
-    case 'admin-info':
-      updateAdminInfo($db);
-      break;
-    case 'admin-password':
-      updateAdminPassword($db);
-      break; 
+  $currentCategory = [];
+  while($row = $db->fetch($result)) {
+    $currentCategory[] = $row['MADM'];
   }
 
-  function updateInfo($db) {
-    $userID = $_SESSION['LOGIN']['INFO']['id'];
-    $new_username = $_POST['username'];
-    $new_fullname = $_POST['fullname'];
-    $new_email = $_POST['email'];
-    $new_phone = $_POST['phone'];
+  $categoryNeedDeleted = array_diff($currentCategory, $_POST['category']);
+  $categoryNeedAdd = array_diff($_POST['category'], $currentCategory);
 
-    $updateSql = "
-      update user
-      set username = '$new_username', fullname = '$new_fullname', email = '$new_email', phone = '$new_phone'
-      where id = $userID
+  foreach($categoryNeedDeleted as $id) {
+    $deleteCategorizeSQL = "
+      delete from PHANLOAI where MADM = $id
     ";
-    $db->query($updateSql);
-  
-    $_SESSION['LOGIN']['INFO'] = $db->fetch($db->query("
-      select *
-      from user
-      where id = $userID
-    "));
-
-    header("location: ../views/user.php");
+    if(!$db->query($deleteCategorizeSQL))
+      errorPrompt(
+        'EDIT',
+        'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+        "../admin/edit_admin.php?{$_POST['queryStr']}"
+      );
+  }
+  foreach($categoryNeedAdd as $id) {
+    $addCategorizeSQL = "
+      insert into PHANLOAI(MASP, MADM) values({$_POST['id']}, $id)
+    ";
+    if(!$db->query($addCategorizeSQL))
+      errorPrompt(
+        'EDIT',
+        'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+        "../admin/edit_admin.php?{$_POST['queryStr']}"
+      );
   }
 
-  function updatePassword($db) {
-    $userID = $_SESSION['LOGIN']['INFO']['id'];
-    $current_password = md5($_POST['current_password']);
-    $new_password = $_POST['new_password'];
-    $confirm_password = $_POST['confirm_password'];
+}
 
-    if(empty($current_password) || empty($new_password) || empty($confirm_password)) {
-      $_SESSION['EDIT'] = [
-        'PROMPT' => 'Vui lòng điền vào biểu mẫu này'
-      ];
-      header("location: ../views/edit.php?mode=password");
-    } else {
-      $selectPassSQl = "
-        select *
-        from user
-        where password = '$current_password'
+function updateManufacturer() {
+  global $db;
+
+  $updateManufacturerSQL = "
+    update HANGSANXUAT
+    set TENHSX = '{$_POST['name']}'
+    where MAHSX = {$_POST['id']}
+  ";
+
+  if(!$db->query($updateManufacturerSQL))
+    errorPrompt(
+      'EDIT',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/edit_admin.php?{$_POST['queryStr']}"
+    );
+}
+
+function updateCategory() {
+  global $db;
+
+  $updateCategorySQL = "
+    update DANHMUC
+    set TENDM = '{$_POST['name']}'
+    where MADM = {$_POST['id']}
+  ";
+
+  if($db->query($updateCategorySQL))
+    successPrompt(
+      'HOMEPAGE',
+      'Thêm thành công!',
+      "../admin/index.php?mode={$_POST['mode']}&page=1"  
+    );
+  else
+    errorPrompt(
+      'EDIT',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/edit_admin.php?{$_POST['queryStr']}"
+    );
+}
+
+function updateSize() {
+  global $db;
+
+  $updateSizeSQL = "
+    update KICHCO
+    set SOLUONG = {$_POST['quantity']}
+    where MASP = {$_POST['productId']} and MAKC = {$_POST['id']}
+  ";
+
+  if($db->query($updateSizeSQL))
+    successPrompt(
+      'HOMEPAGE',
+      'Thêm thành công!',
+      "../admin/index.php?mode={$_POST['mode']}&page=1"  
+    );
+  else
+    errorPrompt(
+      'EDIT',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/edit_admin.php?{$_POST['queryStr']}"
+    );
+}
+
+function updateImage() {
+  global $db;
+
+  $file = $_FILES['image']['tmp_name'];
+  $image = file_get_contents($file);
+
+  $stmt = null;
+
+  switch ($_POST['mode']) {
+    case 'image':
+      $updateImageSQL = "
+        update HINHANH
+        set FILE = ?
+        where MAHA = ? and MASP = ?
       ";
-      $result = $db->fetch($db->query($selectPassSQl));
+      $stmt = $db->prepare($updateImageSQL);
+      mysqli_stmt_bind_param($stmt, 'sii', $image, $_POST['id'], $_POST['productId']);
 
-      if($result == 0) {
-        $_SESSION['EDIT'] = [
-          'PROMPT' => 'Mật Khẩu hiện tại không chính xác'
-        ];
-        header("location: ../views/edit.php?mode=password");
-      }
-      else if(!passwordValidation($new_password)) {
-        $_SESSION['EDIT'] = [
-          'PROMPT' => 'Mật Khẩu mới không hợp lệ'
-        ];
-        header("location: ../views/edit.php?mode=password");
-      }
-      else if($new_password != $confirm_password) {
-        $_SESSION['EDIT'] = [
-          'PROMPT' => 'Mật Khẩu mới không trùng khớp'
-        ];
-        header("location: ../views/edit.php?mode=password");
-      }
-      else {
-        $new_password = md5($new_password);
-        $updatePassSQl = "
-          update user
-          set password = '$new_password'
-          where id = $userID
-        ";
-        $db->query($updatePassSQl);
-        header("location: ../views/user.php");
-      }
-    }
+      if($db->stmt_execute($stmt))
+          successPrompt(
+            'HOMEPAGE',
+            'Thêm thành công!',
+            "../admin/index.php?mode={$_POST['mode']}&page=1"  
+          );
+        else
+          errorPrompt(
+            'EDIT',
+            'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+            "../admin/edit_admin.php?{$_POST['queryStr']}"
+          );
+
+      break;
+    case 'manufacturer':
+      $updateImageSQL = "
+        update HANGSANXUAT
+        set LOGO = ?
+        where MAHSX = ? 
+      ";
+      $stmt = $db->prepare($updateImageSQL);
+      mysqli_stmt_bind_param($stmt, 'si', $image, $_POST['id']);
+
+      if($db->stmt_execute($stmt))
+          successPrompt(
+            'HOMEPAGE',
+            'Thêm thành công!',
+            "../admin/index.php?mode={$_POST['mode']}&page=1"  
+          );
+        else
+          errorPrompt(
+            'UPLOAD',
+            'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+            "../admin/edit_admin.php?{$_POST['queryStr']}"
+          );
+
+      break;
   }
+}
 
-  function updateAdminInfo($db) {
-    $new_username = $_POST['username'];
+function updateInfo()
+{
+  global $db;
 
-    $updateSql = "
-      update admin
-      set username = '$new_username'
+  $userId = $_SESSION['USER']['INFO']['MATK'];
+  $newUsername = $_POST['username'];
+  $newFullname = $_POST['fullname'];
+  $newEmail = $_POST['email'];
+  $newPhone = $_POST['phone'];
+  $newAddress = $_POST['address'];
+
+  $updateSql = "
+      update NGUOIDUNG
+      set 
+        TENTK = '$newUsername',
+        HOTEN = '$newFullname',
+        EMAIL = '$newEmail',
+        SDT = '$newPhone',
+        DCHI = '$newAddress'
+      where MATK = $userId
     ";
-    
-    if(!$db->query($updateSql)) {
-      $_SESSION['EDIT'] = [
-        'PROMPT' => 'Đã xảy ra lỗi, vui lòng thử lại sau!'
-      ];
-      header("location: ../admin/edit_admin.php");
-    }
+
+  if($db->query($updateSql)) {
+    $_SESSION['USER']['INFO'] = $db->fetch($db->query("select MATK, TENTK, HOTEN, EMAIL, SDT, NGLAPTK, DCHI from NGUOIDUNG where MATK = $userId"));
+    successPrompt(
+      'HOMEPAGE',
+      'Cập nhật thành công',
+      "../views/user.php"  
+    );
+  }
+  else 
+    errorPrompt(
+      'EDIT',
+      'Đã xảy ra lỗi, vui lòng thử lại sau!',
+      "../views/edit.php?{$_POST['queryStr']}"
+    );
+}
+
+function updatePassword()
+{
+  global $db;
+
+  $currentPassword = md5($_POST['currentPassword']);
+  $newPassword = $_POST['newPassword'];
+  $confirmPassword = $_POST['confirmPassword'];
+
+  if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) 
+    errorPrompt(
+      'EDIT',
+      'Vui lòng điền vào biểu mẫu này',
+      "../views/edit.php?{$_POST['queryStr']}"
+    );
+  else {
+    $currentUserInfoSQL = "
+        select *
+        from NGUOIDUNG
+        where MATK = {$_SESSION['USER']['INFO']['MATK']}
+      ";
+    $currentUserInfo = $db->fetch($db->query($currentUserInfoSQL));
+
+    if ($currentUserInfo == 0)
+      errorPrompt(
+        'EDIT',
+        'Mật khẩu không đúng!',
+        "../views/edit.php?{$_POST['queryStr']}"  
+      );
+    else if (!passwordValidation($newPassword))
+      errorPrompt(
+        'EDIT',
+        'Mật Khẩu mới không hợp lệ!',
+        "../views/edit.php?{$_POST['queryStr']}"  
+      );
+    else if ($newPassword != $confirmPassword)
+      errorPrompt(
+        'EDIT',
+        'Mật Khẩu mới không trùng khớp!',
+        "../views/edit.php?{$_POST['queryStr']}"  
+      );
     else {
-      header("location: ../admin/index.php");
-    }
-  }
-
-  function updateAdminPassword($db) {
-    $current_password = md5($_POST['current_password']);
-    $new_password = $_POST['new_password'];
-    $confirm_password = $_POST['confirm_password'];
-
-    if(empty($current_password) || empty($new_password) || empty($confirm_password)) {
-      $_SESSION['EDIT'] = [
-        'PROMPT' => 'Vui lòng điền vào biểu mẫu này'
-      ];
-      header("location: ../admin/edit_admin.php?mode=password");
-    } else {
-      $selectPassSQl = "
-        select *
-        from admin
-      ";
-      $result = $db->query($selectPassSQl);
-
-      if(!$result) {
-        $_SESSION['EDIT'] = [
-          'PROMPT' => 'Đã xảy ra lỗi, vui lòng thử lại sau!'
-        ];
-        header("location: ../admin/edit_admin.php?mode=password");
-      }
-
-      $result = $db->fetch($result);
-
-      if($result == 0) {
-        $_SESSION['EDIT'] = [
-          'PROMPT' => 'Mật Khẩu hiện tại không chính xác'
-        ];
-        header("location: ../admin/edit_admin.php?mode=password");
-      }
-      else if(!passwordValidation($new_password)) {
-        $_SESSION['EDIT'] = [
-          'PROMPT' => 'Mật Khẩu mới không hợp lệ'
-        ];
-        header("location: ../admin/edit_admin.php?mode=password");
-      }
-      else if($new_password != $confirm_password) {
-        $_SESSION['EDIT'] = [
-          'PROMPT' => 'Mật Khẩu mới không trùng khớp'
-        ];
-        header("location: ../admin/edit_admin.php?mode=password");
-      }
-      else {
-        $new_password = md5($new_password);
-        $updatePassSQl = "
-          update admin
-          set password = '$new_password'
+      $newPassword = md5($newPassword);
+      $updatePassSQL = "
+          update NGUOIDUNG
+          set MATKHAU = '$newPassword'
+          where MATK = {$_SESSION['USER']['INFO']['MATK']}
         ";
-        $db->query($updatePassSQl);
-        header("location: ../admin/index.php");
-      }
+      if($db->query($updatePassSQL)) 
+        successPrompt(
+          'HOMEPAGE',
+          'Cập nhật thành công',
+          "../views/user.php"  
+        );
+      else
+        errorPrompt(
+          'EDIT',
+          'Đã xảy ra lỗi, vui lòng thử lại sau!',
+          "../views/editphp?{$_POST['queryStr']}"  
+        );
     }
   }
+}
 
-?>
+function updateAdminInfo()
+{
+  global $db;
+  $updateInfoSQL = "
+    update QUANTRIVIEN
+    set TENTK = '{$_POST['username']}'
+    where MAQTV = {$_POST['id']}
+  ";
+  
+  if ($db->query($updateInfoSQL)) {
+    $_SESSION['ADMIN']['INFO']['TENTK'] = $_POST['name'];
+    successPrompt(
+      'HOMEPAGE',
+      'Cập nhật thành công',
+      "../admin/index.php?mode=admin-info"  
+    );
+  }
+  else 
+    errorPrompt(
+      'EDIT',
+      'Đã xảy ra lỗi, vui lòng thử lại sau!',
+      "../admin/edit_admin.php?{$_POST['queryStr']}"
+    );
+}
+
+function updateAdminPassword()
+{
+  global $db;
+
+  $currentPassword = md5($_POST['currentPassword']);
+  $newPassword = $_POST['newPassword'];
+  $confirmPassword = $_POST['confirmPassword'];
+
+  if(empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
+    errorPrompt(
+      'EDIT',
+      'Vui lòng điền vào biểu mẫu này',
+      "../admin/edit_admin.php?{$_POST['queryStr']}"
+    );
+  } else {
+    $currentAdminInfoSQL = "
+        select *
+        from QUANTRIVIEN
+        where MAQTV = {$_POST['id']}
+      ";
+    $adminInfo = $db->fetch($db->query($currentAdminInfoSQL));
+
+    if ($adminInfo == 0)
+      errorPrompt(
+        'EDIT',
+        'Mật khẩu không đúng!',
+        "../admin/edit_admin.php?{$_POST['queryStr']}"  
+      );
+    else if (!passwordValidation($newPassword))
+      errorPrompt(
+        'EDIT',
+        'Mật Khẩu mới không hợp lệ!',
+        "../admin/edit_admin.php?{$_POST['queryStr']}"  
+      );
+    else if ($newPassword != $confirmPassword)
+      errorPrompt(
+        'EDIT',
+        'Mật Khẩu mới không trùng khớp!',
+        "../admin/edit_admin.php?{$_POST['queryStr']}"  
+      );
+    else {
+      $newPassword = md5($newPassword);
+      $updatePassSQL = "
+        update QUANTRIVIEN
+        set MATKHAU = '$newPassword'
+        where MAQTV = {$adminInfo['MAQTV']}
+      ";
+      if($db->query($updatePassSQL)) 
+        successPrompt(
+          'HOMEPAGE',
+          'Cập nhật thành công',
+          "../admin/index.php?mode=admin-info"  
+        );
+      else
+        errorPrompt(
+          'EDIT',
+          'Đã xảy ra lỗi, vui lòng thử lại sau!',
+          "../admin/edit_admin.php?{$_POST['queryStr']}"  
+        );
+    }
+  }
+}

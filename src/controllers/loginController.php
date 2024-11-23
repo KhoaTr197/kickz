@@ -1,4 +1,5 @@
 <?php
+  require_once("promptController.php");
   require_once("../models/Database.php");
   session_start();
 
@@ -11,25 +12,25 @@
   $db = new Database();
   $sql = "
     select *
-    from user
-    where username = '$username' and
-          password = '$password'
+    from NGUOIDUNG
+    where TENTK = '$username' and
+          MATKHAU = '$password'
   ";
   $result = $db->fetch($db->query($sql));
-  
-  $_SESSION['LOGIN'] = [];
-  
-  if($result == 0) {
-    $_SESSION['LOGIN'] = [
-      'ERROR_PROMPT' => 'Tên Tài Khoản Hoặc Mật Khẩu không chính xác'
-    ];
-    header("location: ../views/login.php");
+    
+  if($result != 0) {
+    $_SESSION['USER']['HAS_LOGON'] = true;
+    $_SESSION['USER']['INFO'] = $result;
+    successPrompt(
+      'HOMEPAGE',
+      'Đăng Nhập Thành Công!',
+      "../views/homepage.php"
+    );
   } else {
-    $_SESSION['LOGIN'] += [
-      'HAS_LOGON' => true,
-      'INFO' => $result
-    ];
-
-    header("location: ../views/homepage.php");
+    errorPrompt(
+      'LOGIN',
+      'Tên Tài Khoản Hoặc Mật Khẩu không chính xác!',
+      "../views/login.php"
+    );
   }
 ?>

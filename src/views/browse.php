@@ -9,10 +9,21 @@
 
   $db = new Database();
   $sql = "
-      select *
-      from product
+      select SANPHAM.*, HINHANH.*, HANGSANXUAT.LOGO
+      from SANPHAM
+      inner join HINHANH
+      on SANPHAM.MASP = HINHANH.MASP
+      inner join HANGSANXUAT
+      on SANPHAM.MAHSX = HANGSANXUAT.MAHSX
+      where HINHANH.MAHA = 1
     ";
-  $result = $db->query($sql);
+
+  $current_page = isset($_GET["page"]) ? $_GET["page"] : 1;
+  $limit = 16;
+  $paging = paging($db, $sql, $current_page, $limit);
+
+  $newSQl = $paging['sql'];
+  $result = $db->query($newSQl);
 ?>
 
 <!DOCTYPE html>
@@ -39,11 +50,14 @@
               <?php echo $filterPanel; ?>
               <div id='product-list' class='col l-10 c-12'>
                 <div class='row no-gutter'>
-                  <?php
+                  <?php                         
                     while ($row = $db->fetch($result)) {
                       echo productCard_render($row);
                     }
                   ?>
+                </div>
+                <div class="flex-center" id="pagination">
+                  <?php echo $paging['html'];?>
                 </div>
               </div>
             </div>

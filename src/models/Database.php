@@ -3,7 +3,7 @@ class Database {
   const DB_SERVERNAME = 'localhost';
   const DB_USERNAME = 'root';
   const DB_PASSWORD = '';
-  const DB_DBNAME = 'test';
+  const DB_DBNAME = 'kickz';
 
   private $conn;
 
@@ -32,6 +32,30 @@ class Database {
 
   public function fetch($result) {
     return mysqli_fetch_assoc($result);
+  }
+
+  public function fetch_field($result) {
+    return mysqli_fetch_field($result);
+  }
+
+  public function rows_count($result) {
+    return mysqli_num_rows($result);
+  }
+
+  public function prepare($query) {
+    return mysqli_prepare($this->conn, $query);
+  }
+
+  public function stmt_execute($stmt) {
+    return mysqli_stmt_execute($stmt);
+  }
+
+  public function	get_last_id() {
+    return mysqli_insert_id($this->conn);
+  }
+
+  public function escape_str($str) {
+    return mysqli_real_escape_string($this->conn, $str);
   }
 }
 
