@@ -4,6 +4,7 @@ include_once("../views/components/components.php");
 include_once("../utils/utils.php");
 
 session_start();
+
 if (empty($_SESSION['ADMIN']) && empty($_SESSION['ADMIN']['HAS_LOGON'])) {
   header("location: login_admin.php");
 }
@@ -55,7 +56,7 @@ if (isset($_GET['search']) && isset($_GET['mode'])) {
 
 $current_page = isset($_GET["page"]) ? $_GET["page"] : 1;
 
-$userPanelHtml = userPanel_render(isset($_GET['mode']) ? $_GET['mode'] : "admin-info");
+$userPanel_html = userPanel_render(isset($_GET['mode']) ? $_GET['mode'] : "admin-info");
 ?>
 
 <!DOCTYPE html>
@@ -114,7 +115,7 @@ $userPanelHtml = userPanel_render(isset($_GET['mode']) ? $_GET['mode'] : "admin-
         </ul>
       </div>
       <div class="col c-10">
-          <?php echo $userPanelHtml; ?>
+          <?php echo $userPanel_html; ?>
         </div>
       </div>
     </div>
@@ -125,13 +126,13 @@ $userPanelHtml = userPanel_render(isset($_GET['mode']) ? $_GET['mode'] : "admin-
 
 <?php
 function userPanel_render($mode) {
-  $userPanelHeaderHtml = userPanelHeader_render($mode);
-  $userPanelContentHtml = userPanelContent_render($mode);
+  $userPanelHeader_html = userPanelHeader_render($mode);
+  $userPanelContent_html = userPanelContent_render($mode);
 
   return "
     <div class='user-panel'>
-      $userPanelHeaderHtml
-      $userPanelContentHtml
+      $userPanelHeader_html
+      $userPanelContent_html
     </div>
   ";
 }
@@ -153,45 +154,20 @@ function userPanelContent_render($mode) {
         <div class='user-panel-item__content personal-info-wrap'>
           <h2 class='personal-info__title flex'>
             Thông Tin Cá Nhân
-            <a href='edit_admin.php?mode=info' class='personal-title__edit-btn rounded font-medium flex-center'>Sửa</a>
+            <a href='edit_admin.php?mode=admin-info' class='personal-title__edit-btn rounded font-medium flex-center'>Sửa</a>
           </h2>
           <ul class='personal-info__list'>
-            <a class='personal-list__item'>
+            <li class='personal-list__item'>
               <div class='personal-list-item__key'>Tên Tài Khoản:</div>
               <div class='personal-list-item__value'>{$_SESSION['ADMIN']['INFO']['TENTK']}</div>
-            </a>
-            <a class='personal-list__item'>
+            </li>
+            <li class='personal-list__item'>
               <div class='personal-list-item__key'>Mật Khẩu:</div>
-              <a href='edit_admin.php?mode=password' class='personal-list-item__change-pass-btn btn rounded-lg font-medium'>Đổi Mật Khẩu</a>
-            </a>
+              <a href='edit_admin.php?mode=admin-password' class='personal-list-item__change-pass-btn btn rounded-lg font-medium'>Đổi Mật Khẩu</a>
+            </li>
           </ul>
         </div>
       </div>
-      ";
-      break;
-    }
-    case "image": {
-      $paging = paging($db, $sql[$mode], $current_page, 32);
-      $newSQL = $paging['sql'];
-      $result = $db->query($newSQL);  
-
-      $html = "<div class='user-panel__content'><ul class='gallery-list flex flex-center'>";
-
-      while ($row = $db->fetch($result)) {
-        $imageData = base64_encode($row['URL']);
-
-        $html .= "
-          <a class='gallery-list__item rounded flex-center'>
-            <img src='data:image/jpeg;base64,$imageData'>
-            <span class='gallery-list-item__title'>SP-{$row['MASP']}-{$row['MAHA']}</span>
-            <span class='gallery-list-item__action-btn'>Edit</span>
-          </a>";
-      }
-
-      $html .= "
-        </ul>
-        {$paging['html']}
-        </div>
       ";
       break;
     }
@@ -209,7 +185,7 @@ function userPanelContent_render($mode) {
       while ($row = $db->fetch($result)) {
         $html.="<tr>";
         foreach($row as $key => $value) {
-          if($key==='LOGO') {
+          if($key==='LOGO' || $key==='FILE') {
             $imageData = base64_encode($value);
             $html .= "<td><img src='data:image/jpeg;base64,$imageData'></td>";
           }
@@ -220,6 +196,15 @@ function userPanelContent_render($mode) {
             $html .= "<td>$value</td>";
           }
         }
+        $queryStr=getQueryStr($row, $mode);
+        $html .= "
+          <td class='table-action-wrap'>
+            <div class='table-action flex flex-center'>
+              <a class='btn btn-secondary' href='edit_admin.php?$queryStr'>Sửa</a>
+              <a class='btn btn-error'>Xóa</a>
+            </div>
+          </td>
+        ";
         $html.="</tr>";
       }
       $html .= "
@@ -279,4 +264,20 @@ function userPanelHeader_render($mode) {
     </div>
   ";
 }
+
+function getQueryStr($row, $mode) {
+  switch($mode) {
+    case 'product':
+      return "mode=$mode&id={$row['MASP']}&page={$_GET['page']}";
+    case 'manufacturer':
+      return "mode=$mode&id={$row['MAHSX']}&page={$_GET['page']}";
+    case 'category':
+      return "mode=$mode&id={$row['MADM']}&page={$_GET['page']}";
+    case 'size':
+      return "mode=$mode&id={$row['MAKC']}&productId={$row['MASP']}&page={$_GET['page']}";
+    case 'image':
+      return "mode=$mode&id={$row['MAHA']}&productId={$row['MASP']}&page={$_GET['page']}";
+  }
+}
+
 ?>

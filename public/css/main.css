@@ -678,6 +678,10 @@ footer {
   font-size: 16px;
 }
 
+#admin .table td img {
+  max-height: 160px;
+}
+
 #admin .form-control-wrap {
   flex-direction: row;
 }
@@ -690,4 +694,8 @@ footer {
 
 #admin .category-list__item {
   margin: 8px 0;
+}
+
+#admin .preview img {
+  max-width: 320px;
 }
