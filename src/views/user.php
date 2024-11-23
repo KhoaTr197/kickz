@@ -1,9 +1,20 @@
 <?php
+  require_once("../models/Database.php");
   include_once("components/components.php");
   session_start();
 
   $header_html = header_render("breadcrumb");
   $footer_html = footer_render();
+
+  $db = new Database();
+  $sql = "
+    select *
+    from HOADON
+    where MATK = {$_SESSION['USER']['INFO']['MATK']}
+  ";
+  $result = $db->query($sql);
+  
+  $receiptList_html=receiptList_render($result);
 ?>
 
 <!DOCTYPE html>
@@ -54,19 +65,19 @@
                     <ul class="personal-info__list">
                       <li class="personal-list__item">
                         <div class="personal-list-item__key">Tên Tài Khoản:</div>
-                        <div class="personal-list-item__value"><?php echo $_SESSION['LOGIN']['INFO']['username'];?></div>
+                        <div class="personal-list-item__value"><?php echo $_SESSION['USER']['INFO']['TENTK'];?></div>
                       </li>
                       <li class="personal-list__item">
                         <div class="personal-list-item__key">Họ Tên:</div>
-                        <div class="personal-list-item__value"><?php echo $_SESSION['LOGIN']['INFO']['fullname'];?></div>
+                        <div class="personal-list-item__value"><?php echo $_SESSION['USER']['INFO']['HOTEN'];?></div>
                       </li>
                       <li class="personal-list__item">
                         <div class="personal-list-item__key">Email:</div>
-                        <div class="personal-list-item__value"><?php echo $_SESSION['LOGIN']['INFO']['email'];?></div>
+                        <div class="personal-list-item__value"><?php echo $_SESSION['USER']['INFO']['EMAIL'];?></div>
                       </li>
                       <li class="personal-list__item">
                         <div class="personal-list-item__key">SĐT:</div>
-                        <div class="personal-list-item__value"><?php echo $_SESSION['LOGIN']['INFO']['phone'];?></div>
+                        <div class="personal-list-item__value"><?php echo $_SESSION['USER']['INFO']['SDT'];?></div>
                       </li>
                       <li class="personal-list__item">
                         <div class="personal-list-item__key">Mật Khẩu:</div>
@@ -78,10 +89,11 @@
                 <li class="user-panel__item " id="receipt_modal">
                   <div class="receipt-wrap">
                     <h2 class="receipt__title">Đơn Hàng</h2>
-                    <ul class="receipt__list">
-                      <li class="receipt-list__item">Đơn Hàng 1</li>
-                      <li class="receipt-list__item">Đơn Hàng 2</li>
-                      <li class="receipt-list__item">Đơn Hàng 3</li>
+                    <?php echo $receiptList_html?>
+                    <ul class='receipt__list'>
+                      <li class='receipt-list__item'>1</li>
+                      <li class='receipt-list__item'>2</li>
+                      <li class='receipt-list__item'>3</li>
                     </ul>
                   </div>
                 </li>
@@ -94,3 +106,22 @@
   </div>
 </body>
 </html>
+
+<?php
+function receiptList_render($result) {
+  global $db;
+  $html = "<ul class='receipt__list'>";
+
+  while($row = $db->fetch($result)) {
+    $html .= "
+      <li class='receipt-list__item'>
+      </li>
+    ";
+  }
+
+  $html = "</ul>";
+
+
+  return $html;
+}
+?>
