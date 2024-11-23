@@ -12,6 +12,7 @@ CREATE TABLE `NGUOIDUNG` (
   `SDT` varchar(10) UNIQUE,
   `MATKHAU` varchar(32),
   `NGLAPTK` DATE,
+  `DCHI` varchar(200),
   `TRANGTHAI` bit(1)
 );
 
@@ -34,17 +35,17 @@ CREATE TABLE `SANPHAM` (
 );
 
 CREATE TABLE `KICHCO` (
+  `MASP` int,
   `MAKC` int,
-  `MASP` int ,
   `COGIAY` float,
   `SOLUONG` int,
   PRIMARY KEY(`MAKC`, `MASP`)
 );
 
 CREATE TABLE `HINHANH` (
-  `MAHA` int,
   `MASP` int,
-  `URL` BLOB,
+  `MAHA` int,
+  `FILE` BLOB,
   PRIMARY KEY (`MAHA`, `MASP`)
 );
 
@@ -66,8 +67,8 @@ CREATE TABLE `TRANGTHAI` (
 );
 
 CREATE TABLE `CHITIETHOADON` (
-  `MAHD` int,
   `MASP` int,
+  `MAHD` int,
   `MAKC` int,
   `SOLUONG` int,
   `GIA` float,
