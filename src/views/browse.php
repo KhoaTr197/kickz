@@ -9,8 +9,13 @@
 
   $db = new Database();
   $sql = "
-      select *
+      select SANPHAM.*, HINHANH.*, HANGSANXUAT.LOGO
       from SANPHAM
+      inner join HINHANH
+      on SANPHAM.MASP = HINHANH.MASP
+      inner join HANGSANXUAT
+      on SANPHAM.MAHSX = HANGSANXUAT.MAHSX
+      where HINHANH.MAHA = 1
     ";
 
   $current_page = isset($_GET["page"]) ? $_GET["page"] : 1;
