@@ -4,8 +4,7 @@
   session_start();
 
   if(!isset($_GET['mode']) || !getForm())
-    header("location: index.php");
-
+    header("location: index.php?mode=admin-info");
 
   $header_html = header_render("breadcrumb", false, "index.php?mode={$_GET['mode']}&page=1");
 
@@ -44,7 +43,7 @@
             <form class="form" action="../controllers/insertController.php" method="post" enctype="multipart/form-data">
               <?php 
                 echo $error;
-                unset($_SESSION['LOGIN']['ERROR_PROMPT']);
+                unset($_SESSION['UPLOAD']['PROMPT']);
               ?>
               <h2 class='form-title font-medium'><?php echo $formTitle;?></h2>
               <div class='form-control-wrap'>
@@ -115,7 +114,8 @@ function getForm() {
           <div class='category-list'>
             $categoryInputs
           </div>
-        </div>";
+        </div>
+      ";
       break;
     case "manufacturer":
       $formTitle="Thêm Hãng";

@@ -4,7 +4,7 @@
   session_start();
 
   if(!isset($_GET['mode']) || !getForm())
-    header("location: index.php?mode={$_GET['mode']}");
+    header("location: index.php?mode=admin-info");
 
   $header_html = header_render("breadcrumb", false, "index.php?mode={$_GET['mode']}&page=1");
 
