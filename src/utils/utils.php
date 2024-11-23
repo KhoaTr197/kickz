@@ -27,6 +27,9 @@ function formatSQLColumnsName($col)
     'MAKC' => 'Mã Kích Cỡ',
     'COGIAY' => 'Cỡ Giày',
     'SOLUONG' => 'Số Lượng',
+    // HINHANH
+    'MAHA' => 'Mã Hình Ảnh',
+    'FILE' => 'Hình',
     //HOADON
     'MAHD' => '',
     'MATK' => '',
