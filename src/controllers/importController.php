@@ -1,142 +1,173 @@
 <?php
 require_once("csvController.php");
 require_once("imageController.php");
+require_once("promptController.php");
 require_once("../models/Database.php");
 session_start();
 
-$supportedModes = [
-  'product',
-  'manufacturer',
-  'size',
-  'category',
-  'image'
-];
-
-if (!isset($_POST['mode']) || !in_array($_POST['mode'], $supportedModes)) {
-  $_SESSION['UPLOAD']['ERROR_PROMPT'] = "Đã xảy ra lỗi, vui lòng thử lại sau!";
-  header("location: ../admin/import_admin.php?mode={$_POST['mode']}");
-}
-switch ($_POST['mode']) {
-  case 'product':
-    if (!str_contains($_FILES['data']['name'][0], '.csv') || !str_contains($_FILES['data']['name'][1], '.csv')) {
-      $_SESSION['UPLOAD']['ERROR_PROMPT'] = "File không hợp lệ!";
-      header("location: ../admin/import_admin.php?mode={$_POST['mode']}");
-    }
-    break;
-  case 'manufacturer':
-  case 'size':
-  case 'category':
-    if (!str_contains($_FILES['data']['name'], '.csv')) {
-      $_SESSION['UPLOAD']['ERROR_PROMPT'] = "File không hợp lệ!";
-      header("location: ../admin/import_admin.php?mode={$_POST['mode']}");
-    }
-    break;
-  case 'image':
-    if (!checkImages($_FILES['image']['tmp_name'])) {
-      $_SESSION['UPLOAD']['ERROR_PROMPT'] = "File hình ảnh không hợp lệ!";
-      header("location: ../admin/import_admin.php?mode={$_POST['mode']}");
-    }
-    break;
-  default:
-    header("location: ../admin/import_admin.php?mode={$_POST['mode']}");
-    break;
+if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+  errorPrompt(
+    'UPLOAD',
+    'Đã xảy ra lỗi, vui lòng thử lại sau!',
+    "../admin/import_admin.php?mode={$_POST['mode']}"
+  );
 }
 
 $db = new Database();
-$mode = ucfirst($_POST['mode']);
-$errorFlag = false;
 
 switch ($_POST['mode']) {
   case 'product':
+    if(!isCSV($_FILES['data']['name'])) {
+      errorPrompt(
+        'UPLOAD',
+        'File không đúng định dạng!',
+        "../admin/import_admin.php?mode={$_POST['mode']}"
+      );
+    }
+
     $handler = handleCSV($_FILES['data']['tmp_name'][0]);
     readCSV($handler, "insertProduct");
+    
     $handler = handleCSV($_FILES['data']['tmp_name'][1]);
     readCSV($handler, "insertCategorize");
     break;
+  case 'manufacturer':
+    if(!isCSV($_FILES['data']['name']) || !isJPG($_FILES['image']['tmp_name'])) {
+      errorPrompt(
+        'UPLOAD',
+        'File không đúng định dạng!',
+        "../admin/import_admin.php?mode={$_POST['mode']}"
+      );
+    }
+      $handler = handleCSV($_FILES['data']['tmp_name']);
+      readCSV($handler, "insertManufacturer");
+
+      insertImage($_FILES['image']);
+
+    break;
   case 'category':
+    $handler = handleCSV($_FILES['data']['tmp_name']);
+    readCSV($handler, "insertCategory");
+    break;
   case 'size':
     $handler = handleCSV($_FILES['data']['tmp_name']);
-    readCSV($handler, "insert$mode");
-    break;
-  case 'manufacturer':
-    $handler = handleCSV($_FILES['data']['tmp_name']);
-    readCSV($handler, "insertManufacturer");
-    insertImage($_FILES['image'], 'manufacturer');
+    readCSV($handler, "insertSize");
     break;
   case 'image':
-    insertImage($_FILES['image'], 'product');
+    insertImage($_FILES['image']);
     break;
   default:
+    errorPrompt(
+      'UPLOAD',
+      'File không đúng định dạng!',
+      "../admin/import_admin.php?mode={$_POST['mode']}"
+    );
     break;
 }
 
-if($errorFlag) {
-  header("location: ../admin/import_admin.php?mode={$_POST['mode']}");
-} else {
-  header("location: ../admin/index.php?mode={$_POST['mode']}");
-}
-
-function errorPrompt()
-{
-  $_SESSION['UPLOAD']['ERROR_PROMPT'] = "Đã xảy ra lỗi, vui lòng thử lại sau!";
-  $errorFlag=true;
-}
-
-function insertProduct($row, $columns)
+function insertProduct($data, $ref)
 {
   global $db;
 
-  $newName = $db->escape_str($row[$columns['TENSP']]);
-  $newDescription = $db->escape_str($row[$columns['MOTA']]);
+  $newName = $db->escape_str($data[$ref['TENSP']]);
+  $newDescription = $db->escape_str($data[$ref['MOTA']]);
 
-  $productSQL = "insert ignore into SANPHAM (MASP,TENSP,GIA,KHUYENMAI,MOTA,SOSAO,NGSX,MAHSX,TRANGTHAI) values({$row[$columns['MASP']]}, '$newName', {$row[$columns['GIA']]}, {$row[$columns['KHUYENMAI']]}, '$newDescription', {$row[$columns['SOSAO']]}, '{$row[$columns['NGSX']]}', {$row[$columns['MAHSX']]}, {$row[$columns['TRANGTHAI']]})";
+  $productSQL = "insert ignore into SANPHAM (MASP,TENSP,GIA,KHUYENMAI,MOTA,SOSAO,NGSX,MAHSX,TRANGTHAI) values({$data[$ref['MASP']]}, '$newName', {$data[$ref['GIA']]}, {$data[$ref['KHUYENMAI']]}, '$newDescription', {$data[$ref['SOSAO']]}, '{$data[$ref['NGSX']]}', {$data[$ref['MAHSX']]}, {$data[$ref['TRANGTHAI']]})";
 
-  $result = $db->query($productSQL);
-  if (!$result) errorPrompt();
+  if($db->query($productSQL))
+    successPrompt(
+      'HOMEPAGE',
+      'Thêm thành công!',
+      "../admin/index.php?mode={$_POST['mode']}&page=1"  
+    );
+  else
+    errorPrompt(
+      'UPLOAD',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/import_admin.php?mode={$_POST['mode']}"
+    );
 }
 
-function insertCategorize($row, $columns) {
+function insertCategorize($data, $ref) {
   global $db;
 
-  $categorizeSQL = "insert ignore into PHANLOAI (MASP,MADM) values({$row[$columns['MASP']]}, {$row[$columns['MADM']]})";
+  $categorizeSQL = "insert ignore into PHANLOAI (MASP,MADM) values({$data[$ref['MASP']]}, {$data[$ref['MADM']]})";
 
-  $result = $db->query($categorizeSQL);
-  if (!$result) errorPrompt();
+  if($db->query($categorizeSQL))
+    successPrompt(
+      'HOMEPAGE',
+      'Thêm thành công!',
+      "../admin/index.php?mode={$_POST['mode']}&page=1"  
+    );
+  else
+    errorPrompt(
+      'UPLOAD',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/import_admin.php?mode={$_POST['mode']}"
+    );
 }
 
-function insertManufacturer($row, $columns)
+function insertManufacturer($data, $ref)
 {
   global $db;
 
-  $manufacturerSQL = "insert ignore into HANGSANXUAT (MAHSX, TENHSX, LOGO) values({$row[$columns['MAHSX']]}, '{$row[$columns['TENHSX']]}', NULL)";
+  $manufacturerSQL = "insert ignore into HANGSANXUAT (MAHSX, TENHSX, LOGO) values({$data[$ref['MAHSX']]}, '{$data[$ref['TENHSX']]}', NULL)";
 
-  $result = $db->query($manufacturerSQL);
-  if (!$result) errorPrompt();
+  if(!$db->query($manufacturerSQL))
+    errorPrompt(
+      'UPLOAD',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/import_admin.php?mode={$_POST['mode']}"
+    );
 }
 
-function insertSize($row, $columns)
+function insertSize($data, $ref)
 {
   global $db;
 
-  $sizeSQL = "insert ignore into KICHCO (MASP,MAKC,COGIAY,SOLUONG) values({$row[$columns['MASP']]}, {$row[$columns['MAKC']]}, {$row[$columns['COGIAY']]}, {$row[$columns['SOLUONG']]})";
+  $sizeSQL = "insert ignore into KICHCO (MASP,MAKC,COGIAY,SOLUONG) values({$data[$ref['MASP']]}, {$data[$ref['MAKC']]}, {$data[$ref['COGIAY']]}, {$data[$ref['SOLUONG']]})";
 
-  $result = $db->query($sizeSQL);
-  if (!$result) errorPrompt();
+  echo $sizeSQL;
+
+  if($db->query($sizeSQL))
+    successPrompt(
+      'HOMEPAGE',
+      'Thêm thành công!',
+      "../admin/index.php?mode={$_POST['mode']}&page=1"  
+    );
+  else
+    errorPrompt(
+      'UPLOAD',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/import_admin.php?mode={$_POST['mode']}"
+    );
 }
 
-function insertCategory($row, $columns)
+function insertCategory($data, $ref)
 {
   global $db;
 
-  $categorySQL = "insert ignore into DANHMUC (MADM,TENDM) values({$row[$columns['MADM']]}, '{$row[$columns['TENDM']]}')";
+  $categorySQL = "insert ignore into DANHMUC (MADM,TENDM) values({$data[$ref['MADM']]}, N'{$data[$ref['TENDM']]}')";
 
-  $result = $db->query($categorySQL);
-  if (!$result) errorPrompt();
+  if($db->query($categorySQL))
+    successPrompt(
+      'HOMEPAGE',
+      'Thêm thành công!',
+      "../admin/index.php?mode={$_POST['mode']}&page=1"  
+    );
+  else
+    errorPrompt(
+      'UPLOAD',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/import_admin.php?mode={$_POST['mode']}"
+    );
 }
 
-function insertImage($arrayImg, $mode)
+function insertImage($arrayImg)
 {
   global $db;
+
+  print_r($arrayImg);
 
   foreach ($arrayImg['tmp_name'] as $i => $name) {
     $filename = explode('-', substr($arrayImg['name'][$i], 0, -4));
@@ -153,22 +184,30 @@ function insertImage($arrayImg, $mode)
     $imageSQL = "";
     $stmt = null;
 
-    switch ($mode) {
+    switch ($_POST['mode']) {
       case 'product':
         $imageSQL = "
-            insert ignore into HINHANH (MASP, MAHA, URL)
+            insert ignore into HINHANH (MASP, MAHA, FILE)
             values(?, ?, ?)
           ";
         $stmt = $db->prepare($imageSQL);
         mysqli_stmt_bind_param($stmt, 'iis', $id, $idx[$filename[2]], $image);
-        $db->stmt_execute($stmt);
+
+        if($db->stmt_execute($stmt))
+          successPrompt(
+            'HOMEPAGE',
+            'Thêm thành công!',
+            "../admin/index.php?mode={$_POST['mode']}&page=1"  
+          );
+        else
+          errorPrompt(
+            'UPLOAD',
+            'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+            "../admin/import_admin.php?mode={$_POST['mode']}"
+          );
+
         break;
       case 'manufacturer':
-        $checkSQL = "select * from HANGSANXUAT where MAHSX = $id} limit 1";
-
-        $result = $db->query($checkSQL);
-        if(!$result || $db->rows_count($result) === 0) errorPrompt();
-      
         $imageSQL = "
             update HANGSANXUAT
             set LOGO = ?
@@ -176,8 +215,19 @@ function insertImage($arrayImg, $mode)
           ";
         $stmt = $db->prepare($imageSQL);
         mysqli_stmt_bind_param($stmt, 'si', $image, $id);
-        $result = $db->stmt_execute($stmt);
-        if (!$result) errorPrompt();
+
+        if($db->stmt_execute($stmt))
+          successPrompt(
+            'HOMEPAGE',
+            'Thêm thành công!',
+            "../admin/index.php?mode={$_POST['mode']}&page=1"  
+          );
+        else
+          errorPrompt(
+            'UPLOAD',
+            'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+            "../admin/import_admin.php?mode={$_POST['mode']}"
+          );
 
         break;
     }
