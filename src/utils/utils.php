@@ -21,6 +21,7 @@ function formatSQLColumnsName($col)
     'MAHSX' => 'Mã HSX',
     'LOGO' => 'Logo',
     //DANHMUC
+    'DANHMUC' => 'Danh Mục',
     'MADM' => 'Mã Danh Mục',
     'TENDM' => 'Tên Danh Mục',
     'MAKC' => 'Mã Kích Cỡ',
