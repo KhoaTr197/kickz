@@ -54,8 +54,6 @@ if (isset($_GET['search']) && isset($_GET['mode'])) {
   $search = $_GET['search'];
 }
 
-$current_page = isset($_GET["page"]) ? $_GET["page"] : 1;
-
 $userPanel_html = userPanel_render(isset($_GET['mode']) ? $_GET['mode'] : "admin-info");
 ?>
 
@@ -138,10 +136,10 @@ function userPanel_render($mode) {
 }
 
 function userPanelContent_render($mode) {
-  global $db, $sql, $current_page;
+  global $db, $sql;
 
   if($mode!=="admin-info") {
-    $paging = paging($db, $sql[$mode], $current_page);
+    $paging = paging($db, $sql[$mode]);
     $newSQL = $paging['sql'];
     $result = $db->query($newSQL);
   }

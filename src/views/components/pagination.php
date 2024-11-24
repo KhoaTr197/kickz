@@ -2,11 +2,21 @@
 function paging(
   $db,
   $sql,
-  $current_page=1,
   $limit=20,
 )
 {
   global $db;
+
+  $current_page = 0;
+
+  
+  if($_GET['page']) {
+    $current_page = $_GET['page'];
+  }
+  else {
+    $queryStr="{$_SERVER['QUERY_STRING']}&";
+    header("location: {$_SERVER['PHP_SELF']}?{$queryStr}page=1");
+  }
 
   $newQueryStr = str_replace("page=$current_page", "", $_SERVER['QUERY_STRING']);
 
