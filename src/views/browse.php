@@ -3,24 +3,29 @@
   include_once("components/components.php");
   session_start();
 
+  $db = new Database();
+  
   $header_html = header_render("navbar", isset($_SESSION['LOGIN']['HAS_LOGON']) ? $_SESSION['LOGIN']['HAS_LOGON'] : false);
   $filterPanel = filterPanel_render();
   $footer_html = footer_render();
 
-  $db = new Database();
   $sql = "
-      select SANPHAM.*, HINHANH.*, HANGSANXUAT.LOGO
+      select SANPHAM.*, HINHANH.*, HANGSANXUAT.LOGO, PHANLOAI.MADM
       from SANPHAM
       inner join HINHANH
       on SANPHAM.MASP = HINHANH.MASP
       inner join HANGSANXUAT
       on SANPHAM.MAHSX = HANGSANXUAT.MAHSX
+      inner join PHANLOAI
+      on SANPHAM.MASP = PHANLOAI.MASP
       where HINHANH.MAHA = 1
     ";
 
-  $current_page = isset($_GET["page"]) ? $_GET["page"] : 1;
+  if(isset($_GET['category']))
+    $sql .= "and PHANLOAI.MADM = {$_GET['category']}";
+
   $limit = 16;
-  $paging = paging($db, $sql, $current_page, $limit);
+  $paging = paging($db, $sql, $limit);
 
   $newSQl = $paging['sql'];
   $result = $db->query($newSQl);
