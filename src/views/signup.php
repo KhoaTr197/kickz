@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="../../public/css/grid.css">
   <link rel="stylesheet" href="../../public/css/main.css">
   <script src="../../public/js/jquery-3.7.1.min.js"></script>
+  <script src="../../public/js/app.js"></script>
   <title>Kickz</title>
 </head>
 <body>
