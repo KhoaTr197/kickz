@@ -11,7 +11,7 @@
 
         return "
           <div class='col l-3 c-6'>
-            <a class='product-card rounded' id='product-$id'>
+            <a class='product-card rounded' id='product-$id' href='detail.php?id=$id'>
               <div class='product-card__img-wrap flex flex-center'>
                 <img src='data:image/jpeg;base64,$productImageData'>
               </div>
