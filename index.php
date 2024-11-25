@@ -5,19 +5,25 @@
   $db = new Database();
 
   $categorySQL = "select * from DANHMUC";
+  $manufacturerSQL = "select MAHSX, TENHSX from HANGSANXUAT";
+  $categoryListArr = [];
+  $manufacturerListArr = [];
+
   $categoryList = $db->query($categorySQL);
-  $arr = [];
 
   while($row = $db->fetch($categoryList)) {
-    array_push($arr, $row);
+    array_push($categoryListArr, $row);
   }
   
-  $_SESSION['CATEGORY_LIST'] = $arr;
+  $_SESSION['CATEGORY_LIST'] = $categoryListArr;
 
-  if($_GET['page'])
-    echo $_GET['page'];
-  else
-    header("location: {$_SERVER['REQUEST_URI']}?page=1");
+  $manufacturerList = $db->query($manufacturerSQL);
+
+  while($row = $db->fetch($manufacturerList)) {
+    array_push($manufacturerListArr, $row);
+  }
+  
+  $_SESSION['MANUFACTURER_LIST'] = $manufacturerListArr;
 
   header("location: src/views/homepage.php");
 ?>
