@@ -1,8 +1,24 @@
 <?php
+require_once("../models/Database.php");
 include_once("components/components.php");
 
-$header_html = header_render("breadcrumb");
+if(!isset($_GET['id']))
+  header("location: browse.php");
+
+$db = new Database();
+
+$header_html = header_render("breadcrumb", false, "browse.php");
 $footer_html = footer_render();
+
+$productData = getProductData();
+$carousel_html = carousel_render();
+$sizeList_html = sizeList_render();
+$ratings_html = rating_render();
+
+
+
+$price = formatPrice($productData['GIA']);
+
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +33,8 @@ $footer_html = footer_render();
   <link rel="stylesheet" href="../../public/css/base.css">
   <link rel="stylesheet" href="../../public/css/grid.css">
   <link rel="stylesheet" href="../../public/css/main.css">
-  <script src="public/js/jquery-3.7.1.min.js"></script>
+  <script src="../../public/js/jquery-3.7.1.min.js"></script>
+  <script src="../../public/js/app.js"></script>
   <title>Kickz</title>
 </head>
 
@@ -26,72 +43,142 @@ $footer_html = footer_render();
     <?php echo $header_html;?>
     <main class='main'>
       <div class='wide'>
-        <div class='product-detail row'>
-          <div class='col c-7'>
-            <div class="detail-carousel">
-              <div class='carousel__preview flex-center'>
-                <img src='../../public/img/shoe-right-side-test.jpg'>
-              </div>
-              <div class='carousel__gallery flex-center'>
-                <img class='active' src='../../public/img/shoe-right-side-test.jpg' width='128' height='96'>
-                <img src='../../public/img/shoe-right-side-test.jpg'>
-                <img src='../../public/img/shoe-right-side-test.jpg'>
-                <img src='../../public/img/shoe-right-side-test.jpg'>
-              </div>
-            </div>
-          </div>
-          <div class='col c-5'>
-            <div class="detail-panel flex">
-              <div class='detail-panel__name font-medium'>
-                Jordan 3 Retro OG SP A Ma Maniére While You Were Sleeping (Women's)
-                <div class='detail__ratings flex'>
-                  <img src='../../public/img/star_icon.svg'>
-                  <img src='../../public/img/star_icon.svg'>
-                  <img src='../../public/img/star_icon.svg'>
-                  <img src='../../public/img/star_icon.svg'>
-                  <img src='../../public/img/star_icon.svg'>
+        <?php
+          echo "
+            <div class='product-detail row'>
+              <div class='col c-7'>
+                <div class='detail-carousel'>
+                  <div class='carousel__preview flex-center'>
+                    {$carousel_html['previewImage']}
+                  </div>
+                  <div class='carousel__gallery flex-center'>
+                    {$carousel_html['images']}
+                  </div>
                 </div>
               </div>
-              <div class='detail-panel__price'>
-                <div class='price--old font-normal'>4.999.999đ</div>
-                <div class='price--new'>3.699.999đ</div>
+              <div class='col c-5'>
+                <form class='detail-panel flex' method='post' action='../controllers/insertController.php'>
+                  <input name='id' value={$productData['MASP']} hidden>
+                  <input name='size' value='' hidden>
+                  <div class='detail-panel__name font-medium'>
+                    {$productData['TENSP']}
+                    <div class='detail__ratings flex'>
+                      $ratings_html
+                    </div>
+                  </div>
+                  <div class='detail-panel__price'>
+                    <div class='price--old font-normal'>$price</div>
+                    <div class='price--new'>$price</div>
+                  </div>
+                  <div class='detail-panel__size'>
+                    <p class='size-title font-normal'>Kích Cỡ</p>
+                    <ul class='size-list flex'>
+                      $sizeList_html
+                    </ul>
+                  </div>
+                  <button class='detail-panel__action-btn' name='mode' value='addToCart'>
+                    <div class='add-cart-btn btn btn-primary flex-center font-semibold'>
+                      <img src='../../public/img/add-cart_icon.svg'>
+                      <span>Thêm Vào Giỏ Hàng</span>
+                    </div>
+                  </button>
+                </form>
               </div>
-              <div class='detail-panel__size'>
-                <p class='size-title font-normal'>Kích Cỡ</p>
-                <ul class='size-list flex'>
-                  <li class='size-item btn flex-center'>40</li>
-                  <li class='size-item btn flex-center'>40.5</li>
-                  <li class='size-item btn-primary flex-center'>41</li>
-                  <li class='size-item btn flex-center'>41.5</li>
-                  <li class='size-item btn flex-center'>42</li>
-                  <li class='size-item btn flex-center'>42.5</li>
-                </ul>
-              </div>
-              <div class='detail-panel__action-btn'>
-                <div class='add-cart-btn btn btn-primary flex-center font-semibold'>
-                  <img src='../../public/img/add-cart_icon.svg'>
-                  <span>Thêm Vào Giỏ Hàng</span>
+              <div class='col c-12'>
+                <div class='detail-description flex'>
+                  <div class='detail-description__title'>Mô Tả Chi Tiết</div>
+                  <div class='detail-description__info'>
+                    <div class='brand'>Hãng: {$productData['TENHSX']}</div>
+                    <div class='date'>Ngày Ra Mắt: {$productData['NGSX']}</div>
+                  </div>
+                  <div class='detail-description__description font-normal'>{$productData['MOTA']}</div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class='col c-12'>
-            <div class="detail-description flex">
-              <div class='detail-description__title'>Mô Tả Chi Tiết</div>
-              <div class='detail-description__info'>
-                <div class='brand'>Hãng: NIKE</div>
-                <div class='date'>Ngày Ra Mắt: 20/08/2024</div>
-              </div>
-              <div class='detail-description__description font-normal'>The Air Jordan 3 Retro OG SP A Ma Maniére While You Were Sleeping (Women’s) là một sự tiếp nối tuyệt đẹp của mối hợp tác nổi tiếng giữa A Ma Maniére và Jordan Brand. Nổi tiếng với thẩm mỹ sang trọng và kể chuyện, A Ma Maniére mang đến một kiệt tác khác với màu sắc đen, tím ore và pewter phẳng này. Là một phần của bộ sưu tập "While You Were Sleeping" lớn hơn, đôi giày vẫn trung thành với phong cách đặc trưng của thương hiệu với chất liệu cao cấp và chi tiết thiết kế chu đáo. Sự phát hành này mang theo cùng một tiêu chuẩn cao đã làm cho đôi giày đầu tiên A Ma Maniére Jordan 3 trở thành một cổ điển ngay lập tức.</div>
-            </div>
-          </div>
-        </div>
+          ";
+        ?>
       </div>
   </div>
   </main>
   <?php echo $footer_html;?>
   </div>
-  <script src="../../public/js/app.js"></script>
 </body>
-
 </html>
+
+<?php
+function getProductData() {
+  global $db;
+
+  $productSQL = "
+    select *
+    from SANPHAM inner join HANGSANXUAT
+    on SANPHAM.MAHSX = HANGSANXUAT.MAHSX
+    where MASP = {$_GET['id']}
+  ";
+
+  return $db->fetch($db->query($productSQL));
+}
+function carousel_render() {
+  global $db;
+  $imageSQL = "
+    select *
+    from HINHANH
+    where MASP = {$_GET['id']}
+  ";
+
+  $imageSQLResult = $db->query($imageSQL);
+  $previewImage = "";
+  $images = "";
+  while($row = $db->fetch($imageSQLResult)) {
+    $imageData = base64_encode($row['FILE']);
+
+    if($row['MAHA'] == 1) {
+      $previewImage = "<img class='carousel-preview__img' id='carousel-{$row['MAHA']}' src='data:image/jpeg;base64,$imageData'>";
+      $images .= "<img class='carousel-gallery__img active' id='carousel-{$row['MAHA']}' src='data:image/jpeg;base64,$imageData'>";
+    } else {
+      $images .= "<img class='carousel-gallery__img' id='carousel-{$row['MAHA']}' src='data:image/jpeg;base64,$imageData'>";
+    }
+
+  }
+
+  return [
+    'previewImage' => $previewImage,
+    'images' => $images
+  ];
+}
+function sizeList_render() {
+  global $db;
+
+  $sizeSQL = "
+    select *
+    from KICHCO
+    where MASP = {$_GET['id']}
+  ";
+  $html = "";
+
+  $sizeSQLResult = $db->query($sizeSQL);
+  while($row = $db->fetch($sizeSQLResult)) {
+    $html .= "
+      <li class='size-item btn flex-center' value={$row['MAKC']} >
+        <span class='size-item__size '>{$row['COGIAY']}</span>
+        <span class='size-item__quantity font-bold'>SL: {$row['SOLUONG']}</span>
+      </li>
+    ";
+  }
+
+  return $html;
+}
+function rating_render() {
+  global $productData;
+  $html = "";
+
+  for($i=0; $i < 5; $i++) {
+    if($i < $productData['SOSAO'])
+      $html .= "<img src='../../public/img/star_icon.svg'>";
+    else
+      $html .= "<img src='../../public/img/faded-star_icon.svg'>";
+  }
+
+  return $html;
+}
+?>
