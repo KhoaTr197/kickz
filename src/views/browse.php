@@ -3,26 +3,21 @@
   include_once("components/components.php");
   session_start();
 
-  $db = new Database();
-  
   $header_html = header_render("navbar", isset($_SESSION['LOGIN']['HAS_LOGON']) ? $_SESSION['LOGIN']['HAS_LOGON'] : false);
   $filterPanel = filterPanel_render();
   $footer_html = footer_render();
-
+  
+  $db = new Database();
+  $sql = getSQL();
   $sql = "
-      select SANPHAM.*, HINHANH.*, HANGSANXUAT.LOGO, PHANLOAI.MADM
-      from SANPHAM
-      inner join HINHANH
-      on SANPHAM.MASP = HINHANH.MASP
-      inner join HANGSANXUAT
-      on SANPHAM.MAHSX = HANGSANXUAT.MAHSX
-      inner join PHANLOAI
-      on SANPHAM.MASP = PHANLOAI.MASP
-      where HINHANH.MAHA = 1
-    ";
-
-  if(isset($_GET['category']))
-    $sql .= "and PHANLOAI.MADM = {$_GET['category']}";
+    select SANPHAM.*, HINHANH.*, HANGSANXUAT.LOGO
+    from SANPHAM
+    inner join HINHANH
+    on SANPHAM.MASP = HINHANH.MASP
+    inner join HANGSANXUAT
+    on SANPHAM.MAHSX = HANGSANXUAT.MAHSX
+    where HINHANH.MAHA = 1
+  ";
 
   $limit = 16;
   $paging = paging($db, $sql, $limit);
@@ -72,3 +67,35 @@
   </div>
 </body>
 </html>
+
+<?php
+function getSQL() {
+  $result = "
+    select SANPHAM.*, HINHANH.*, HANGSANXUAT.LOGO
+    from SANPHAM
+    inner join HINHANH
+    on SANPHAM.MASP = HINHANH.MASP
+    inner join HANGSANXUAT
+    on SANPHAM.MAHSX = HANGSANXUAT.MAHSX
+  ";
+  $filter = "where HINHANH.MAHA = 1";
+
+  if(isset($_GET['manufacturer'])) {
+    $filter .= "
+      and HANGSANXUAT.MAHSX = {$_GET['manufacturer']}
+    ";
+  }
+
+  if(isset($_GET['category'])) {
+    $result .= "
+      inner join PHANLOAI
+      on SANPHAM.MASP = PHANLOAI.MASP
+    ";
+    $filter .= "
+      and PHANLOAI.MADM = {$_GET['category']}
+    ";
+  }
+
+  return $result.$filter;
+}
+?>
