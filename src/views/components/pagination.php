@@ -8,17 +8,23 @@ function paging(
   global $db;
 
   $current_page = 0;
+  $newQueryStr = "";
 
-  
   if($_GET['page']) {
     $current_page = $_GET['page'];
   }
   else {
-    $queryStr="{$_SERVER['QUERY_STRING']}&";
+    $queryStr="";
+    foreach($_GET as $key => $value) {
+      $queryStr .= "$key=$value&";
+    }
     header("location: {$_SERVER['PHP_SELF']}?{$queryStr}page=1");
   }
 
-  $newQueryStr = str_replace("page=$current_page", "", $_SERVER['QUERY_STRING']);
+  foreach($_GET as $key => $value) {
+    if($key == 'page') continue;
+    $newQueryStr .= "$key=$value&";
+  }
 
   $total_records = $db->rows_count($db->query($sql));
   $total_page = ceil($total_records / $limit);
