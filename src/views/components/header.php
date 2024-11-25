@@ -1,22 +1,12 @@
 <?php
 function header_render($mode, $hasLogon = false, $prev_link = "homepage.php")
 {
+  
   switch ($mode) {
     case 'navbar':
-      $categoryList_html = "";
-      $len = count($_SESSION['CATEGORY_LIST']);
-
-      for($i=0; $i < $len; $i+=2) {
-        $categoryList_html .= "<ul class='category-list'>";
-        for($j=0; $j < 2; $j++) {
-          $categoryList_html .= "
-            <li class='category-item'>
-              <a href='browse.php?category={$_SESSION['CATEGORY_LIST'][$i+$j]['MADM']}'>{$_SESSION['CATEGORY_LIST'][$i+$j]['TENDM']}</a>
-            </li>
-          ";
-        }
-        $categoryList_html .= "</ul>";
-      }
+      $manufacturerList_html = categoryList_render('manufacturer');
+      $categoryList_html = categoryList_render('category');
+      $ratingList_html = categoryList_render('rating');
 
       $menuBtn = "
         <div class='menu-btn btn flex-center' id='menu'>
@@ -25,7 +15,9 @@ function header_render($mode, $hasLogon = false, $prev_link = "homepage.php")
         </div>
         <div class='menu-modal' id='menu-modal'>
           <div class='menu-modal-wrap wide'>
+            $manufacturerList_html
             $categoryList_html
+            $ratingList_html
           </div>
         </div>
       ";
@@ -86,3 +78,80 @@ function header_render($mode, $hasLogon = false, $prev_link = "homepage.php")
       ";
   }
 }
+function categoryList_render($mode) {
+  $newQueryStr="";
+  $html = "";
+
+  switch ($mode) {
+    case 'manufacturer':
+      foreach($_GET as $key => $value) {
+        if($key == 'manufacturer') continue;
+        $newQueryStr .= "$key=$value&";
+      }
+      $html .= "
+        <ul class='category-group'>
+          <li class='category-header'>Danh Mục</li>
+          <ul class='category-list flex'>
+      ";
+      foreach($_SESSION['MANUFACTURER_LIST'] as $manufacturer) {
+        $html .= "
+          <li class='category-item font-normal'>
+            <a href='browse.php?{$newQueryStr}manufacturer={$manufacturer['MAHSX']}'>{$manufacturer['TENHSX']}</a>
+          </li>
+        ";
+      }
+      $html .= "</ul></ul>";
+      break;
+    case 'category':
+      foreach($_GET as $key => $value) {
+        if($key == 'category') continue;
+        $newQueryStr .= "$key=$value&";
+      }
+      $html .= "
+        <ul class='category-group'>
+          <li class='category-header'>Hãng</li>
+          <ul class='category-list flex'>
+      ";
+      foreach($_SESSION['CATEGORY_LIST'] as $category) {
+        $html .= "
+          <li class='category-item font-normal'>
+            <a href='browse.php?{$newQueryStr}rating=1category={$category['MADM']}'>{$category['TENDM']}</a>
+          </li>
+        ";
+      }
+      $html .= "</ul></ul>";
+      break;
+    case 'discount':
+      break;
+    case 'rating':
+      foreach($_GET as $key => $value) {
+        if($key == 'rating') continue;
+        $newQueryStr .= "$key=$value&";
+      }
+      $html .= "
+        <ul class='category-group'>
+          <li class='category-header'>Đánh Giá</li>
+          <ul class='category-list flex'>
+            <li class='category-item font-normal'>
+              <a href='browse.php?{$newQueryStr}rating=1'>1 Sao</a>
+            </li>
+            <li class='category-item font-normal'>
+              <a href='browse.php?{$newQueryStr}rating=2'>2 Sao</a>
+            </li>
+            <li class='category-item font-normal'>
+              <a href='browse.php?{$newQueryStr}rating=3'>3 Sao</a>
+            </li>
+            <li class='category-item font-normal'>
+              <a href='browse.php?{$newQueryStr}rating=4'>4 Sao</a>
+            </li>
+            <li class='category-item font-normal'>
+              <a href='browse.php?{$newQueryStr}rating=5'>5 Sao</a>
+            </li>
+          </ul>
+        </ul>";
+      break;
+  }
+
+  return $html;
+}
+?>
