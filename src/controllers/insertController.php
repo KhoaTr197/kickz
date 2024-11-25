@@ -32,6 +32,9 @@ switch ($_POST['mode']) {
   case 'image':
     insertImage($_FILES['image']);
     break;
+  case 'addToCart':
+    print_r($_POST);
+    break;
   default:
     errorPrompt(
       'UPLOAD',
