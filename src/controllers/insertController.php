@@ -32,9 +32,6 @@ switch ($_POST['mode']) {
   case 'image':
     insertImage($_FILES['image']);
     break;
-  case 'addToCart':
-    print_r($_POST);
-    break;
   default:
     errorPrompt(
       'UPLOAD',
@@ -139,7 +136,7 @@ function insertCategory()
     );
 }
 
-function insertImage($mode)
+function insertImage()
 {
   global $db;
 
@@ -190,3 +187,5 @@ function insertImage($mode)
       "../admin/insert_admin.php?mode={$_POST['mode']}"
     );
 }
+
+?>

@@ -1,16 +1,27 @@
 <?php
 require_once("../models/Database.php");
 include_once("components/components.php");
+session_start();
 
-$header_html = header_render("breadcrumb");
+$header_html = header_render("breadcrumb", false, 'browse.php');
 $footer_html = footer_render();
 
 $db = new Database();
 $sql = "
-    select *
-    from product
-  ";
+  select CHITIETGIOHANG.*, SANPHAM.TENSP, KICHCO.MAKC, KICHCO.COGIAY, HINHANH.FILE
+  from CHITIETGIOHANG
+  inner join SANPHAM
+  on CHITIETGIOHANG.MASP = SANPHAM.MASP
+  inner join KICHCO
+  on CHITIETGIOHANG.MAKC = KICHCO.MAKC and CHITIETGIOHANG.MASP = KICHCO.MASP
+  inner join HINHANH
+  on CHITIETGIOHANG.MASP = HINHANH.MASP
+  where MAGH = 1 and MAHA = 1
+";
+
 $result = $db->query($sql);
+$totalPrice = 0;
+$infoInputs_html = getInfoInputs();
 ?>
 
 <!DOCTYPE html>
@@ -30,19 +41,20 @@ $result = $db->query($sql);
   <title>Kickz</title>
 </head>
 
-<body onunload="return myFunction()">
+<body>
   <div id="app" class="grid">
     <?php echo $header_html ?>
     <main class='main'>
       <div class='wide'>
-        <form action='../controllers/checkout.php' method='post' id="cart-list" class='row'>
+        <form action='../controllers/checkoutController.php' method='post' id="cart-list" class='row'>
           <div class="col c-8">
             <ul class="cart-list">
               <h2 class='cart-list__title'>Giỏ Hàng</h2>
               <?php
-              while ($row = $db->fetch($result)) {
-                echo productCard_render($row, 'cart');
-              }
+                while($row = $db->fetch($result)) {
+                  $totalPrice += $row['GIA'];
+                  echo productCard_render($row, 'cart');
+                }
               ?>
             </ul>
           </div>
@@ -51,7 +63,11 @@ $result = $db->query($sql);
               <div class="checkout__price-list flex">
                 <div class="price-list__item">
                   <div class="price-list-item__name">Tổng Tiền Sản Phẩm</div>
-                  <div class="price-list-item__price">16.000.000đ</div>
+                  <div class="price-list-item__price">
+                    <?php
+                      echo formatPrice($totalPrice);
+                    ?>
+                  </div>
                 </div>
                 <div class="price-list__item">
                   <div class="price-list-item__name">Phí Vận Chuyển</div>
@@ -60,16 +76,48 @@ $result = $db->query($sql);
               </div>
               <div class="checkout__total-price flex font-semibold">
                 <div class="checkout-total-price__name">Tổng Tiền</div>
-                <div class="checkout-total-price__price">16.100.000đ</div>
+                <div class="checkout-total-price__price">
+                  <?php
+                      echo formatPrice($totalPrice + 100000);
+                    ?>
+                </div>
+              </div>
+              <div class="checkout__info font-semibold">
+                <div class="checkout-info__title">Thông Tin Người Mua & Nhận</div>
+                <?php
+                  echo $infoInputs_html;
+                ?>
               </div>
               <button id='checkout-btn' type="submit" class="checkout__checkout-btn btn btn-primary font-semibold">Xác Nhận Đơn Hàng</button>
             </div>
           </div>
-        </form action='../controllers/checkout.php' method='post'>
+        </form>
       </div>
     </main>
     <?php echo $footer_html; ?>
   </div>
 </body>
-
 </html>
+
+<?php
+function getInfoInputs() {
+  return "
+    <div class='form-control flex flex-center checkout-info__input-wrap'>
+      <label>Họ Tên:</label>
+      <input class='form-input checkout-info__input' name='name' value='{$_SESSION['USER']['INFO']['HOTEN']}' />
+    </div>
+    <div class='form-control flex flex-center checkout-info__input-wrap'>
+      <label>SĐT:</label>
+      <input class='form-input checkout-info__input' name='phone' value='{$_SESSION['USER']['INFO']['SDT']}' />
+    </div>
+    <div class='form-control flex flex-center checkout-info__input-wrap'>
+      <label>Email:</label>
+      <input class='form-input checkout-info__input' name='email' value='{$_SESSION['USER']['INFO']['EMAIL']}' />
+    </div>
+    <div class='form-control flex flex-center checkout-info__input-wrap'>
+      <label>Địa Chỉ:</label>
+      <textarea class='form-input checkout-info__input' name='address'>{$_SESSION['USER']['INFO']['DCHI']}</textarea>
+    </div>
+  ";
+}
+?>

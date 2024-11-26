@@ -1,13 +1,14 @@
 <?php
 require_once("../models/Database.php");
 include_once("components/components.php");
+session_start();
 
 if(!isset($_GET['id']))
   header("location: browse.php");
 
 $db = new Database();
 
-$header_html = header_render("breadcrumb", false, "browse.php");
+$header_html = header_render("breadcrumb", false, "{$_SESSION['URL_BACKUP']}");
 $footer_html = footer_render();
 
 $productData = getProductData();
@@ -15,9 +16,11 @@ $carousel_html = carousel_render();
 $sizeList_html = sizeList_render();
 $ratings_html = rating_render();
 
+$oldPrice = $productData['KHUYENMAI'] != 0 ? formatPrice($productData['GIA']) : '';
 
+$newPrice = formatPrice($productData['GIA'] - $productData['KHUYENMAI']);
 
-$price = formatPrice($productData['GIA']);
+$newPriceNoFormat = $productData['GIA'] - $productData['KHUYENMAI'];
 
 ?>
 
@@ -57,9 +60,10 @@ $price = formatPrice($productData['GIA']);
                 </div>
               </div>
               <div class='col c-5'>
-                <form class='detail-panel flex' method='post' action='../controllers/insertController.php'>
+                <form class='detail-panel flex' method='post' action='../controllers/cartController.php'>
                   <input name='id' value={$productData['MASP']} hidden>
                   <input name='size' value='' hidden>
+                  <input name='price' value=$newPriceNoFormat hidden>
                   <div class='detail-panel__name font-medium'>
                     {$productData['TENSP']}
                     <div class='detail__ratings flex'>
@@ -67,8 +71,8 @@ $price = formatPrice($productData['GIA']);
                     </div>
                   </div>
                   <div class='detail-panel__price'>
-                    <div class='price--old font-normal'>$price</div>
-                    <div class='price--new'>$price</div>
+                    <div class='price--old font-normal'>$oldPrice</div>
+                    <div class='price--new'>$newPrice</div>
                   </div>
                   <div class='detail-panel__size'>
                     <p class='size-title font-normal'>Kích Cỡ</p>

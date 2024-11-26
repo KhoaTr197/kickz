@@ -29,8 +29,14 @@ $(document).ready(function() {
 
   $('.size-item').click(function() {
     $(this).siblings().removeClass('active');
-    $(this).addClass('active');
-    console.log($('.detail-panel input[name=size]').val($(this).val()));
+
+    if($(this).hasClass('active')) {
+      $(this).removeClass('active');
+      $('.detail-panel input[name=size]').val('');
+    } else {
+      $(this).addClass('active');
+      $('.detail-panel input[name=size]').val($(this).val());
+    }
   })
 
   $('.sidebar__item').click(function() {
@@ -41,22 +47,6 @@ $(document).ready(function() {
 
     $(`.user-panel__item`).removeClass('active');
     $(`#${sidebarItem[0]}_modal`).addClass('active');
-  })
-
-  $('.quantity-btn__minus').click(function() {
-    let element = $(this).siblings('.quantity-btn__input')[0];
-    element.stepDown();
-    element.dispatchEvent(new Event('change'));
-  })
-
-  $('.quantity-btn__add').click(function() {
-    let element = $(this).siblings('.quantity-btn__input')[0];
-    element.stepUp();
-    element.dispatchEvent(new Event('change'));
-  })
-
-  $(document).on('click', '.size-option__delete-btn', function() {
-    $(this).parent().remove();
   })
 
   $('.gallery-list__item').hover(

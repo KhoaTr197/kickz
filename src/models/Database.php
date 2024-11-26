@@ -30,6 +30,10 @@ class Database {
     return mysqli_query($this->conn, $query_str);
   }
 
+  public function multi_query($query_str) {
+    return mysqli_multi_query($this->conn, $query_str);
+  }
+
   public function fetch($result) {
     return mysqli_fetch_assoc($result);
   }

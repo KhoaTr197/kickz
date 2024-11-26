@@ -3,7 +3,10 @@
   include_once("components/components.php");
   session_start();
 
-  $header_html = header_render("navbar", isset($_SESSION['LOGIN']['HAS_LOGON']) ? $_SESSION['LOGIN']['HAS_LOGON'] : false);
+  if($_SESSION['URL_BACKUP'] != $_SERVER['REQUEST_URI']) 
+    $_SESSION['URL_BACKUP'] = $_SERVER['REQUEST_URI'];
+
+  $header_html = header_render("navbar", isset($_SESSION['USER']['HAS_LOGON']) ? $_SESSION['USER']['HAS_LOGON'] : false);
   $filterPanel = filterPanel_render();
   $footer_html = footer_render();
   
