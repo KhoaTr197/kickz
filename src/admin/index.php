@@ -39,6 +39,7 @@ $sql = [
   'image' => "
     select *
     from HINHANH
+    order by MASP
   ",
   'receipt' => "
     select *
