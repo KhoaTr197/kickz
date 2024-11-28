@@ -152,7 +152,7 @@ function getForm() {
           <div class='form-reminder'>Tải Hình Ảnh (Chỉ hỗ trợ file JPG)</div>
           <div class='form-reminder'>Cần đặt tền file theo đúng định dạng:</div>
           <div class='form-reminder'>+ Sản Phẩm: product-[MASP]-[BEN].jpg</div>
-          <input class='form-input flex-center' type='file' name='image[]' multiple required>
+          <input class='form-input flex-center' type='file' name='image' required>
         </div>
       ";
       break;
