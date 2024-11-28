@@ -54,7 +54,7 @@
               <a class='quantity-btn__minus flex-center' href='../controllers/cartController.php?mode=decrease&id=$productId&sizeId=$sizeId'>
                 <img src='../../public/img/minus_icon.svg'/>
               </a>
-              <input class='quantity-btn__input font-medium' type='number' min='0' value='$quantity' name='product-$productId-$sizeId' />
+              <input class='quantity-btn__input font-medium' type='number' min='0' name='quantity' value='$quantity' readonly/>
               <a class='quantity-btn__add flex-center' href='../controllers/cartController.php?mode=increase&id=$productId&sizeId=$sizeId'>
                 <img src='../../public/img/plus_icon.svg'/>                     
               </a>
