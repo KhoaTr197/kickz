@@ -28,14 +28,15 @@
   top: var(--headerHeight);
   left: 0;
   right: 0;
-  height: 240px;
+  height: fit-content;
+  max-height: 240px;
   background: var(--primaryColor);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
 .menu-modal-wrap {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   padding: 1rem 0;
   height: 100%;
 }
@@ -43,6 +44,19 @@
 /* CATEGORY LIST */
 .category-header {
   font-size: 1.125rem;
+}
+
+.category-group {
+  max-height: 100%;
+  max-width: 320px;
+}
+
+.category-list.flex {
+  flex-wrap: wrap;
+}
+
+.category-list.flex .category-item {
+  flex: 1 1 50%;
 }
 
 .category-item {
@@ -162,6 +176,14 @@
   display: flex;
 }
 
+.breadcrumb-nav {
+  margin-bottom: 8px;
+}
+
+.breadcrumb-nav__item {
+  text-decoration: underline;
+}
+
 /* FILTER PANEL */
 .filter-list {
   margin-bottom: 2rem;
@@ -241,6 +263,7 @@
 }
 
 .product-card__price--new {
+  margin-top: auto;
   font-size: 1.25rem;
 }
 
@@ -294,19 +317,20 @@
   gap: 1rem;
 }
 
-.carousel__gallery img {
+.carousel-gallery__img {
   width: 128px;
   height: 96px;
   border-radius: 8px;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
-.carousel__gallery img.active {
+.carousel-gallery__img.active {
   border: 1px solid #000;
 }
 
 /* DETAIL PANEL */
 .detail-panel {
+  height: 100%;
   flex-direction: column;
   gap: 2rem;
 }
@@ -330,6 +354,8 @@
 }
 
 .detail-panel__size .size-item {
+  user-select: none;
+  flex-direction: column;
   width: 96px;
   height: 48px;
   font-size: 1.25rem;
@@ -337,6 +363,14 @@
   padding: 1rem;
   border-radius: 0.5rem;
   border: 1px solid #BCBCBC;
+}
+
+.size-item.active {
+  background-color: var(--accentColor);
+}
+
+.size-item .size-item__quantity {
+  font-size: 0.5rem;
 }
 
 .detail-panel__price .price--old {
@@ -350,6 +384,7 @@
 }
 
 .detail-panel__action-btn {
+  margin-top: auto;
   display: flex;
   gap: 0.5rem;
 }
@@ -388,6 +423,10 @@
 }
 
 /* CART */
+.cart-reminder {
+  text-align: center;
+}
+
 .cart-list__title {
   font-size: 2rem;
   padding-bottom: 4px;
@@ -402,7 +441,16 @@
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
+.cart-list-item__img-wrap {
+  width: 120px;
+}
+
+.cart-list-item__img {
+  width: 100%;
+}
+
 .cart-info {
+  row-gap: 8px;
   flex-direction: column;
   justify-content: space-between;
 }
@@ -413,7 +461,6 @@
   line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  font-size: 14px;
 }
 
 .cart-info__quantity-btn {
@@ -468,6 +515,27 @@
   padding: 32px 0 16px;
   font-size: 1.25rem;
   border-top: 1px solid var(--secondaryText);
+}
+
+.checkout__info {
+  margin: 64px 0;
+}
+
+.checkout-info__input-wrap {
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 8px 0;
+}
+
+.checkout-info__input {
+  flex: 0 0 80%;
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid #BCBCBC;
+}
+
+textarea.checkout-info__input {
+  height: fit-content;
 }
 
 .checkout__checkout-btn {
@@ -593,6 +661,67 @@
   border-bottom: 1px solid #000;
 }
 
+.receipt-list__item {
+  margin: 16px 0;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid #bcbcbc;
+}
+
+.reicept-list-item__header {
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.reicept-list-item__title {
+  
+}
+
+.reicept-status--pending {
+  color: var(--warningColor);
+}
+
+.reicept-status--success {
+  color: var(--successColor);
+}
+
+.reicept-status--error {
+  color: var(--errorColor);
+}
+
+.receipt-list-item__customer-info {
+  margin: 16px 0;
+}
+
+.receipt-list-item__detail {
+  margin: 16px 0;
+  padding: 8px 0;
+  border-top: 1px solid #bcbcbc;
+  border-bottom: 1px solid #bcbcbc;
+}
+
+.receipt-detail-list__item {
+  margin: 8px 0;
+}
+
+.receipt-detail-list-item__img {
+  width: 80px;
+  margin-right: 8px;
+}
+
+.receipt-detail-list-item__info {
+  flex-direction: column;
+  row-gap: 4px;
+}
+
+.receipt-detail-list-item__info:last-child {
+  margin-left: auto;
+  align-items: flex-end;
+}
+
+.receipt-list-item__price {
+  justify-content: space-between;
+}
 /* FOOTER */
 footer {
   color: var(--accentText);

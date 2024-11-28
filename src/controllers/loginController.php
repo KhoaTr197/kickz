@@ -10,17 +10,42 @@
   $password = md5($_POST['password']);
 
   $db = new Database();
-  $sql = "
+  $checkUserSQL = "
     select *
     from NGUOIDUNG
     where TENTK = '$username' and
           MATKHAU = '$password'
   ";
-  $result = $db->fetch($db->query($sql));
+  $userData = $db->fetch($db->query($checkUserSQL));
+
     
-  if($result != 0) {
+  if($userData != 0) {
     $_SESSION['USER']['HAS_LOGON'] = true;
-    $_SESSION['USER']['INFO'] = $result;
+    $_SESSION['USER']['INFO'] = $userData;
+
+    $checkCartSQL = "
+      select *
+      from GIOHANG
+      where MATK = {$userData['MATK']}
+    ";
+    $cartResult = $db->rows_count($db->query($checkCartSQL));
+
+    if($cartResult == 0) {
+      $createCartSQL = "
+        insert into GIOHANG (MAGH, MATK)
+        values (NULL, {$userData['MATK']})
+      ";
+      $db->query($createCartSQL);
+      $_SESSION['CART_ID']=$db->get_last_id();
+    } else {
+      $selectCartSQL = "
+        select MAGH
+        from GIOHANG
+        where MATK = {$userData['MATK']}
+      ";
+      $_SESSION['CART_ID']=$db->fetch($db->query($selectCartSQL))['MAGH'];
+    }
+
     successPrompt(
       'HOMEPAGE',
       'Đăng Nhập Thành Công!',

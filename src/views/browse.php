@@ -3,24 +3,22 @@
   include_once("components/components.php");
   session_start();
 
-  $header_html = header_render("navbar", isset($_SESSION['LOGIN']['HAS_LOGON']) ? $_SESSION['LOGIN']['HAS_LOGON'] : false);
+  if(!isset($_SESSION['CATEGORY_LIST']) || !isset($_SESSION['MANUFACTURER_LIST']))
+    header("location: ../../index.php");
+
+  if($_SESSION['URL_BACKUP'] != $_SERVER['REQUEST_URI']) 
+    $_SESSION['URL_BACKUP'] = $_SERVER['REQUEST_URI'];
+
+  $header_html = header_render("navbar", isset($_SESSION['USER']['HAS_LOGON']) ? $_SESSION['USER']['HAS_LOGON'] : false);
+  $breadcrumbsNav_html = breadcrumbsNav_render();
   $filterPanel = filterPanel_render();
   $footer_html = footer_render();
-
+  
   $db = new Database();
-  $sql = "
-      select SANPHAM.*, HINHANH.*, HANGSANXUAT.LOGO
-      from SANPHAM
-      inner join HINHANH
-      on SANPHAM.MASP = HINHANH.MASP
-      inner join HANGSANXUAT
-      on SANPHAM.MAHSX = HANGSANXUAT.MAHSX
-      where HINHANH.MAHA = 1
-    ";
-
-  $current_page = isset($_GET["page"]) ? $_GET["page"] : 1;
+  $sql = getSQL();
+  
   $limit = 16;
-  $paging = paging($db, $sql, $current_page, $limit);
+  $paging = paging($db, $sql, $limit);
 
   $newSQl = $paging['sql'];
   $result = $db->query($newSQl);
@@ -49,8 +47,9 @@
             <div class='row' id="browse">
               <?php echo $filterPanel; ?>
               <div id='product-list' class='col l-10 c-12'>
+                <?php echo $breadcrumbsNav_html; ?>
                 <div class='row no-gutter'>
-                  <?php                         
+                  <?php             
                     while ($row = $db->fetch($result)) {
                       echo productCard_render($row);
                     }
@@ -67,3 +66,82 @@
   </div>
 </body>
 </html>
+
+<?php
+function getSQL() {
+  $result = "
+    select SANPHAM.*, HINHANH.*, HANGSANXUAT.LOGO
+    from SANPHAM
+    inner join HINHANH
+    on SANPHAM.MASP = HINHANH.MASP
+    inner join HANGSANXUAT
+    on SANPHAM.MAHSX = HANGSANXUAT.MAHSX
+  ";
+  $filter = "where HINHANH.MAHA = 1 ";
+
+  if(isset($_GET['manufacturer'])) {
+    $filter .= "
+      and HANGSANXUAT.MAHSX = {$_GET['manufacturer']}
+    ";
+  }
+
+  if(isset($_GET['category'])) {
+    $result .= "
+      inner join PHANLOAI
+      on SANPHAM.MASP = PHANLOAI.MASP
+    ";
+    $filter .= "
+      and PHANLOAI.MADM = {$_GET['category']}
+    ";
+  }
+
+  if(isset($_GET['price'])) {
+    $price = explode('-', $_GET['price']);
+
+    switch($price[0]) {
+      case 'less':
+        $filter .= "and SANPHAM.GIA < {$price[1]}";
+        break;
+      case 'more':
+        $filter .= "and SANPHAM.GIA > {$price[1]}";
+        break;
+      default:
+        $filter .= "and SANPHAM.GIA between {$price[0]} and {$price[1]}";
+        break;
+    }
+  }
+
+  if(isset($_GET['rating'])) {
+    $filter .= "
+      and SANPHAM.SOSAO = {$_GET['rating']}
+    ";
+  }
+
+  return $result.$filter;
+}
+function breadcrumbsNav_render() {
+  $nav="";
+
+  if(isset($_GET['category']))
+    foreach($_SESSION['CATEGORY_LIST'] as $category) {
+      if($_GET['category'] == $category['MADM'])
+        $nav .= "<a href='browse.php'>Trang Chủ</a> / <span class='breadcrumb-nav__item'>{$category['TENDM']}</span>";
+    }
+  else if(isset($_GET['manufacturer']))
+  foreach($_SESSION['MANUFACTURER_LIST'] as $manufacturer) {
+    if($_GET['manufacturer'] == $manufacturer['MAHSX'])
+      $nav .= "<a href='browse.php'>Trang Chủ</a> / <span class='breadcrumb-nav__item'>{$manufacturer['TENHSX']}</span>";
+  }
+  
+  
+  return "
+    <div class='row no-gutter'>
+      <div class='col c-12'>
+        <div class='breadcrumb-nav font-normal'>         
+          $nav
+        </div>
+      </div>
+    </div>
+  ";
+}
+?>

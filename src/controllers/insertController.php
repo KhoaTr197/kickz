@@ -136,7 +136,7 @@ function insertCategory()
     );
 }
 
-function insertImage($mode)
+function insertImage()
 {
   global $db;
 
@@ -187,3 +187,5 @@ function insertImage($mode)
       "../admin/insert_admin.php?mode={$_POST['mode']}"
     );
 }
+
+?>

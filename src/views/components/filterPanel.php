@@ -1,118 +1,56 @@
 <?php
-  function filterPanel_render() {
-    return "
+function filterPanel_render()
+{
+  
+  $priceList_html = filterList_render("price");
+  $manufacturerList_html = filterList_render("manufacturer");
+
+  return "
       <div id='filter-panel' class='col l-2 c-12 no-gutter'>
         <div class='filter-panel-wrap'>
-          <ul class='filter-list' id='brand'>
-            <h3 class='filter-list__title font-medium'>Nhãn Hàng</h3>
-            <li class='filter-list__item'>
-              <label class='checkbox'>
-                <div class='checkbox-wrap'>
-                  <input type='checkbox' name='brand' id='filter-Adidas' value='Adidas'>
-                  <span class='checkmark'></span>
-                </div>
-                <span class='checkbox-label'>Adidas</span>
-              </label>
-            </li>
-            <li class='filter-list__item'>
-              <label class='checkbox'>
-                <div class='checkbox-wrap'>
-                  <input type='checkbox' name='brand' id='filter-Nike' value='Nike'>
-                  <span class='checkmark'></span>
-                </div>
-                <span class='checkbox-label'>Nike</span>
-              </label>
-            </li>
-            <li class='filter-list__item'>
-              <label class='checkbox'>
-                <div class='checkbox-wrap'>
-                  <input type='checkbox' name='brand' id='filter-Converse' value='Converse'>
-                  <span class='checkmark'></span>
-                </div>
-                <span class='checkbox-label'>Converse</span>
-              </label>
-            </li>
-            <li class='filter-list__item'>
-              <label class='checkbox'>
-                <div class='checkbox-wrap'>
-                  <input type='checkbox' name='brand' id='filter-Puma' value='Puma'>
-                  <span class='checkmark'></span>
-                </div>
-                <span class='checkbox-label'>Puma</span>
-              </label>
-            </li>
-          </ul>
-          <ul class='filter-list' id='type'>
-            <h3 class='filter-list__title font-medium'>Loại</h3>
-            <li class='filter-list__item'>
-              <label class='checkbox'>
-                <div class='checkbox-wrap'>
-                  <input type='checkbox' name='type[]' id='' value='sport'>
-                  <span class='checkmark'></span>
-                </div>
-                <span class='checkbox-label'>Thể Thao</span>
-              </label>
-            </li>
-            <li class='filter-list__item'>
-              <label class='checkbox'>
-                <div class='checkbox-wrap'>
-                  <input type='checkbox' name='type[]' id='' value='fashion'>
-                  <span class='checkmark'></span>
-                </div>
-                <span class='checkbox-label'>Thời Trang</span>
-              </label>
-            </li>
-            <li class='filter-list__item'>
-              <label class='checkbox'>
-                <div class='checkbox-wrap'>
-                  <input type='checkbox' name='type[]' id='' value='sneaker'>
-                  <span class='checkmark'></span>
-                </div>
-                <span class='checkbox-label'>Sneaker</span>
-              </label>
-            </li>
-          </ul>
-          <ul class='filter-list' id='price'>
-            <h3 class='filter-list__title font-medium'>Giá Tiền</h3>
-            <li class='filter-list__item'>
-              <label class='checkbox'>
-                <div class='checkbox-wrap'>
-                  <input type='checkbox' name='price[]' id='' value='less-1000000'>
-                  <span class='checkmark'></span>
-                </div>
-                <span class='checkbox-label'>Dưới 1.000.000đ</span>
-              </label>
-            </li>
-            <li class='filter-list__item'>
-              <label class='checkbox'>
-                <div class='checkbox-wrap'>
-                  <input type='checkbox' name='price[]' id='' value='between-1000000-5000000'>
-                  <span class='checkmark'></span>
-                </div>
-                <span class='checkbox-label'>Từ 1.000.000đ - 5.000.000đ</span>
-              </label>
-            </li>
-            <li class='filter-list__item'>
-              <label class='checkbox'>
-                <div class='checkbox-wrap'>
-                  <input type='checkbox' name='price[]' id='' value='between-5000000-10000000'>
-                  <span class='checkmark'></span>
-                </div>
-                <span class='checkbox-label'>Từ 5.000.000đ - 10.000.000đ</span>
-              </label>
-            </li>
-            <li class='filter-list__item'>
-              <label class='checkbox'>
-                <div class='checkbox-wrap'>
-                  <input type='checkbox' name='price[]' id='' value='more-10000000'>
-                  <span class='checkmark'></span>
-                </div>
-                <span class='checkbox-label'>Trên 10.000.000đ</span>
-              </label>
-            </li>
-          </ul>
+          $priceList_html     
         </div>
       </div>
     ";
+}
+function filterList_render($mode) {
+  $newQueryStr = "";
+  $priceList = [
+    'less-1000000' => 'Dưới 1.000.000đ',
+    '1000000-5000000' => 'Từ 1.000.000đ - 5.000.000đ',
+    '5000000-10000000' => 'Từ 5.000.000đ - 10.000.000đ',
+    'more-10000000' => 'Trên 10.000.000đ'
+  ];
+  $html = "";
+
+  switch($mode) {
+    case 'price':
+      foreach($_GET as $key => $value) {
+        if($key == 'price') continue;
+        $newQueryStr .= "$key=$value&";
+      }
+      $html .= "
+      <ul class='filter-list' id='price'>
+        <h3 class='filter-list__title font-medium'>Giá Tiền</h3>
+      ";
+      foreach ($priceList as $price => $title) {
+        $isChecked = (isset($_GET['price']) and $price === $_GET['price']) ? 'checked' : '';
+        $html .= "
+            <li class='filter-list__item'>
+              <label class='checkbox'>
+                <div class='checkbox-wrap'>
+                  <input type='checkbox' value='price=$price' $isChecked>
+                  <span class='checkmark'></span>
+                </div>
+                <span class='checkbox-label'>$title</span>
+              </label>
+            </li>
+          ";
+      }
+      $html .= "</ul>";
+      break;
   }
+
+  return $html;
+}
 ?>

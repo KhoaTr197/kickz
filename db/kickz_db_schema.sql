@@ -36,7 +36,7 @@ CREATE TABLE `SANPHAM` (
 
 CREATE TABLE `KICHCO` (
   `MASP` int,
-  `MAKC` int,
+  `MAKC` int AUTO_INCREMENT,
   `COGIAY` float,
   `SOLUONG` int,
   PRIMARY KEY(`MAKC`, `MASP`)
@@ -52,6 +52,7 @@ CREATE TABLE `HINHANH` (
 CREATE TABLE `HOADON` (
   `MAHD` int PRIMARY KEY AUTO_INCREMENT,
   `MATK` INT,
+  `TONGTIEN` float,
   `HOTENKH` varchar(50),
   `EMAIL` varchar(150),
   `SDT` varchar(15),
@@ -87,9 +88,8 @@ CREATE TABLE `PHANLOAI` (
 );
 
 CREATE TABLE `GIOHANG` (
-  `MAGH` INT AUTO_INCREMENT,
-  `MATK` INT,
-  PRIMARY KEY (`MAGH`, `MATK`)
+  `MAGH` INT PRIMARY KEY AUTO_INCREMENT,
+  `MATK` INT
 );
 
 CREATE TABLE `CHITIETGIOHANG` (
@@ -128,3 +128,19 @@ ALTER TABLE `CHITIETGIOHANG` ADD FOREIGN KEY (`MAKC`) REFERENCES `KICHCO` (`MAKC
 ALTER TABLE `GIOHANG` ADD FOREIGN KEY (`MATK`) REFERENCES `NGUOIDUNG` (`MATK`);
 
 ALTER TABLE `HOADON` ADD FOREIGN KEY (`MATT`) REFERENCES `TRANGTHAI` (`MATT`);
+
+INSERT INTO `nguoidung` (`MATK`, `TENTK`, `HOTEN`, `EMAIL`, `SDT`, `MATKHAU`, `NGLAPTK`, `DCHI`, `TRANGTHAI`) VALUES
+(1, 'mkhoa', 'Trần Hoàng Minh Khoa', '0306231298@caothang.edu.vn', '0306231298', 'a4a6f167cfba8b8c4ba43436619ebafd', '2024-11-23', '159 Nam Kỳ Khởi Nghĩa, Phường Võ Thị Sáu, Quận 3, Hồ Chí Minh', b'1'),
+(2, 'khuy', 'Huỳnh Khắc Huy', '0306231291@caothang.edu.vn', '0306231291', '0c9300550669a652d36c86dadfb9b843', '2024-11-13', '65 Đ. Huỳnh Thúc Kháng, Bến Nghé, Quận 1, Hồ Chí Minh', b'1');
+
+INSERT INTO `quantrivien` (`MAQTV`, `TENTK`, `MATKHAU`) VALUES
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3'),
+(2, 'mkhoa', 'a4a6f167cfba8b8c4ba43436619ebafd'),
+(3, 'khuy', '0c9300550669a652d36c86dadfb9b843');
+
+INSERT INTO `trangthai` (`MATT`, `TENTT`) VALUES
+(1, 'Chờ xác nhận'),
+(2, 'Đã xác nhận'),
+(3, 'Đang giao'),
+(4, 'Đã giao'),
+(10, 'Đã hủy');
