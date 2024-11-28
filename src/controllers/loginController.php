@@ -18,16 +18,17 @@
   ";
   $userData = $db->fetch($db->query($checkUserSQL));
 
-  $checkCartSQL = "
-    select *
-    from GIOHANG
-    where MATK = {$userData['MATK']}
-  ";
-  $cartResult = $db->rows_count($db->query($checkCartSQL));
     
   if($userData != 0) {
     $_SESSION['USER']['HAS_LOGON'] = true;
     $_SESSION['USER']['INFO'] = $userData;
+
+    $checkCartSQL = "
+      select *
+      from GIOHANG
+      where MATK = {$userData['MATK']}
+    ";
+    $cartResult = $db->rows_count($db->query($checkCartSQL));
 
     if($cartResult == 0) {
       $createCartSQL = "
@@ -36,6 +37,13 @@
       ";
       $db->query($createCartSQL);
       $_SESSION['CART_ID']=$db->get_last_id();
+    } else {
+      $selectCartSQL = "
+        select MAGH
+        from GIOHANG
+        where MATK = {$userData['MATK']}
+      ";
+      $_SESSION['CART_ID']=$db->fetch($db->query($selectCartSQL))['MAGH'];
     }
 
     successPrompt(
