@@ -2,6 +2,10 @@
   include_once("components/components.php");
   session_start();
 
+  if(!isset($_SESSION['CATEGORY_LIST']) || !isset($_SESSION['MANUFACTURER_LIST']))
+    header("location: ../../index.php");
+
+
   $header_html = header_render("navbar", isset($_SESSION['USER']['HAS_LOGON']) ? $_SESSION['USER']['HAS_LOGON'] : false);
   $footer_html = footer_render();
 ?>

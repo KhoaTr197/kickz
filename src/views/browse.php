@@ -3,6 +3,9 @@
   include_once("components/components.php");
   session_start();
 
+  if(!isset($_SESSION['CATEGORY_LIST']) || !isset($_SESSION['MANUFACTURER_LIST']))
+    header("location: ../../index.php");
+
   if($_SESSION['URL_BACKUP'] != $_SERVER['REQUEST_URI']) 
     $_SESSION['URL_BACKUP'] = $_SERVER['REQUEST_URI'];
 
