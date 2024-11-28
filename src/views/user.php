@@ -10,6 +10,8 @@
   $sql = "
     select *
     from HOADON
+    inner join TRANGTHAI
+    on HOADON.MATT = TRANGTHAI.MATT
     where MATK = {$_SESSION['USER']['INFO']['MATK']}
   ";
   $result = $db->query($sql);
@@ -89,12 +91,7 @@
                 <li class="user-panel__item " id="receipt_modal">
                   <div class="receipt-wrap">
                     <h2 class="receipt__title">Đơn Hàng</h2>
-                    <?php echo $receiptList_html?>
-                    <ul class='receipt__list'>
-                      <li class='receipt-list__item'>1</li>
-                      <li class='receipt-list__item'>2</li>
-                      <li class='receipt-list__item'>3</li>
-                    </ul>
+                    <?php echo $receiptList_html; ?>
                   </div>
                 </li>
               </div>
@@ -110,16 +107,102 @@
 <?php
 function receiptList_render($result) {
   global $db;
+  $status = [
+    '1' => 'pending',
+    '2' => 'pending',
+    '3' => 'pending',
+    '4' => 'success',
+    '10' => 'error',
+  ];
   $html = "<ul class='receipt__list'>";
-
+  
   while($row = $db->fetch($result)) {
+    $receiptDetailData = $db->query("
+      select CHITIETHOADON.*, SANPHAM.TENSP, KICHCO.MAKC, KICHCO.COGIAY, HINHANH.FILE
+      from CHITIETHOADON
+      inner join SANPHAM
+      on CHITIETHOADON.MASP = SANPHAM.MASP
+      inner join KICHCO
+      on CHITIETHOADON.MAKC = KICHCO.MAKC and CHITIETHOADON.MASP = KICHCO.MASP
+      inner join HINHANH
+      on CHITIETHOADON.MASP = HINHANH.MASP
+      where MAHD = {$row['MAHD']} and MAHA = 1
+    ");
+
+    $receiptDetailList_html = "<ul class='receipt-list-item__detail-list'>";
+
+    while($detailRow = $db->fetch($receiptDetailData)) {
+      $productImageData = base64_encode($detailRow['FILE']);
+      $price = formatPrice($detailRow['GIA']);
+
+      $receiptDetailList_html .= "
+        <li class='receipt-detail-list__item flex'>
+          <div class='receipt-detail-list-item__img-wrap flex flex-center'>
+            <img class='receipt-detail-list-item__img' src='data:image/jpeg;base64,$productImageData'>
+          </div>
+          <div class='receipt-detail-list-item__info flex'>
+            <div class='receipt-detail-list-item__name font-medium'>
+              {$detailRow['TENSP']}
+            </div>
+            <div class='receipt-detail-list-item__size font-normal'>
+              Size: {$detailRow['COGIAY']}
+            </div>
+          </div>
+          <div class='receipt-detail-list-item__info flex'>
+            <div class='receipt-detail-list-item__price font-medium'>$price</div>
+            <div class='receipt-detail-list-item__quantity font-normal'>SL: {$detailRow['SOLUONG']}</div>
+          </div>
+
+        </li>
+      ";
+    }
+
+    $receiptDetailList_html .= "</ul>";
+
+    $receiptPrice = formatPrice($row['TONGTIEN']);
+
     $html .= "
       <li class='receipt-list__item'>
+        <div class='reicept-list-item__header flex'>
+          <div class='reicept-list-item__title'>
+            <h3 class='reicept-list-item-title__id'>Đơn Hàng #{$row['MAHD']}</h3>
+            <h4 class='reicept-list-item-title__date font-normal'>Ngày mua hàng: {$row['NGLAPHD']}</h4>
+          </div>
+          <div class='reicept-list-item__status'>
+            Trạng thái: 
+            <span class='reicept-status--{$status[$row['MATT']]}'>{$row['TENTT']}<span>
+          </div>
+        </div>
+          <div class='receipt-list-item__customer-info'>
+          <p class='font-normal'>
+            <span class='font-medium'>Họ Tên: </span>
+            {$row['HOTENKH']}
+          </p>
+          <p class='font-normal'>
+            <span class='font-medium'>Địa Chỉ:</span>
+            {$row['DCHI']}
+          </p>
+          <p class='font-normal'>
+            <span class='font-medium'>SĐT:</span>
+            {$row['SDT']}
+          </p>
+          <p class='font-normal'>
+            <span class='font-medium'>Email:</span>
+            {$row['EMAIL']}
+          </p>
+        </div>
+        <div class='receipt-list-item__detail'>
+          $receiptDetailList_html
+        </div>
+        <div class='receipt-list-item__price flex'>
+          <span>Tổng Tiền</span>
+          <span>$receiptPrice</span>
+        </div>
       </li>
     ";
   }
 
-  $html = "</ul>";
+  $html .= "</ul>";
 
 
   return $html;
