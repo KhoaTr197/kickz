@@ -47,7 +47,7 @@ function header_render($mode, $hasLogon = false, $prev_link = "homepage.php")
       return
         "<header class='header-container'>
             <div class='header-wrap wide flex-center'>
-              <a href='homepage.php' class='logo flex-center'>
+              <a href='browse.php' class='logo flex-center'>
                 <img class='logo__icon' src='../../public/img/logo_icon.svg' alt='Kickz Logo'>
               </a>
               $menuBtn
@@ -96,7 +96,7 @@ function categoryList_render($mode) {
       foreach($_SESSION['MANUFACTURER_LIST'] as $manufacturer) {
         $html .= "
           <li class='category-item font-normal'>
-            <a href='browse.php?{$newQueryStr}manufacturer={$manufacturer['MAHSX']}'>{$manufacturer['TENHSX']}</a>
+            <a href='browse.php?manufacturer={$manufacturer['MAHSX']}'>{$manufacturer['TENHSX']}</a>
           </li>
         ";
       }
@@ -115,7 +115,7 @@ function categoryList_render($mode) {
       foreach($_SESSION['CATEGORY_LIST'] as $category) {
         $html .= "
           <li class='category-item font-normal'>
-            <a href='browse.php?{$newQueryStr}rating=1category={$category['MADM']}'>{$category['TENDM']}</a>
+            <a href='browse.php?category={$category['MADM']}'>{$category['TENDM']}</a>
           </li>
         ";
       }
@@ -133,19 +133,19 @@ function categoryList_render($mode) {
           <li class='category-header'>Đánh Giá</li>
           <ul class='category-list flex'>
             <li class='category-item font-normal'>
-              <a href='browse.php?{$newQueryStr}rating=1'>1 Sao</a>
+              <a href='browse.php?rating=1'>1 Sao</a>
             </li>
             <li class='category-item font-normal'>
-              <a href='browse.php?{$newQueryStr}rating=2'>2 Sao</a>
+              <a href='browse.php?rating=2'>2 Sao</a>
             </li>
             <li class='category-item font-normal'>
-              <a href='browse.php?{$newQueryStr}rating=3'>3 Sao</a>
+              <a href='browse.php?rating=3'>3 Sao</a>
             </li>
             <li class='category-item font-normal'>
-              <a href='browse.php?{$newQueryStr}rating=4'>4 Sao</a>
+              <a href='browse.php?rating=4'>4 Sao</a>
             </li>
             <li class='category-item font-normal'>
-              <a href='browse.php?{$newQueryStr}rating=5'>5 Sao</a>
+              <a href='browse.php?rating=5'>5 Sao</a>
             </li>
           </ul>
         </ul>";
