@@ -27,6 +27,7 @@ function header_render($mode, $hasLogon = false, $prev_link = "homepage.php")
             <img class='search-bar__icon' src='../../public/img/search_icon.svg' alt='Search Bar'>
           </label>
           <input type='text' name='search' id='search-bar-input' placeholder='Tìm Kiếm' />
+          <div>Huy</div>
         </form>
       ";
       $cartBtn = "
