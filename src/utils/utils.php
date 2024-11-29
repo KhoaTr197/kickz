@@ -4,6 +4,13 @@ function formatPrice($price)
   $newPrice = number_format($price, 0, '', '.');
   return "$newPrice" . "đ";
 }
+function formatDate($date) {
+  $dateObj = date_create($date);
+  return date_format($dateObj,"d/m/Y");
+}
+function formatStatus($bool) {
+  return $bool ? "Đang kinh doanh" : "Ngừng kinh doanh";
+}
 function formatSQLColumnsName($col)
 {
   $ref = [
@@ -31,9 +38,10 @@ function formatSQLColumnsName($col)
     'MAHA' => 'Mã Hình Ảnh',
     'FILE' => 'Hình',
     //HOADON
-    'MAHD' => '',
-    'MATK' => '',
-    'HOTENKH' => '',
+    'MAHD' => 'Mã Đơn Hàng',
+    'MATK' => 'Mã Tài Khoản',
+    'TONGTIEN' => 'Tổng Tiền',
+    'HOTENKH' => 'Họ Tên',
     'EMAIL' => 'Email',
     'SDT' => 'SĐT',
     'DCHI' => 'Địa Chỉ',

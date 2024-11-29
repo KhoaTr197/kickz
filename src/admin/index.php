@@ -13,7 +13,7 @@ $db = new Database();
 
 $sql = [
   'product' => "
-    select SANPHAM.*, HANGSANXUAT.TENHSX, GROUP_CONCAT(DANHMUC.TENDM SEPARATOR ', ') as DANHMUC
+    select SANPHAM.MASP, SANPHAM.TENSP, SANPHAM.GIA, SANPHAM.KHUYENMAI, SANPHAM.MOTA, SANPHAM.SOSAO,SANPHAM.NGSX, SANPHAM.TRANGTHAI, HANGSANXUAT.TENHSX, GROUP_CONCAT(DANHMUC.TENDM SEPARATOR ', ') as DANHMUC
     from SANPHAM
     inner join HANGSANXUAT
     on SANPHAM.MAHSX = HANGSANXUAT.MAHSX
@@ -190,6 +190,12 @@ function userPanelContent_render($mode) {
           }
           else if($key==='GIA') {
             $html .= "<td>".formatPrice($value)."</td>";
+          }
+          else if($key==='NGSX') {
+            $html .= "<td>".formatDate($value)."</td>";
+          }
+          else if($key==='TRANGTHAI') {
+            $html .= "<td>".formatStatus($value)."</td>";
           }
           else {
             $html .= "<td>$value</td>";
