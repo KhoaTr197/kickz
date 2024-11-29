@@ -117,6 +117,12 @@ function getSQL() {
     ";
   }
 
+  if(isset($_GET['search'])) {
+    $filter .= "
+      and SANPHAM.TENSP like '%{$_GET['search']}%'
+    ";
+  }
+
   return $result.$filter;
 }
 function breadcrumbsNav_render() {

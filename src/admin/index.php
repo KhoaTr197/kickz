@@ -9,6 +9,11 @@ if (empty($_SESSION['ADMIN']) && empty($_SESSION['ADMIN']['HAS_LOGON'])) {
   header("location: login_admin.php");
 }
 
+$search = "";
+if (isset($_GET['search']) && isset($_GET['mode'])) {
+  $search = urldecode($_GET['search']);
+}
+
 $db = new Database();
 
 $sql = [
@@ -21,39 +26,43 @@ $sql = [
     on SANPHAM.MASP = PHANLOAI.MASP
     left join DANHMUC
     on PHANLOAI.MADM = DANHMUC.MADM
+    where CONCAT(SANPHAM.MASP, TENSP, GIA, KHUYENMAI, MOTA, SOSAO, NGSX, TRANGTHAI, TENHSX) like '%$search%'
     group by SANPHAM.MASP
+    having GROUP_CONCAT(DANHMUC.TENDM SEPARATOR ', ') like '%$search%'
   ",
   'manufacturer' => "
     select *
     from HANGSANXUAT
+    where CONCAT(TENHSX, MAHSX) like '%$search%'
   ",
   'size' => "
     select *
     from KICHCO
+    where CONCAT(MASP, MAKC, COGIAY, SOLUONG) like '%$search%'
     order by MASP asc, MAKC asc
   ",
   'category' => "
     select *
     from DANHMUC
+    where CONCAT(MADM, TENDM) like '%$search%'
   ",
   'image' => "
     select *
     from HINHANH
+    where CONCAT(MASP, MAHA) like '%$search%'
     order by MASP
   ",
   'receipt' => "
     select *
     from HOADON
+    where CONCAT(MAHD,MATK,TONGTIEN,HOTENKH,EMAIL,SDT,DCHI,GHICHU,NGLAPHD) like '%$search%'
   ",
   'user' => "
     select MATK,TENTK,HOTEN,EMAIL,SDT,NGLAPTK,TRANGTHAI	
     from NGUOIDUNG
+    where CONCAT(MATK, TENTK, HOTEN, EMAIL, SDT, NGLAPTK, TRANGTHAI) LIKE '%$search%'
   "
 ];
-
-if (isset($_GET['search']) && isset($_GET['mode'])) {
-  $search = $_GET['search'];
-}
 
 $userPanel_html = userPanel_render(isset($_GET['mode']) ? $_GET['mode'] : "admin-info");
 ?>
