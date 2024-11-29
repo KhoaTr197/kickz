@@ -22,12 +22,12 @@ function header_render($mode, $hasLogon = false, $prev_link = "homepage.php")
         </div>
       ";
       $searchBar = "
-        <div class='search-bar rounded'>
+        <form class='search-bar rounded'>
           <label class='search-bar__label flex-center' for='search-bar-input'>
             <img class='search-bar__icon' src='../../public/img/search_icon.svg' alt='Search Bar'>
           </label>
-          <input type='text' name='search' id='search-bar-input' placeholder='Tìm Kiếm'/>
-        </div>
+          <input type='text' name='search' id='search-bar-input' placeholder='Tìm Kiếm' />
+        </form>
       ";
       $cartBtn = "
         <a class='nav-btn cartBtn' id='cart' href='cart.php'>
