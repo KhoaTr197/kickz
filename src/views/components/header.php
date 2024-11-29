@@ -30,12 +30,12 @@ function header_render($mode, $hasLogon = false, $prev_link = "homepage.php")
         </div>
       ";
       $cartBtn = "
-        <a class='cartBtn' id='cart' href='cart.php'>
+        <a class='nav-btn cartBtn' id='cart' href='cart.php'>
           <img src='../../public/img/cart_icon.svg' alt='Cart Button'>
         </a>  
       ";
       $userBtn = "
-        <a class='userBtn' id='user' href='user.php'>
+        <a class='nav-btn userBtn' id='user' href='user.php'>
           <img src='../../public/img/user_icon.svg' alt='User Button'>
         </a>
       ";
