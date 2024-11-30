@@ -68,10 +68,25 @@ function addToCart($data)
       "../views/detail.php?id={$data['id']}"
     );
   else {
-    $insertCartSQL = "
+    $checkCartSQL = "
+      select * from CHITIETGIOHANG
+      where MAGH = {$_SESSION['CART_ID']} and MASP = {$_POST['id']} and MAKC = {$_POST['size']}
+    ";
+    $checkResult = $db->query($checkCartSQL);
+    
+    if($db->rows_count($checkResult) > 0){
+      $insertCartSQL = "
+      update CHITIETGIOHANG
+      set SOLUONG=SOLUONG+1
+      where MAGH = {$_SESSION['CART_ID']} and MASP = {$_POST['id']} and MAKC = {$_POST['size']}
+      ";
+    }
+    else {
+      $insertCartSQL = "
       insert into CHITIETGIOHANG (MAGH,MASP,MAKC,SOLUONG,GIA)
       values ({$_SESSION['CART_ID']}, {$_POST['id']}, {$_POST['size']}, 1, {$_POST['price']})
-    ";
+      ";
+    }
 
     if ($db->query($insertCartSQL))
       successPrompt(
@@ -82,8 +97,8 @@ function addToCart($data)
     else
       warningPrompt(
         'HOMEPAGE',
-        'Đã tồn tại sản phẩm trong giỏ hàng!',
+        'Đã tồn tại sản phẩm trong giỏ hàng!', //
         "../views/detail.php?id={$data['id']}"
       );
-  }
+   }
 }
