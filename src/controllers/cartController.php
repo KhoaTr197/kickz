@@ -52,6 +52,13 @@ function cartHandle()
 
 function addToCart($data)
 {
+  if(!isset($_SESSION['CART_ID']))
+    errorPrompt(
+      'HOMEPAGE',
+      'Hãy đăng nhập để thêm vào giỏ hàng!',
+      "../views/detail.php?id={$data['id']}"
+    );
+
   global $db;
 
   if (empty($data['size']))
