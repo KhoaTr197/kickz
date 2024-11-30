@@ -49,7 +49,7 @@
     successPrompt(
       'HOMEPAGE',
       'Đăng Nhập Thành Công!',
-      "../views/homepage.php"
+      "../views/browse.php"
     );
   } else {
     errorPrompt(
