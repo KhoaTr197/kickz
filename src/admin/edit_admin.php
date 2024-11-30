@@ -16,8 +16,9 @@
  
   $error='';
 
-  if(!empty($_SESSION) && !empty($_SESSION['EDIT']['PROMPT'])) {
-    $error="<div class='form-error flex rounded'>".$_SESSION['EDIT']['PROMPT']."</div>";
+
+  if(!empty($_SESSION) && !empty($_SESSION['EDIT']['PROMPT']['MSG'])) {
+    $error="<div class='form-error flex rounded'>".$_SESSION['EDIT']['PROMPT']['MSG']."</div>";
   }
 ?>
 
