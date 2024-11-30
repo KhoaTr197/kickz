@@ -3,6 +3,14 @@ $(document).ready(function() {
     $("#menu-modal").toggle();
   })
 
+  setTimeout(function() {
+    $(".notification").animate({
+      top: '0px'
+    }, 500, function() {
+      $('.notification').remove();
+    });
+  }, 2000);
+
   $('.filter-list__item input').click(function(e) {
     e.stopPropagation();
 
