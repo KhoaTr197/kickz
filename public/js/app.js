@@ -5,7 +5,7 @@ $(document).ready(function() {
 
   setTimeout(function() {
     $(".notification").animate({
-      top: '0px'
+      top: '-5rem'
     }, 500, function() {
       $('.notification').remove();
     });
