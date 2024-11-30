@@ -18,7 +18,8 @@ function paging(
     foreach($_GET as $key => $value) {
       $queryStr .= "$key=$value&";
     }
-    header("location: {$_SERVER['PHP_SELF']}?{$queryStr}page=1");
+    header("location: ?{$queryStr}page=1");
+    exit();
   }
 
   foreach($_GET as $key => $value) {
