@@ -59,7 +59,11 @@ $result = $db->query($newSQl);
                 }
               }
               else{
-                echo "<div>Không có sản phẩm nào phù hợp</div>";
+                echo "
+                <div class='col c-12 cart-reminder'>
+                <h1>Không tìm thấy sản phẩm<h1>
+                </div>
+                ";
               }
               
               ?>
