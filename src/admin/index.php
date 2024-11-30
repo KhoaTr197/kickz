@@ -307,7 +307,7 @@ function userPanelHeader_render($mode)
           <label class='search-bar__label flex-center' for='search-bar-input'>
             <img class='search-bar__icon' src='../../public/img/search_icon.svg' alt='Search Bar'>
           </label>
-          <input type='text' name='search' id='search-bar-input' placeholder='Tìm Kiếm' />
+          <input type='text' name='search' id='search-bar-input' placeholder='Tìm Kiếm' value=''/>
           <input type='hidden' name='mode' value='$mode' />
         </form>
       ";
@@ -327,7 +327,7 @@ function userPanelHeader_render($mode)
           <label class='search-bar__label flex-center' for='search-bar-input'>
             <img class='search-bar__icon' src='../../public/img/search_icon.svg' alt='Search Bar'>
           </label>
-          <input type='text' name='search' id='search-bar-input' placeholder='Tìm Kiếm' />
+          <input type='text' name='search' id='search-bar-input' placeholder='Tìm Kiếm' value=''/>
           <input type='hidden' name='mode' value='$mode' />
         </form>
       ";
