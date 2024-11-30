@@ -80,9 +80,9 @@ function addToCart($data)
         "../views/detail.php?id={$data['id']}"
       );
     else
-      errorPrompt(
+      warningPrompt(
         'HOMEPAGE',
-        'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+        'Đã tồn tại sản phẩm trong giỏ hàng!',
         "../views/detail.php?id={$data['id']}"
       );
   }
