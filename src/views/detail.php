@@ -43,11 +43,12 @@ $newPriceNoFormat = $productData['GIA'] - $productData['KHUYENMAI'];
 
 <body>
   <div id="app" class="grid">
-    <?php echo $header_html;?>
+    <?php echo notify('HOMEPAGE'); ?>
+    <?php echo $header_html; ?>
     <main class='main'>
       <div class='wide'>
         <?php
-          echo "
+        echo "
             <div class='product-detail row'>
               <div class='col c-7'>
                 <div class='detail-carousel'>
@@ -104,13 +105,15 @@ $newPriceNoFormat = $productData['GIA'] - $productData['KHUYENMAI'];
       </div>
   </div>
   </main>
-  <?php echo $footer_html;?>
+  <?php echo $footer_html; ?>
   </div>
 </body>
+
 </html>
 
 <?php
-function getProductData() {
+function getProductData()
+{
   global $db;
 
   $productSQL = "
@@ -122,7 +125,8 @@ function getProductData() {
 
   return $db->fetch($db->query($productSQL));
 }
-function carousel_render() {
+function carousel_render()
+{
   global $db;
   $imageSQL = "
     select *
@@ -133,16 +137,15 @@ function carousel_render() {
   $imageSQLResult = $db->query($imageSQL);
   $previewImage = "";
   $images = "";
-  while($row = $db->fetch($imageSQLResult)) {
+  while ($row = $db->fetch($imageSQLResult)) {
     $imageData = base64_encode($row['FILE']);
 
-    if($row['MAHA'] == 1) {
+    if ($row['MAHA'] == 1) {
       $previewImage = "<img class='carousel-preview__img' id='carousel-{$row['MAHA']}' src='data:image/jpeg;base64,$imageData'>";
       $images .= "<img class='carousel-gallery__img active' id='carousel-{$row['MAHA']}' src='data:image/jpeg;base64,$imageData'>";
     } else {
       $images .= "<img class='carousel-gallery__img' id='carousel-{$row['MAHA']}' src='data:image/jpeg;base64,$imageData'>";
     }
-
   }
 
   return [
@@ -150,7 +153,8 @@ function carousel_render() {
     'images' => $images
   ];
 }
-function sizeList_render() {
+function sizeList_render()
+{
   global $db;
 
   $sizeSQL = "
@@ -161,7 +165,7 @@ function sizeList_render() {
   $html = "";
 
   $sizeSQLResult = $db->query($sizeSQL);
-  while($row = $db->fetch($sizeSQLResult)) {
+  while ($row = $db->fetch($sizeSQLResult)) {
     $html .= "
       <li class='size-item btn flex-center' value={$row['MAKC']} >
         <span class='size-item__size '>{$row['COGIAY']}</span>
@@ -172,12 +176,13 @@ function sizeList_render() {
 
   return $html;
 }
-function rating_render() {
+function rating_render()
+{
   global $productData;
   $html = "";
 
-  for($i=0; $i < 5; $i++) {
-    if($i < $productData['SOSAO'])
+  for ($i = 0; $i < 5; $i++) {
+    if ($i < $productData['SOSAO'])
       $html .= "<img src='../../public/img/star_icon.svg'>";
     else
       $html .= "<img src='../../public/img/faded-star_icon.svg'>";

@@ -1,25 +1,26 @@
 <?php
-  include_once("../views/components/components.php");
-  session_start();
+include_once("../views/components/components.php");
+session_start();
 
-  if(!isset($_GET['mode']) || !getForm())
-    header("location: user.php");
+if (!isset($_GET['mode']) || !getForm())
+  header("location: user.php");
 
-  $header_html = header_render("breadcrumb", false, "user.php");
+$header_html = header_render("breadcrumb", false, "user.php");
 
-  $formTitle;
-  $formInputs;
-  $queryStr = urldecode($_SERVER['QUERY_STRING']);
+$formTitle;
+$formInputs;
+$queryStr = urldecode($_SERVER['QUERY_STRING']);
 
-  $error='';
+$error = '';
 
-  if(!empty($_SESSION) && !empty($_SESSION['EDIT']['PROMPT'])) {
-    $error="<div class='form-error flex rounded'>".$_SESSION['EDIT']['PROMPT']."</div>";
-  }
+if (!empty($_SESSION) && !empty($_SESSION['EDIT']['PROMPT']['MSG'])) {
+  $error = "<div class='form-error flex rounded'>" . $_SESSION['EDIT']['PROMPT']['MSG'] . "</div>";
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,38 +34,41 @@
   <script src="../../public/js/app.js"></script>
   <title>Kickz</title>
 </head>
+
 <body>
   <div id="app" class="grid">
-    <?php echo $header_html;?>
-      <main class='main'>
-        <div class='wide'>
-          <div class='row'>
-            <div class="col c-o-3 c-6 flex-center">
-              <form class='form' id='edit-form' action='../controllers/editController.php' method='post'>
-                <input name="queryStr" value=<?php echo $queryStr?> hidden />
-                <?php 
-                  echo $error;
-                  unset($_SESSION['EDIT']['PROMPT']);
-                ?>
-                <h2 class='form-title font-medium'><?php echo $formTitle;?></h2>
-                <div class='form-control-wrap'>
-                  <?php echo $formInputs;?>
-                </div>
-                <button class='form-submit-btn btn btn-primary' type='submit' name="mode" value=<?php echo $_GET['mode'];?> >Xác Nhận</button>
-              </form>
-            </div>
+    <?php echo $header_html; ?>
+    <main class='main'>
+      <div class='wide'>
+        <div class='row'>
+          <div class="col c-o-3 c-6 flex-center">
+            <form class='form' id='edit-form' action='../controllers/editController.php' method='post'>
+              <input name="queryStr" value=<?php echo $queryStr ?> hidden />
+              <?php
+              echo $error;
+              unset($_SESSION['EDIT']['PROMPT']);
+              ?>
+              <h2 class='form-title font-medium'><?php echo $formTitle; ?></h2>
+              <div class='form-control-wrap'>
+                <?php echo $formInputs; ?>
+              </div>
+              <button class='form-submit-btn btn btn-primary' type='submit' name="mode" value=<?php echo $_GET['mode']; ?>>Xác Nhận</button>
+            </form>
           </div>
         </div>
-      </main>
+      </div>
+    </main>
   </div>
 </body>
+
 </html>
 
 <?php
-function getForm() {
+function getForm()
+{
   global $formTitle, $formInputs;
 
-  switch($_GET['mode']) {
+  switch ($_GET['mode']) {
     case 'info':
       $formTitle = 'Sửa Thông Tin Cá Nhân';
       $formInputs = "

@@ -31,6 +31,7 @@ $cart_html = cart_render();
 
 <body>
   <div id="app" class="grid">
+    <?php echo notify('HOMEPAGE'); ?>
     <?php echo $header_html ?>
     <main class='main'>
       <div class='wide'>
@@ -42,10 +43,12 @@ $cart_html = cart_render();
     <?php echo $footer_html; ?>
   </div>
 </body>
+
 </html>
 
 <?php
-function cart_render() {
+function cart_render()
+{
   global $db;
 
   $isEmpty = false;
@@ -54,7 +57,7 @@ function cart_render() {
   $receiptPrice = 0;
   $infoInputs_html = getInfoInputs();
 
-  if(isset($_SESSION['CART_ID'])) {
+  if (isset($_SESSION['CART_ID'])) {
     $sql = "
       select CHITIETGIOHANG.*, SANPHAM.TENSP, KICHCO.MAKC, KICHCO.COGIAY, HINHANH.FILE
       from CHITIETGIOHANG
@@ -66,17 +69,16 @@ function cart_render() {
       on CHITIETGIOHANG.MASP = HINHANH.MASP
       where MAGH = {$_SESSION['CART_ID']} and MAHA = 1
     ";
-    
+
     $result = $db->query($sql);
 
-    if($db->rows_count($result) > 0) {
-      while($row = $db->fetch($result)) {
-        $totalPrice += ($row['GIA']*$row['SOLUONG']);
+    if ($db->rows_count($result) > 0) {
+      while ($row = $db->fetch($result)) {
+        $totalPrice += ($row['GIA'] * $row['SOLUONG']);
         $productCardList_html .= productCard_render($row, 'cart');
       }
       $receiptPrice = formatPrice($totalPrice + 100000);
       $totalPrice = formatPrice($totalPrice);
-
     } else {
       return "
         <div class='col c-12 cart-reminder'>
@@ -89,7 +91,7 @@ function cart_render() {
     $isEmpty = true;
   }
 
-  if($isEmpty)
+  if ($isEmpty)
     return "
       <div class='col c-12 cart-reminder'>
         <h1>Giỏ hàng trống<h1>
@@ -130,7 +132,8 @@ function cart_render() {
       </div>
     ";
 }
-function getInfoInputs() {
+function getInfoInputs()
+{
   if (isset($_SESSION['USER']))
     return "
       <div class='checkout__info font-semibold'>
