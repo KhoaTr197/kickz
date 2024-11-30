@@ -40,7 +40,6 @@ if($db->query($createReceiptSQL)) {
   $insertReceiptDetailSQL .= $clearCartSQL;
 
   if($db->multi_query($insertReceiptDetailSQL)) {
-    $db->multi_query($clearCartSQL);
     successPrompt(
       'HOMEPAGE',
       'Mua hàng thành công!',
