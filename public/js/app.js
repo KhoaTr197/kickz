@@ -49,6 +49,14 @@ $(document).ready(function() {
     $(`#${sidebarItem[0]}_modal`).addClass('active');
   })
 
+  $('.table-action__disable-btn').click(function(event) {
+    event.preventDefault();
+
+    if (confirm("Bạn có chắc chắn muốn tiếp tục không? (Đối với Sản Phẩm sẽ chỉ vô hiệu hóa)")) {
+      window.location.href = $(this).attr('href');
+    }
+  })
+
   $('.gallery-list__item').hover(
     function() {
       $(this).find('.gallery-list-item__action-btn').show();
