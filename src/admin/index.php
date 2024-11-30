@@ -53,8 +53,9 @@ $sql = [
     order by MASP
   ",
   'receipt' => "
-    select *
-    from HOADON
+    select MAHD, MATK, TONGTIEN, HOTENKH, EMAIL, SDT, DCHI, GHICHU, NGLAPHD, TENTT
+    from HOADON inner join TRANGTHAI
+    on HOADON.MATT = TRANGTHAI.MATT
     where CONCAT(MAHD,MATK,TONGTIEN,HOTENKH,EMAIL,SDT,DCHI,GHICHU,NGLAPHD) like '%$search%'
   ",
   'user' => "
@@ -123,17 +124,19 @@ $userPanel_html = userPanel_render(isset($_GET['mode']) ? $_GET['mode'] : "admin
         </ul>
       </div>
       <div class="col c-10">
-          <?php echo $userPanel_html; ?>
-        </div>
+        <?php echo $userPanel_html; ?>
       </div>
     </div>
   </div>
+  </div>
 </body>
+
 </html>
 
 
 <?php
-function userPanel_render($mode) {
+function userPanel_render($mode)
+{
   $userPanelHeader_html = userPanelHeader_render($mode);
   $userPanelContent_html = userPanelContent_render($mode);
 
@@ -145,19 +148,20 @@ function userPanel_render($mode) {
   ";
 }
 
-function userPanelContent_render($mode) {
+function userPanelContent_render($mode)
+{
   global $db, $sql;
 
-  if($mode!=="admin-info") {
+  if ($mode !== "admin-info") {
     $paging = paging($db, $sql[$mode]);
     $newSQL = $paging['sql'];
     $result = $db->query($newSQL);
   }
 
   $html = "";
-  switch($mode) {
+  switch ($mode) {
     case "admin-info": {
-      $html .= "
+        $html .= "
         <div class='user-panel__content active' id='admin-info_modal'>
         <div class='user-panel-item__content personal-info-wrap'>
           <h2 class='personal-info__title flex'>
@@ -177,66 +181,123 @@ function userPanelContent_render($mode) {
         </div>
       </div>
       ";
-      break;
-    }
-    default: {
-      $html = "<div class='user-panel__content'><table class='list-table table table-striped table-bordered'><tr>";
-
-      while($column = $db->fetch_field($result)) {
-        $html .= "<th>".formatSQLColumnsName($column->name)."</th>";
+        break;
       }
+    default: {
+        $html = "<div class='user-panel__content'><table class='list-table table table-striped table-bordered'><tr>";
 
-      $html .= "
+        while ($column = $db->fetch_field($result)) {
+          $html .= "<th>" . formatSQLColumnsName($column->name) . "</th>";
+        }
+
+        $html .= "
         <th colspan='2'>Thao Tác</th>
       </tr>";
 
-      while ($row = $db->fetch($result)) {
-        $html.="<tr>";
-        foreach($row as $key => $value) {
-          if($key==='LOGO' || $key==='FILE') {
-            $imageData = base64_encode($value);
-            $html .= "<td><img src='data:image/jpeg;base64,$imageData'></td>";
+        while ($row = $db->fetch($result)) {
+          $html .= "<tr>";
+          foreach ($row as $key => $value) {
+
+            switch ($key) {
+              case 'LOGO':
+              case 'FILE':
+                $imageData = base64_encode($value);
+                $html .= "<td><img src='data:image/jpeg;base64,$imageData'></td>";
+                break;
+              case 'GIA':
+                $html .= "<td>" . formatPrice($value) . "</td>";
+                break;
+              case 'NGSX':
+              case 'NGLAPHD':
+                $html .= "<td>" . formatDate($value) . "</td>";
+                break;
+              case 'TRANGTHAI':
+                $html .= "<td>" . formatStatus($value, $mode) . "</td>";
+                break;
+              default:
+                $html .= "<td>$value</td>";
+                break;
+            }
+            
           }
-          else if($key==='GIA') {
-            $html .= "<td>".formatPrice($value)."</td>";
+          $queryStr = getQueryStr($row, $mode);
+
+          $approveBtn="
+            <a class='btn btn-secondary' href='../controllers/approveController.php?$queryStr'>Phê Duyệt</a>
+          ";
+          $editBtn="
+            <a class='btn btn-secondary' href='edit_admin.php?$queryStr'>Sửa</a>
+          ";
+          $disableBtn="
+            <a class='table-action__disable-btn btn btn-error' href='../controllers/disableController.php?$queryStr'>Xóa</a>
+          ";
+          $enableBtn="
+            <a class='table-action__enable-btn btn btn-primary' href='../controllers/enableController.php?$queryStr'>Kích hoạt</a>
+          ";
+
+          switch($mode) {
+            case 'product':
+              if(isset($row['TRANGTHAI']) and $row['TRANGTHAI'] == 0)
+                $html .= "
+                <td class='table-action-wrap'>
+                  <div class='table-action flex flex-center'>
+                    <a class='btn btn-secondary' href='edit_admin.php?$queryStr'>Sửa</a>
+                    $enableBtn
+                  </div>
+                </td>
+              ";
+              else
+                $html .= "
+                  <td class='table-action-wrap'>
+                    <div class='table-action flex flex-center'>
+                      $editBtn
+                      $disableBtn
+                    </div>
+                  </td>
+                ";
+              break;
+            case 'receipt':
+              $html .= "
+                <td class='table-action-wrap'>
+                  <div class='table-action flex flex-center'>
+                    $approveBtn
+                  </div>
+                </td>
+              ";
+              break;
+            case 'user':
+              break;
+            default:
+              $html .= "
+                <td class='table-action-wrap'>
+                  <div class='table-action flex flex-center'>
+                    $editBtn
+                    $disableBtn
+                  </div>
+                </td>
+              ";
+              break;
           }
-          else if($key==='NGSX') {
-            $html .= "<td>".formatDate($value)."</td>";
-          }
-          else if($key==='TRANGTHAI') {
-            $html .= "<td>".formatStatus($value)."</td>";
-          }
-          else {
-            $html .= "<td>$value</td>";
-          }
+
+          $html .= "</tr>";
         }
-        $queryStr=getQueryStr($row, $mode);
         $html .= "
-          <td class='table-action-wrap'>
-            <div class='table-action flex flex-center'>
-              <a class='btn btn-secondary' href='edit_admin.php?$queryStr'>Sửa</a>
-              <a class='btn btn-error'>Xóa</a>
-            </div>
-          </td>
+          </table>
+            {$paging['html']}
+          </div>
         ";
-        $html.="</tr>";
+        break;
       }
-      $html .= "
-        </table>
-          {$paging['html']}
-        </div>
-      ";
-      break;
-    }
   }
   return $html;
 }
 
-function userPanelHeader_render($mode) {
+function userPanelHeader_render($mode)
+{
   $addBtn = '';
   $searchBar = '';
 
-  switch($mode) {
+  switch ($mode) {
     case "admin-info":
       break;
     case "receipt":
@@ -279,8 +340,9 @@ function userPanelHeader_render($mode) {
   ";
 }
 
-function getQueryStr($row, $mode) {
-  switch($mode) {
+function getQueryStr($row, $mode)
+{
+  switch ($mode) {
     case 'product':
       return "mode=$mode&id={$row['MASP']}&page={$_GET['page']}";
     case 'manufacturer':
