@@ -8,8 +8,11 @@ function formatDate($date) {
   $dateObj = date_create($date);
   return date_format($dateObj,"d/m/Y");
 }
-function formatStatus($bool) {
-  return $bool ? "Đang kinh doanh" : "Ngừng kinh doanh";
+function formatStatus($bool, $mode=null) {
+  if($mode == 'user')
+    return $bool ? "Đang kích hoạt" : "Tạm khóa";
+  else
+    return $bool ? "Đang kinh doanh" : "Ngừng kinh doanh";
 }
 function formatSQLColumnsName($col)
 {
@@ -52,6 +55,8 @@ function formatSQLColumnsName($col)
     'TENTK' => 'Tên Tài Khoản',
     'HOTEN' => 'Họ Tên',
     'NGLAPTK' => 'Ngày Lập Tài Khoản',
+    //TRANGTHAI
+    'TENTT' => 'Trạng Thái'
   ];
   return $ref[$col];
 }
