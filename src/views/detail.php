@@ -103,7 +103,6 @@ $newPriceNoFormat = $productData['GIA'] - $productData['KHUYENMAI'];
           ";
         ?>
       </div>
-  </div>
   </main>
   <?php echo $footer_html; ?>
   </div>

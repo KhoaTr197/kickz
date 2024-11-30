@@ -53,13 +53,19 @@ $result = $db->query($newSQl);
             <?php echo $breadcrumbsNav_html; ?>
             <div class='row no-gutter'>
               <?php
-              while ($row = $db->fetch($result)) {
-                echo productCard_render($row);
+              if($db->rows_count($result)>0){
+                while ($row = $db->fetch($result)) {
+                  echo productCard_render($row);
+                }
               }
+              else{
+                echo "<div>Không có sản phẩm nào phù hợp</div>";
+              }
+              
               ?>
             </div>
             <div class="flex-center" id="pagination">
-              <?php echo $paging['html']; ?>
+              <?php if($db->rows_count($result)>0) echo $paging['html']; ?>
             </div>
           </div>
         </div>
