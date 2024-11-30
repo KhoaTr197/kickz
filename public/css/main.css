@@ -831,6 +831,10 @@ footer {
   font-size: 16px;
 }
 
+#admin a.table-action__enable-btn {
+  color: #000;
+}
+
 #admin .table td img {
   max-height: 160px;
 }
