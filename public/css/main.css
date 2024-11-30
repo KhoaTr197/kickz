@@ -776,6 +776,10 @@ footer {
 }
 
 /* ADMIN */
+#admin {
+  position: relative;
+}
+
 #admin .sidebar {
   flex-direction: column;
   min-height: 100vh;
@@ -794,8 +798,9 @@ footer {
 
 #admin .user-panel__header {
   position: sticky;
-  z-index: 999;
+  z-index: 997;
   top: 0;
+  height: 5rem;
   background-color: var(--primaryColor);
   padding: 1rem;
   justify-content: space-between;
@@ -856,4 +861,8 @@ footer {
 
 #admin .preview img {
   max-width: 320px;
+}
+
+#admin .notification {
+  top: 1rem;
 }
