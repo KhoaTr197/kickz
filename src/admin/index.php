@@ -88,6 +88,7 @@ $userPanel_html = userPanel_render(isset($_GET['mode']) ? $_GET['mode'] : "admin
 <body>
   <div id="app" class="grid">
     <div class="row no-gutters" id="admin">
+      <?php echo notify('ADMIN_HOMEPAGE'); ?>
       <div class='col c-2'>
         <ul class="sidebar flex">
           <a href="../views/homepage.php" class="homepage-btn flex-center">
@@ -117,7 +118,7 @@ $userPanel_html = userPanel_render(isset($_GET['mode']) ? $_GET['mode'] : "admin
           <a class="sidebar__item <?php echo (isset($_GET['mode']) && $_GET['mode'] == 'user') ? 'active' : ''; ?>" id="user-list_sidebar" href="?mode=user&page=1">
             Danh Sách Người Dùng
           </a>
-          <a class='sidebar__item' href="../controllers/logout.php">
+          <a class='sidebar__item' href="../controllers/logoutController.php?mode=admin">
             <img class='sidebar-item__icon' src="../../public/img/logout_icon.svg">
             Đăng Xuất
           </a>
@@ -299,6 +300,7 @@ function userPanelHeader_render($mode)
 
   switch ($mode) {
     case "admin-info":
+      return '';
       break;
     case "receipt":
     case "user":
@@ -333,7 +335,7 @@ function userPanelHeader_render($mode)
       ";
   }
   return "
-    <div class='user-panel__header flex'>    
+    <div class='user-panel__header flex flex-center'>    
       $addBtn
       $searchBar
     </div>

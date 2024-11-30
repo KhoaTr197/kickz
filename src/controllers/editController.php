@@ -110,6 +110,11 @@ function updateProduct() {
       );
   }
 
+  successPrompt(
+    'ADMIN_HOMEPAGE',
+    'Cập nhật thành công!',
+    "../admin/index.php?mode={$_POST['mode']}&page=1"  
+  );
 }
 
 function updateManufacturer() {
@@ -121,7 +126,13 @@ function updateManufacturer() {
     where MAHSX = {$_POST['id']}
   ";
 
-  if(!$db->query($updateManufacturerSQL))
+  if($db->query($updateManufacturerSQL))
+    successPrompt(
+      'ADMIN_HOMEPAGE',
+      'Cập nhật thành công!',
+      "../admin/index.php?mode={$_POST['mode']}&page=1"  
+    );
+  else
     errorPrompt(
       'EDIT',
       'Đã có lỗi xảy ra, xin vui lòng thử lại!',
@@ -140,8 +151,8 @@ function updateCategory() {
 
   if($db->query($updateCategorySQL))
     successPrompt(
-      'HOMEPAGE',
-      'Thêm thành công!',
+      'ADMIN_HOMEPAGE',
+      'Cập nhật thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  
     );
   else
@@ -163,8 +174,8 @@ function updateSize() {
 
   if($db->query($updateSizeSQL))
     successPrompt(
-      'HOMEPAGE',
-      'Thêm thành công!',
+      'ADMIN_HOMEPAGE',
+      'Cập nhật thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  
     );
   else
@@ -195,8 +206,8 @@ function updateImage() {
 
       if($db->stmt_execute($stmt))
           successPrompt(
-            'HOMEPAGE',
-            'Thêm thành công!',
+            'ADMIN_HOMEPAGE',
+            'Cập nhật thành công!',
             "../admin/index.php?mode={$_POST['mode']}&page=1"  
           );
         else
@@ -218,8 +229,8 @@ function updateImage() {
 
       if($db->stmt_execute($stmt))
           successPrompt(
-            'HOMEPAGE',
-            'Thêm thành công!',
+            'ADMIN_HOMEPAGE',
+            'Cập nhật thành công!',
             "../admin/index.php?mode={$_POST['mode']}&page=1"  
           );
         else
@@ -344,9 +355,9 @@ function updateAdminInfo()
   ";
   
   if ($db->query($updateInfoSQL)) {
-    $_SESSION['ADMIN']['INFO']['TENTK'] = $_POST['name'];
+    $_SESSION['ADMIN']['INFO']['TENTK'] = $_POST['username'];
     successPrompt(
-      'HOMEPAGE',
+      'ADMIN_HOMEPAGE',
       'Cập nhật thành công',
       "../admin/index.php?mode=admin-info"  
     );
@@ -408,7 +419,7 @@ function updateAdminPassword()
       ";
       if($db->query($updatePassSQL)) 
         successPrompt(
-          'HOMEPAGE',
+          'ADMIN_HOMEPAGE',
           'Cập nhật thành công',
           "../admin/index.php?mode=admin-info"  
         );

@@ -76,7 +76,7 @@ function insertProduct($data, $ref)
 
   if($db->query($productSQL))
     successPrompt(
-      'HOMEPAGE',
+      'ADMIN_HOMEPAGE',
       'Thêm thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  
     );
@@ -95,7 +95,7 @@ function insertCategorize($data, $ref) {
 
   if($db->query($categorizeSQL))
     successPrompt(
-      'HOMEPAGE',
+      'ADMIN_HOMEPAGE',
       'Thêm thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  
     );
@@ -129,7 +129,7 @@ function insertSize($data, $ref)
 
   if($db->query($sizeSQL))
     successPrompt(
-      'HOMEPAGE',
+      'ADMIN_HOMEPAGE',
       'Thêm thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  
     );
@@ -149,7 +149,7 @@ function insertCategory($data, $ref)
 
   if($db->query($categorySQL))
     successPrompt(
-      'HOMEPAGE',
+      'ADMIN_HOMEPAGE',
       'Thêm thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  
     );
@@ -191,7 +191,7 @@ function insertImage($arrayImg)
 
         if($db->stmt_execute($stmt))
           successPrompt(
-            'HOMEPAGE',
+            'ADMIN_HOMEPAGE',
             'Thêm thành công!',
             "../admin/index.php?mode={$_POST['mode']}&page=1"  
           );
@@ -214,7 +214,7 @@ function insertImage($arrayImg)
 
         if($db->stmt_execute($stmt))
           successPrompt(
-            'HOMEPAGE',
+            'ADMIN_HOMEPAGE',
             'Thêm thành công!',
             "../admin/index.php?mode={$_POST['mode']}&page=1"  
           );

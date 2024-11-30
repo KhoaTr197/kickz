@@ -13,7 +13,7 @@ $updateProductSQL = "
   ";
 
 if ($db->query($updateProductSQL))
-  errorPrompt(
+  successPrompt(
     'ADMIN_HOMEPAGE',
     'Kích hoạt thành công!',
     "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"

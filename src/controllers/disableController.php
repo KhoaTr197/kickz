@@ -41,7 +41,7 @@ function updateProduct() {
   ";
 
   if($db->query($updateProductSQL))
-    errorPrompt(
+    successPrompt(
       'ADMIN_HOMEPAGE',
       'Vô hiệu hóa thành công!',
       "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
@@ -63,7 +63,7 @@ function deleteManufacturer() {
   ";
 
   if($db->query($deleteManufacturerSQL))
-    errorPrompt(
+    successPrompt(
       'ADMIN_HOMEPAGE',
       'Xóa thành công!',
       "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
@@ -85,7 +85,7 @@ function deleteCategory() {
   ";
 
   if($db->query($deleteCategorySQL))
-    errorPrompt(
+    successPrompt(
       'ADMIN_HOMEPAGE',
       'Xóa thành công!',
       "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
@@ -107,7 +107,7 @@ function deleteSize() {
   ";
 
   if($db->query($deleteSizeSQL))
-    errorPrompt(
+    successPrompt(
       'ADMIN_HOMEPAGE',
       'Xóa thành công!',
       "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
@@ -129,7 +129,7 @@ function deleteImage() {
   ";
 
   if($db->query($deleteImageSQL))
-    errorPrompt(
+    successPrompt(
       'ADMIN_HOMEPAGE',
       'Xóa thành công!',
       "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
