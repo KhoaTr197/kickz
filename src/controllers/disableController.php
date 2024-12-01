@@ -22,6 +22,9 @@ switch ($_GET['mode']) {
   case 'image':
     deleteImage();
     break;
+  case 'order':
+    updateOrder();
+    break;
   default:
     errorPrompt(
       'ADMIN_HOMEPAGE',
@@ -139,5 +142,27 @@ function deleteImage() {
       'ADMIN_HOMEPAGE',
       'Đã xảy ra lỗi, vui lòng thử lại sau!',
       "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
+    );
+}
+function updateOrder() {
+  global $db;
+
+  $updateOrderSQL = "
+    update HOADON
+    set MATT = 10
+    where MAHD = {$_GET['id']} and MATK = {$_SESSION['USER']['INFO']['MATK']}
+  ";
+
+  if($db->query($updateOrderSQL))
+    successPrompt(
+      'HOMEPAGE',
+      'Hủy đơn hàng thành công!',
+      "../views/user.php"
+    );
+  else
+    errorPrompt(
+      'HOMEPAGE',
+      'Đã xảy ra lỗi, vui lòng thử lại sau!',
+      "../views/index.php"
     );
 }

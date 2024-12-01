@@ -166,35 +166,48 @@ function receiptList_render($result)
 
     $receiptPrice = formatPrice($row['TONGTIEN']);
 
+    $btnDisable ='';
+
+    if($row['MATT'] == 1){
+      $btnDisable = "
+      <div class='receipt-list-item__customer-action'>
+      <a href='../controllers/disableController.php?mode=order&id={$row['MAHD']}' class='receipt__cancel-btn rounded font-medium flex-center'>Huỷ đơn hàng</a>
+      </div>
+      ";
+    } 
+
     $html .= "
       <li class='receipt-list__item'>
-        <div class='reicept-list-item__header flex'>
-          <div class='reicept-list-item__title'>
-            <h3 class='reicept-list-item-title__id'>Đơn Hàng #{$row['MAHD']}</h3>
-            <h4 class='reicept-list-item-title__date font-normal'>Ngày mua hàng: {$row['NGLAPHD']}</h4>
+        <div class='receipt-list-item__header flex' style='justify-content: space-between; align-items: flex-end;'>
+          <div class='receipt-list-item__title'>
+            <h3 class='receipt-list-item-title__id'>Đơn Hàng #{$row['MAHD']}</h3>
+            <h4 class='receipt-list-item-title__date font-normal'>Ngày mua hàng: {$row['NGLAPHD']}</h4>
           </div>
-          <div class='reicept-list-item__status'>
+          <div class='receipt-list-item__status'>
             Trạng thái: 
-            <span class='reicept-status--{$status[$row['MATT']]}'>{$row['TENTT']}<span>
+            <span class='receipt-status--{$status[$row['MATT']]}'>{$row['TENTT']}<span>
           </div>
         </div>
+        <div class='receipt-list-item__customer flex' style='justify-content: space-between; align-items: center;'>
           <div class='receipt-list-item__customer-info'>
-          <p class='font-normal'>
-            <span class='font-medium'>Họ Tên: </span>
-            {$row['HOTENKH']}
-          </p>
-          <p class='font-normal'>
-            <span class='font-medium'>Địa Chỉ:</span>
-            {$row['DCHI']}
-          </p>
-          <p class='font-normal'>
-            <span class='font-medium'>SĐT:</span>
-            {$row['SDT']}
-          </p>
-          <p class='font-normal'>
-            <span class='font-medium'>Email:</span>
-            {$row['EMAIL']}
-          </p>
+            <p class='font-normal'>
+              <span class='font-medium'>Họ Tên: </span>
+              {$row['HOTENKH']}
+            </p>
+            <p class='font-normal'>
+              <span class='font-medium'>Địa Chỉ:</span>
+              {$row['DCHI']}
+            </p>
+            <p class='font-normal'>
+              <span class='font-medium'>SĐT:</span>
+              {$row['SDT']}
+            </p>
+            <p class='font-normal'>
+              <span class='font-medium'>Email:</span>
+              {$row['EMAIL']}
+            </p>
+          </div>
+          $btnDisable
         </div>
         <div class='receipt-list-item__detail'>
           $receiptDetailList_html

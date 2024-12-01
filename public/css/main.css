@@ -114,7 +114,7 @@
 }
 
 .other-cta__link {
-  color: #BCBCBC;
+  color: #bcbcbc;
   text-decoration: underline;
 }
 
@@ -296,7 +296,7 @@
 
 .product-detail__overview {
   padding: 1rem 0;
-  border-bottom: 1px solid #BCBCBC;
+  border-bottom: 1px solid #bcbcbc;
 }
 
 .product-detail__description-wrap {
@@ -374,7 +374,7 @@
   font-weight: 400;
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid #BCBCBC;
+  border: 1px solid #bcbcbc;
 }
 
 .size-item.active {
@@ -386,7 +386,7 @@
 }
 
 .detail-panel__price .price--old {
-  color: #BCBCBC;
+  color: #bcbcbc;
   font-size: 1.25rem;
   text-decoration: line-through;
 }
@@ -410,7 +410,7 @@
 .detail-panel__action-btn .wishlist-btn {
   width: 64px;
   height: 64px;
-  background: #C4C4C4;
+  background: #c4c4c4;
 }
 
 .detail-panel__action-btn .wishlist-btn img {
@@ -423,7 +423,7 @@
   padding-top: 16px;
   flex-direction: column;
   gap: 16px;
-  border-top: 1px solid #BCBCBC;
+  border-top: 1px solid #bcbcbc;
 }
 
 .detail-description__title {
@@ -482,10 +482,10 @@
   height: 48px;
   gap: 8px;
   background: var(--primaryColor);
-  border: 1px solid #BCBCBC;
+  border: 1px solid #bcbcbc;
 }
 
-.quantity-btn>* {
+.quantity-btn > * {
   height: 100%;
 }
 
@@ -544,7 +544,7 @@
   flex: 0 0 80%;
   border-radius: 0;
   border: none;
-  border-bottom: 1px solid #BCBCBC;
+  border-bottom: 1px solid #bcbcbc;
 }
 
 textarea.checkout-info__input {
@@ -681,24 +681,28 @@ textarea.checkout-info__input {
   border: 1px solid #bcbcbc;
 }
 
-.reicept-list-item__header {
+.receipt-list-item__header,
+.receipt-list-item__customer {
   justify-content: space-between;
+}
+
+.receipt-list-item__header {
   align-items: flex-end;
 }
 
-.reicept-list-item__title {
-  
+.receipt-list-item__customer {
+  align-items: center;
 }
 
-.reicept-status--pending {
+.receipt-status--pending {
   color: var(--warningColor);
 }
 
-.reicept-status--success {
+.receipt-status--success {
   color: var(--successColor);
 }
 
-.reicept-status--error {
+.receipt-status--error {
   color: var(--errorColor);
 }
 
