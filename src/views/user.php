@@ -178,7 +178,7 @@ function receiptList_render($result)
 
     $html .= "
       <li class='receipt-list__item'>
-        <div class='receipt-list-item__header flex' style='justify-content: space-between; align-items: flex-end;'>
+        <div class='receipt-list-item__header flex'>
           <div class='receipt-list-item__title'>
             <h3 class='receipt-list-item-title__id'>Đơn Hàng #{$row['MAHD']}</h3>
             <h4 class='receipt-list-item-title__date font-normal'>Ngày mua hàng: {$row['NGLAPHD']}</h4>
@@ -188,7 +188,7 @@ function receiptList_render($result)
             <span class='receipt-status--{$status[$row['MATT']]}'>{$row['TENTT']}<span>
           </div>
         </div>
-        <div class='receipt-list-item__customer flex' style='justify-content: space-between; align-items: center;'>
+        <div class='receipt-list-item__customer flex'>
           <div class='receipt-list-item__customer-info'>
             <p class='font-normal'>
               <span class='font-medium'>Họ Tên: </span>
