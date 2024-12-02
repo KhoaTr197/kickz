@@ -690,6 +690,11 @@ textarea.checkout-info__input {
   align-items: flex-end;
 }
 
+.receipt-list-item__cancel-btn {
+  color: var(--accentText);
+  margin-top: 2rem;
+}
+
 .receipt-list-item__customer {
   align-items: center;
 }

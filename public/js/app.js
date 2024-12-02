@@ -19,7 +19,6 @@ $(document).ready(function() {
 
     if(url.searchParams.has(queryStr[0])) {
       url.searchParams.delete(queryStr[0]);
-      console.log(url.toString());
       if($(this)[0].checked)
         url.searchParams.append(queryStr[0], queryStr[1]);
     } else {
@@ -61,6 +60,14 @@ $(document).ready(function() {
     event.preventDefault();
 
     if (confirm("Bạn có chắc chắn muốn tiếp tục không? (Đối với Sản Phẩm sẽ chỉ vô hiệu hóa)")) {
+      window.location.href = $(this).attr('href');
+    }
+  })
+
+  $('.receipt-list-item__cancel-btn').click(function(event) {
+    event.preventDefault();
+
+    if (confirm("Bạn có chắc chắn muốn hủy đơn hàng không")) {
       window.location.href = $(this).attr('href');
     }
   })

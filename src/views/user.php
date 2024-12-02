@@ -170,9 +170,7 @@ function receiptList_render($result)
 
     if($row['MATT'] == 1){
       $btnDisable = "
-      <div class='receipt-list-item__customer-action'>
-      <a href='../controllers/disableController.php?mode=order&id={$row['MAHD']}' class='receipt__cancel-btn rounded font-medium flex-center'>Huỷ đơn hàng</a>
-      </div>
+        <a href='../controllers/disableController.php?mode=order&id={$row['MAHD']}' class='receipt-list-item__cancel-btn btn btn-error rounded font-medium flex-center'>Huỷ đơn hàng</a>
       ";
     } 
 
@@ -207,7 +205,6 @@ function receiptList_render($result)
               {$row['EMAIL']}
             </p>
           </div>
-          $btnDisable
         </div>
         <div class='receipt-list-item__detail'>
           $receiptDetailList_html
@@ -216,6 +213,7 @@ function receiptList_render($result)
           <span>Tổng Tiền</span>
           <span>$receiptPrice</span>
         </div>
+        $btnDisable
       </li>
     ";
   }
