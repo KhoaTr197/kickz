@@ -14,6 +14,13 @@ function formatStatus($bool, $mode=null) {
   else
     return $bool ? "Đang kinh doanh" : "Ngừng kinh doanh";
 }
+function formatName($col)
+{
+  $ref = [
+    'price' => 'Giá'
+  ];
+  return $ref[$col];
+}
 function formatSQLColumnsName($col)
 {
   $ref = [
