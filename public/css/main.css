@@ -193,17 +193,31 @@
 }
 
 /* FILTER PANEL */
+.filter-panel {
+
+}
+
 .filter-list {
-  margin-bottom: 2rem;
+  gap: 8px;
+  margin-bottom: 1rem;
 }
 
 .filter-list__item {
   margin: 0.5rem 0;
 }
 
+.filter-panel--row .filter-list__item {
+  border: 1px solid #bcbcbc;
+}
+
+.filter-panel--row .filter-list__item--active {
+  background-color: var(--accentColor);
+  border: none;
+}
+
 .filter-list__title {
   font-size: 1.5rem;
-  border-bottom: solid 1px black;
+  border-bottom: solid 1px #bcbcbc;
   padding-bottom: 0.5rem;
 }
 
