@@ -11,7 +11,16 @@ if ($_SESSION['URL_BACKUP'] != $_SERVER['REQUEST_URI'])
 
 $header_html = header_render("navbar", isset($_SESSION['USER']['HAS_LOGON']) ? $_SESSION['USER']['HAS_LOGON'] : false);
 $breadcrumbsNav_html = breadcrumbsNav_render();
-$filterPanel = filterPanel_render();
+$filterPanel = filterPanel_render(
+  ['price'=> [
+    'less-1000000' => 'Dưới 1.000.000đ',
+    '1000000-5000000' => 'Từ 1.000.000đ - 5.000.000đ',
+    '5000000-10000000' => 'Từ 5.000.000đ - 10.000.000đ',
+    'more-10000000' => 'Trên 10.000.000đ'
+  ]],
+  'checkbox',
+  'column'
+);
 $footer_html = footer_render();
 
 $db = new Database();
