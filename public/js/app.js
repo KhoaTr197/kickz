@@ -64,6 +64,14 @@ $(document).ready(function() {
     }
   })
 
+  $('.table-action--receipt a').click(function(event) {
+    event.preventDefault();
+
+    if (confirm("Bạn có chắc chắn muốn tiếp tục không")) {
+      window.location.href = $(this).attr('href');
+    }
+  })
+
   $('.receipt-list-item__cancel-btn').click(function(event) {
     event.preventDefault();
 
