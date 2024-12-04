@@ -25,5 +25,7 @@
   
   $_SESSION['MANUFACTURER_LIST'] = $manufacturerListArr;
 
+  $_SESSION['URL_BACKUP'] = "src/views/homepage.php";
+
   header("location: src/views/homepage.php");
 ?>
