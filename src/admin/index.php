@@ -394,17 +394,23 @@ function tableActionBtn_render($mode, $queryStr, $row) {
 
 function getQueryStr($row, $mode)
 {
+  $prevQueryStr="";
+  foreach($_GET as $key => $value) {
+    $prevQueryStr .= "$key=$value&";
+  }
   switch ($mode) {
     case 'product':
-      return "mode=$mode&id={$row['MASP']}&page={$_GET['page']}";
+      return "$prevQueryStr&id={$row['MASP']}";
     case 'manufacturer':
-      return "mode=$mode&id={$row['MAHSX']}&page={$_GET['page']}";
+      return "$prevQueryStr&id={$row['MAHSX']}";
     case 'category':
-      return "mode=$mode&id={$row['MADM']}&page={$_GET['page']}";
+      return "$prevQueryStr&id={$row['MADM']}";
     case 'size':
-      return "mode=$mode&id={$row['MAKC']}&productId={$row['MASP']}&page={$_GET['page']}";
+      return "$prevQueryStr&id={$row['MAKC']}&productId={$row['MASP']}";
     case 'image':
-      return "mode=$mode&id={$row['MAHA']}&productId={$row['MASP']}&page={$_GET['page']}";
+      return "$prevQueryStr&id={$row['MAHA']}&productId={$row['MASP']}";
+    case 'receipt':
+      return "$prevQueryStr&id={$row['MAHD']}&currStatus={$row['MATT']}";
   }
 }
 
