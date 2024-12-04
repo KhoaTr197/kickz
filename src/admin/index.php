@@ -237,7 +237,7 @@ function userPanelTable_render($mode)
           $tableRows_html .= "<td><img src='data:image/jpeg;base64,$imageData'></td>";
           break;
         case 'GIA':
-        case 'TONGTIEN  ':
+        case 'TONGTIEN':
           $tableRows_html .= "<td>" . formatPrice($value) . "</td>";
           break;
         case 'NGSX':
@@ -353,20 +353,31 @@ function tableActionBtn_render($mode, $queryStr, $row) {
         ";
       break;
     case 'receipt': {
-      $processContent = [
-        1 => "Phê Duyệt",
-        2 => "Chuẩn Bị Hàng",
-        3 => "Giao Thành Công",
-        10 => ""
-      ];
       switch ($row['MATT']) {
         case 1:
+          $html .= "
+            <td class='table-action-wrap table-action--receipt'>
+              <div class='table-action flex flex-center'>
+                <a class='btn btn-secondary' href='../controllers/receiptController.php?$queryStr' >Phê Duyệt</a>
+              </div>
+            </td>
+          ";
+          break;
         case 2:
+          $html .= "
+            <td class='table-action-wrap table-action--receipt'>
+              <div class='table-action flex flex-center'>
+                <a class='btn btn-secondary' href='../controllers/receiptController.php?$queryStr' >Chuẩn bị hàng</a>
+              </div>
+            </td>
+          ";
+          break;
         case 3:
           $html .= "
-            <td class='table-action-wrap'>
+            <td class='table-action-wrap table-action--receipt'>
               <div class='table-action flex flex-center'>
-                <a class='btn btn-secondary' href='../controllers/receiptController.php?currStatus={$row['MATT']}' >{$processContent[$row['MATT']]}</a>
+                <a class='btn btn-secondary' href='../controllers/receiptController.php?$queryStr&nextStatus=5' >Trả hàng</a>
+                <a class='btn btn-secondary' href='../controllers/receiptController.php?$queryStr&nextStatus=4' >Đã giao</a>
               </div>
             </td>
           ";
