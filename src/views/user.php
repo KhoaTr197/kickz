@@ -13,6 +13,7 @@ $sql = "
     inner join TRANGTHAI
     on HOADON.MATT = TRANGTHAI.MATT
     where MATK = {$_SESSION['USER']['INFO']['MATK']}
+    order by HOADON.MATT asc
   ";
 $result = $db->query($sql);
 
@@ -166,16 +167,21 @@ function receiptList_render($result)
 
     $receiptPrice = formatPrice($row['TONGTIEN']);
 
-    $btnDisable ='';
+    $receiptStatus = '';
+    $btnDisable = '';
 
     if($row['MATT'] == 1){
       $btnDisable = "
         <a href='../controllers/disableController.php?mode=order&id={$row['MAHD']}' class='receipt-list-item__cancel-btn btn btn-error rounded font-medium flex-center'>Huỷ đơn hàng</a>
       ";
+    }
+
+    if($row['MATT'] == 10){
+      $receiptStatus = 'receipt-list__item--disabled';
     } 
 
     $html .= "
-      <li class='receipt-list__item'>
+      <li class='receipt-list__item $receiptStatus'>
         <div class='receipt-list-item__header flex'>
           <div class='receipt-list-item__title'>
             <h3 class='receipt-list-item-title__id'>Đơn Hàng #{$row['MAHD']}</h3>
