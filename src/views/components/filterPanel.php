@@ -19,10 +19,12 @@ function filterPanel_render(
       $filterItems="";
       
       foreach($filterListData as $filterListName => $filterList) {
-        if(!isset($_GET[$filterListName]))
-          return header("location: ?{$newQueryStr}$filterListName=none");
         foreach($filterList as $filterKey => $filterValue) {
-          $isActived = (isset($_GET[$filterListName]) and $filterKey == $_GET[$filterListName]) ? 'filter-list__item--active' : '';
+          $isActived = '';
+          if(!isset($_GET[$filterListName]) and $filterKey == 'none')
+            $isActived = 'filter-list__item--active';
+          else if (isset($_GET[$filterListName]) and $filterKey == $_GET[$filterListName])
+            $isActived = 'filter-list__item--active';
 
           $filterItems .= "
             <a class='filter-list__item $isActived flex flex-center btn rounded-lg' href='?{$newQueryStr}$filterListName=$filterKey'>$filterValue</a>

@@ -39,7 +39,6 @@ $sql = [
     select *
     from KICHCO
     where CONCAT(MASP, MAKC, COGIAY, SOLUONG) like '%$search%'
-    order by MASP asc, MAKC asc
   ",
   'category' => "
     select *
@@ -193,21 +192,59 @@ function userPanelTable_render($mode)
 
   $tableRows_html = "";
   $filterList_html = "";
+  $filterListName = "status";
   $filterList = [
     'none' => 'Tất Cả'
   ];
 
   switch($mode) {
+    case 'product': {
+      $filterListName = 'status';
+
+      if(isset($_GET['status']) and $_GET['status'] != 'none')
+        $sql['product'] .= " and TRANGTHAI = {$_GET['status']}";
+
+      $filterList['0'] = formatStatus(0);
+      $filterList['1'] = formatStatus(1);
+      break;
+    }
+    case 'size': {
+      $filterListName = 'size';
+
+      if(isset($_GET['size']) and $_GET['size'] != 'none')
+        $sql['size'] .= " and COGIAY = {$_GET['size']}";
+
+      $sql['size'] .= " order by MASP asc, MAKC asc";
+
+      $statusListResult = $db->query("select distinct COGIAY from KICHCO order by COGIAY asc");
+      while ($row = $db->fetch($statusListResult)) {
+        $filterList[$row['COGIAY']] = "Kích cỡ {$row['COGIAY']}";
+      }
+      break;
+    }
     case 'receipt': {
+      $filterListName = 'status';
+      
       if(isset($_GET['status']) and $_GET['status'] != 'none')
         $sql['receipt'] .= " and TRANGTHAI.MATT = {$_GET['status']}";
+
 
       $statusListResult = $db->query("select * from TRANGTHAI");
       while ($row = $db->fetch($statusListResult)) {
         $filterList[$row['MATT']] = $row['TENTT'];
       }
-    }
       break;
+    }
+    case 'user': {
+      $filterListName = 'status';
+      
+      if(isset($_GET['status']) and $_GET['status'] != 'none')
+        $sql['user'] .= " and TRANGTHAI = {$_GET['status']}";
+
+      $filterList['0'] = formatStatus(0, 'user');
+      $filterList['1'] = formatStatus(1, 'user');  
+      break;
+    }
     default:
       break;
   }
@@ -258,7 +295,7 @@ function userPanelTable_render($mode)
     $tableRows_html .= "</tr>";
   }
 
-  $filterList_html = filterPanel_render(['status'=>$filterList], 'button', 'row');
+  $filterList_html = filterPanel_render([$filterListName=>$filterList], 'button', 'row');
 
   return "
     $filterList_html
@@ -271,51 +308,62 @@ function userPanelTable_render($mode)
 
 function userPanelHeader_render($mode)
 {
-  $addBtn = '';
-  $searchBar = '';
+  $addBtn = "
+    <div class='user-panel-header__action flex'>
+      <a class='user-panel__add-btn btn btn-primary flex-center' href='insert_admin.php?mode=$mode'>
+        <img src='../../public/img/plus_icon.svg'>
+        Thêm
+      </a>
+      <a class='user-panel__add-list-btn btn flex-center' href='import_admin.php?mode=$mode'>Thêm Danh Sách</a>
+    </div>
+  ";
+  $updateBtn = "
+    <div class='user-panel-header__action flex'>
+      <a class='user-panel__add-list-btn btn flex-center' href='import_admin.php?mode=$mode'>Cập nhật đơn hàng</a>
+    </div>
+  ";
+  $searchBar = "
+    <form class='search-bar rounded'>
+      <label class='search-bar__label flex-center' for='search-bar-input'>
+        <img class='search-bar__icon' src='../../public/img/search_icon.svg' alt='Search Bar'>
+      </label>
+      <input type='text' name='search' id='search-bar-input' placeholder='Tìm Kiếm' value=''/>
+      <input type='hidden' name='mode' value='$mode' />
+    </form>
+  ";
 
   switch ($mode) {
     case "admin-info":
       return '';
       break;
     case "receipt":
-    case "user":
-      $searchBar = "
-        <form class='search-bar rounded'>
-          <label class='search-bar__label flex-center' for='search-bar-input'>
-            <img class='search-bar__icon' src='../../public/img/search_icon.svg' alt='Search Bar'>
-          </label>
-          <input type='text' name='search' id='search-bar-input' placeholder='Tìm Kiếm' value=''/>
-          <input type='hidden' name='mode' value='$mode' />
-        </form>
-      ";
-      break;
-    default:
-      $addBtn = "
-        <div class='user-panel-header__action flex'>
-          <a class='user-panel__add-btn btn btn-primary flex-center' href='insert_admin.php?mode=$mode'>
-            <img src='../../public/img/plus_icon.svg'>
-            Thêm
-          </a>
-          <a class='user-panel__add-list-btn btn flex-center' href='import_admin.php?mode=$mode'>Thêm Danh Sách</a>
+      if(isset($_GET['status']) and $_GET['status']==3)
+        return "
+          <div class='user-panel__header flex flex-center'>    
+            $updateBtn
+            $searchBar
+          </div>
+        ";
+      else
+      return "
+        <div class='user-panel__header flex flex-center'>    
+          $searchBar
         </div>
       ";
-      $searchBar = "
-        <form class='search-bar rounded'>
-          <label class='search-bar__label flex-center' for='search-bar-input'>
-            <img class='search-bar__icon' src='../../public/img/search_icon.svg' alt='Search Bar'>
-          </label>
-          <input type='text' name='search' id='search-bar-input' placeholder='Tìm Kiếm' value=''/>
-          <input type='hidden' name='mode' value='$mode' />
-        </form>
+    case "user":
+      return "
+        <div class='user-panel__header flex flex-center'>    
+          $searchBar
+        </div>
+      ";
+    default:
+      return "
+        <div class='user-panel__header flex flex-center'>    
+          $addBtn
+          $searchBar
+        </div>
       ";
   }
-  return "
-    <div class='user-panel__header flex flex-center'>    
-      $addBtn
-      $searchBar
-    </div>
-  ";
 }
 
 function tableActionBtn_render($mode, $queryStr, $row) {
@@ -382,6 +430,7 @@ function tableActionBtn_render($mode, $queryStr, $row) {
             </td>
           ";
           break;
+        case 5:
         case 10:
           break;
       }

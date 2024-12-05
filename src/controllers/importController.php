@@ -56,6 +56,10 @@ switch ($_POST['mode']) {
   case 'image':
     insertImage($_FILES['image']);
     break;
+  case 'receipt':
+    $handler = handleCSV($_FILES['data']['tmp_name']);
+    readCSV($handler, "updateReceipt");
+    break;
   default:
     errorPrompt(
       'UPLOAD',
@@ -229,3 +233,28 @@ function insertImage($arrayImg)
     }
   }
 }
+
+function updateReceipt($data, $ref) {
+  global $db;
+
+  $updateSQL = "
+    update HOADON
+    set MATT = 3
+    where MAHD = {$data[$ref['MAHD']]}
+  ";
+
+  if($db->query($updateSQL))
+    successPrompt(
+      'ADMIN_HOMEPAGE',
+      'Cập nhật thành công!',
+      "../admin/index.php?mode={$_POST['mode']}&page=1"  
+    );
+  else
+    errorPrompt(
+      'UPLOAD',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/import_admin.php?mode={$_POST['mode']}"
+    );
+
+}
+?>

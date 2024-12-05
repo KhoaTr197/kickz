@@ -118,6 +118,15 @@ function getForm() {
         </div>
       ";
       break;
+    case 'receipt':
+      $formTitle='Cập nhật Danh Sách Đơn Hàng Đã Giao';
+      $formInputs = "
+        <div class='form-control'>
+          <div class='form-reminder'>Tải file chứa Danh Sách Đơn Hàng Đã Giao (Chỉ hỗ trợ file CSV)</div>
+          <input class='form-input flex-center' type='file' name='data'>
+        </div>
+      ";
+      break;
     default:
       return false;
   }
