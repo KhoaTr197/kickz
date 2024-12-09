@@ -51,6 +51,15 @@ switch ($_POST['mode']) {
 
 function updateProduct() {
   global $db;
+  
+  if(empty($_POST['price']) || empty($_POST['discount']) || empty($_POST['rating']))
+    errorPrompt(
+      'EDIT',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/edit_admin.php?{$_POST['queryStr']}"
+    );
+
+  if(empty($_POST['date'])) $_POST['date'] = date('Y-m-d');
 
   $updateProductSQL = "
     update SANPHAM
