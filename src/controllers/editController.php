@@ -64,13 +64,14 @@ function updateProduct() {
       MAHSX = {$_POST['manufacturer']}
     where MASP = {$_POST['id']}
   ";
-  if(!$db->query($updateProductSQL))
-    errorPrompt(
+  if(!$db->query($updateProductSQL)) {
+    return errorPrompt(
       'EDIT',
       'Đã có lỗi xảy ra, xin vui lòng thử lại!',
       "../admin/edit_admin.php?{$_POST['queryStr']}"
     );
-
+  }
+   
   $selectCategorizeSQL = "
     select MADM
     from PHANLOAI
