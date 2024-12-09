@@ -52,7 +52,7 @@ switch ($_POST['mode']) {
 function updateProduct() {
   global $db;
   
-  if(empty($_POST['price']) || empty($_POST['discount']) || empty($_POST['rating']))
+  if(!isset($_POST['price']) || !isset($_POST['discount']) || !isset($_POST['rating']))
     return errorPrompt(
       'EDIT',
       'Đã có lỗi xảy ra, xin vui lòng thử lại!',
