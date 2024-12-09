@@ -279,6 +279,7 @@ function userPanelTable_render($mode)
           break;
         case 'NGSX':
         case 'NGLAPHD':
+        case 'NGLAPTK':
           $tableRows_html .= "<td>" . formatDate($value) . "</td>";
           break;
         case 'TRANGTHAI':
