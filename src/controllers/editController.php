@@ -53,7 +53,7 @@ function updateProduct() {
   global $db;
   
   if(empty($_POST['price']) || empty($_POST['discount']) || empty($_POST['rating']))
-    errorPrompt(
+    return errorPrompt(
       'EDIT',
       'Đã có lỗi xảy ra, xin vui lòng thử lại!',
       "../admin/edit_admin.php?{$_POST['queryStr']}"
