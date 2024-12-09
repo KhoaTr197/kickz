@@ -32,7 +32,7 @@ function formatSQLColumnsName($col)
     'SOSAO' => 'Đánh Giá',
     'TENHSX' => 'Tên Hãng',
     'NGSX' => 'Ngày Sản Xuất',
-    'KHUYENMAI' => 'Khuyến Mãi',
+    'KHUYENMAI' => 'Khuyến Mãi (%)',
     'TRANGTHAI' => 'Trạng Thái',
     //HSX
     'MAHSX' => 'Mã HSX',

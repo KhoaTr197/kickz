@@ -19,9 +19,9 @@ $ratings_html = rating_render();
 
 $oldPrice = $productData['KHUYENMAI'] != 0 ? formatPrice($productData['GIA']) : '';
 
-$newPrice = formatPrice($productData['GIA'] - $productData['KHUYENMAI']);
+$newPrice = formatPrice($productData['GIA'] * (1 - $productData['KHUYENMAI']/100));
 
-$newPriceNoFormat = $productData['GIA'] - $productData['KHUYENMAI'];
+$newPriceNoFormat = $productData['GIA'] * (1 - $productData['KHUYENMAI']/100);
 
 ?>
 
