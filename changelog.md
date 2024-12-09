@@ -2,6 +2,6 @@
 
 - test & tìm bug các chức năng trong admin
 
-- thiếu phần duyệt đơn hàng
-
 - còn thiếu phần URL ở footer
+
+- nên tối ưu lại phần tìm kiếm ở admin
