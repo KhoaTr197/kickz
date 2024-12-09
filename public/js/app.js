@@ -59,7 +59,7 @@ $(document).ready(function() {
   $('.table-action__disable-btn').click(function(event) {
     event.preventDefault();
 
-    if (confirm("Bạn có chắc chắn muốn tiếp tục không? (Đối với Sản Phẩm sẽ chỉ vô hiệu hóa)")) {
+    if (confirm("Bạn có chắc chắn muốn tiếp tục không? (Đối với Sản Phẩm, Người Dùng sẽ chỉ vô hiệu hóa)")) {
       window.location.href = $(this).attr('href');
     }
   })
