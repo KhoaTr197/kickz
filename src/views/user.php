@@ -1,5 +1,6 @@
 <?php
 require_once("../models/Database.php");
+require_once("../utils/utils.php");
 include_once("components/components.php");
 session_start();
 
@@ -185,7 +186,7 @@ function receiptList_render($result)
         <div class='receipt-list-item__header flex'>
           <div class='receipt-list-item__title'>
             <h3 class='receipt-list-item-title__id'>Đơn Hàng #{$row['MAHD']}</h3>
-            <h4 class='receipt-list-item-title__date font-normal'>Ngày mua hàng: {$row['NGLAPHD']}</h4>
+            <h4 class='receipt-list-item-title__date font-normal'>Ngày mua hàng: ".formatDate($row['NGLAPHD'])."</h4>
           </div>
           <div class='receipt-list-item__status'>
             Trạng thái: 

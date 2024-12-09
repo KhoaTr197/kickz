@@ -1,5 +1,6 @@
 <?php
 require_once("../models/Database.php");
+require_once("../utils/utils.php");
 include_once("components/components.php");
 session_start();
 
@@ -94,7 +95,7 @@ $newPriceNoFormat = $productData['GIA'] - $productData['KHUYENMAI'];
                   <div class='detail-description__title'>Mô Tả Chi Tiết</div>
                   <div class='detail-description__info'>
                     <div class='brand'>Hãng: {$productData['TENHSX']}</div>
-                    <div class='date'>Ngày Ra Mắt: {$productData['NGSX']}</div>
+                    <div class='date'>Ngày Ra Mắt: ".formatDate($productData['NGSX'])."</div>
                   </div>
                   <div class='detail-description__description font-normal'>{$productData['MOTA']}</div>
                 </div>

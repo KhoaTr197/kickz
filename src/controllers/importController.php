@@ -239,10 +239,10 @@ function updateReceipt($data, $ref) {
 
   $updateSQL = "
     update HOADON
-    set MATT = 3
+    set MATT = 4
     where MAHD = {$data[$ref['MAHD']]}
   ";
-
+  
   if($db->query($updateSQL))
     successPrompt(
       'ADMIN_HOMEPAGE',
