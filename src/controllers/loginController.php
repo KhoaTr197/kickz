@@ -14,7 +14,8 @@
     select *
     from NGUOIDUNG
     where TENTK = '$username' and
-          MATKHAU = '$password'
+          MATKHAU = '$password' and
+          TRANGTHAI = 1
   ";
   $userData = $db->fetch($db->query($checkUserSQL));
 

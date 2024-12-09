@@ -438,6 +438,22 @@ function tableActionBtn_render($mode, $queryStr, $row) {
       break;
     }
     case 'user':
+      if($row['TRANGTHAI'])
+        $html .= "
+          <td class='table-action-wrap'>
+            <div class='table-action flex flex-center'>
+              $disableBtn
+            </div>
+          </td>
+        ";
+      else
+        $html .= "
+        <td class='table-action-wrap'>
+          <div class='table-action flex flex-center'>
+            $enableBtn
+          </div>
+        </td>
+      ";
       break;
     default:
       $html .= "
@@ -472,6 +488,8 @@ function getQueryStr($row, $mode)
       return "$prevQueryStr&id={$row['MAHA']}&productId={$row['MASP']}";
     case 'receipt':
       return "$prevQueryStr&id={$row['MAHD']}&currStatus={$row['MATT']}";
+    case 'user':
+      return "$prevQueryStr&id={$row['MATK']}";
   }
 }
 

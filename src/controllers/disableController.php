@@ -8,7 +8,7 @@ $db = new Database();
 
 switch ($_GET['mode']) {
   case 'product':
-    updateProduct();
+    disableProduct();
     break;
   case 'manufacturer':
     deleteManufacturer();
@@ -25,6 +25,9 @@ switch ($_GET['mode']) {
   case 'order':
     updateOrder();
     break;
+  case 'user':
+    disableUser();
+    break;
   default:
     errorPrompt(
       'ADMIN_HOMEPAGE',
@@ -34,16 +37,16 @@ switch ($_GET['mode']) {
     break;
 }
 
-function updateProduct() {
+function disableProduct() {
   global $db;
 
-  $updateProductSQL = "
+  $disableProductSQL = "
     update SANPHAM
     set TRANGTHAI = 0
     where MASP = {$_GET['id']}
   ";
 
-  if($db->query($updateProductSQL))
+  if($db->query($disableProductSQL))
     successPrompt(
       'ADMIN_HOMEPAGE',
       'Vô hiệu hóa thành công!',
@@ -164,5 +167,28 @@ function updateOrder() {
       'HOMEPAGE',
       'Đã xảy ra lỗi, vui lòng thử lại sau!',
       "../views/index.php"
+    );
+}
+
+function disableUser() {
+  global $db;
+
+  $disableUserSQL = "
+    update NGUOIDUNG
+    set TRANGTHAI = 0
+    where MATK = {$_GET['id']}
+  ";
+
+  if($db->query($disableUserSQL))
+    successPrompt(
+      'HOMEPAGE',
+      'Vô hiệu hóa thành công!',
+      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
+    );
+  else
+    errorPrompt(
+      'HOMEPAGE',
+      'Đã xảy ra lỗi, vui lòng thử lại sau!',
+      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
     );
 }
