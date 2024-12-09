@@ -141,7 +141,7 @@ function getForm() {
           <input class='form-input' name='id' value='{$productData['MASP']}' hidden/>
           <input class='form-input' type='text' placeholder='Tên Sản Phẩm' name='name' value='{$productData['TENSP']}' required/>
           <input class='form-input' type='number' placeholder='Giá Tiền' name='price' value='{$productData['GIA']}' required/>
-          <input class='form-input' type='number' placeholder='Khuyến Mãi' name='discount' value='{$productData['KHUYENMAI']}' />
+          <input class='form-input' type='number' min=0 max=100 placeholder='Khuyến Mãi' name='discount' value='{$productData['KHUYENMAI']}' />
           <textarea class='form-input' type='text' placeholder='Mô Tả Chi Tiết' name='description'>{$productData['MOTA']}</textarea>
           <input class='form-input' type='number' min='0' max='5' placeholder='Đánh Giá' name='rating' value='{$productData['SOSAO']}'/>
           <input class='form-input' type='date' placeholder='Ngày Sản Xuất' name='date' value='{$productData['NGSX']}'/>

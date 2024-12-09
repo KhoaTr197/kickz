@@ -6,7 +6,7 @@
         $id = $data['MASP'];
         $name = $data['TENSP'];
         $oldPrice = $data['KHUYENMAI'] != 0 ? formatPrice($data['GIA']) : '';
-        $newPrice = formatPrice($data['GIA'] - $data['KHUYENMAI']);
+        $newPrice = formatPrice($data['GIA']* (1 - $data['KHUYENMAI']/100));
         $productImageData = base64_encode($data['FILE']);
         $manufacturerImageData = base64_encode($data['LOGO']);
 
