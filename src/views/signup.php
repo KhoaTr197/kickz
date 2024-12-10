@@ -5,8 +5,8 @@ session_start();
 $header_html = header_render("login");
 $error = '';
 
-if (!empty($_SESSION) && !empty($_SESSION['SIGNUP']['ERROR_PROMPT']['MSG'])) {
-  $error = "<div class='form-error flex rounded'>" . $_SESSION['SIGNUP']['ERROR_PROMPT']['MSG'] . "</div>";
+if (!empty($_SESSION) && !empty($_SESSION['SIGNUP']['PROMPT']['MSG'])) {
+  $error = "<div class='form-error flex rounded'>" . $_SESSION['SIGNUP']['PROMPT']['MSG'] . "</div>";
 }
 ?>
 
@@ -36,7 +36,7 @@ if (!empty($_SESSION) && !empty($_SESSION['SIGNUP']['ERROR_PROMPT']['MSG'])) {
           <form class='form' action='../controllers/signupController.php' method='post'>
             <?php
             echo $error;
-            unset($_SESSION['SIGNUP']['ERROR_PROMPT']);
+            unset($_SESSION['SIGNUP']['PROMPT']);
             ?>
             <h2 class='form-title font-medium'>Đăng Ký</h2>
             <div class='form-control-wrap'>
