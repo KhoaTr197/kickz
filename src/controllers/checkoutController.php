@@ -1,7 +1,37 @@
 <?php
 require_once("../models/Database.php");
 require_once("promptController.php");
+require_once("formValidation.php");
 session_start();
+
+if(empty($_POST['name'])){
+  return errorPrompt(
+    'HOMEPAGE',
+    'Họ tên không hợp lệ!',
+    "../views/cart.php"
+  );
+}
+else if(!phoneNumberValidation($_POST['phone'])){
+  return errorPrompt(
+    'HOMEPAGE',
+    'Số điện thoại không hợp lệ!',
+    "../views/cart.php"
+  );
+}
+else if(!emailValidation($_POST['email'])){
+  return errorPrompt(
+    'HOMEPAGE',
+    'Email không hợp lệ!',
+    "../views/cart.php"
+  );
+}
+else if(empty($_POST['address'])){
+  return errorPrompt(
+    'HOMEPAGE',
+    'Địa chỉ không hợp lệ!',
+    "../views/cart.php"
+  );
+}
 
 $db = new Database;
 
