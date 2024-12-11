@@ -73,7 +73,7 @@ function getForm()
       $formTitle = 'Sửa Thông Tin Cá Nhân';
       $formInputs = "
         <div class='form-control'>
-          <input class='form-input' type='text' placeholder='Tên Tài Khoản' name='username' value={$_SESSION['USER']['INFO']['TENTK']} />
+          <input class='form-input' type='text' placeholder='Tên Tài Khoản' name='username' value={$_SESSION['USER']['INFO']['TENTK']} readonly/>
           <input class='form-input' type='text' placeholder='Họ Tên' name='fullname' value='{$_SESSION['USER']['INFO']['HOTEN']}' />
           <input class='form-input' type='email' placeholder='Email' name='email' value={$_SESSION['USER']['INFO']['EMAIL']} />
           <input class='form-input' type='tel' placeholder='Số Điện Thoại' name='phone' value={$_SESSION['USER']['INFO']['SDT']} />
@@ -85,9 +85,9 @@ function getForm()
       $formTitle = 'Đổi Mật Khẩu';
       $formInputs = "
         <div class='form-control'>
-          <input class='form-input' type='password' placeholder='Mật Khẩu Hiện Tại' name='current_password' />
-          <input class='form-input' type='password' placeholder='Mật Khẩu Mới' name='new_password' />
-          <input class='form-input' type='password' placeholder='Xác Nhận Mật Khẩu' name='confirm_password' />
+          <input class='form-input' type='password' placeholder='Mật Khẩu Hiện Tại' name='currentPassword' />
+          <input class='form-input' type='password' placeholder='Mật Khẩu Mới' name='newPassword' />
+          <input class='form-input' type='password' placeholder='Xác Nhận Mật Khẩu' name='confirmPassword' />
           <div class='form-reminder'>Mật khẩu dài ít nhất 8 ký tự, chứa số, chữ cái in hoa, không chứa khoảng trắng, ký tự đặc biệt</div>
         </div>
       ";

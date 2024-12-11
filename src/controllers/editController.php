@@ -259,16 +259,43 @@ function updateInfo()
   global $db;
 
   $userId = $_SESSION['USER']['INFO']['MATK'];
-  $newUsername = $_POST['username'];
   $newFullname = $_POST['fullname'];
   $newEmail = $_POST['email'];
   $newPhone = $_POST['phone'];
   $newAddress = $_POST['address'];
 
+  if(empty($newFullname)){
+    return errorPrompt(
+      'EDIT',
+      'Họ tên không hợp lệ!',
+      "../views/edit.php?{$_POST['queryStr']}"
+    );
+  }
+  else if(!emailValidation($newEmail)){
+    return errorPrompt(
+      'EDIT',
+      'Email không hợp lệ!',
+      "../views/edit.php?{$_POST['queryStr']}"
+    );
+  }
+  else if(!phoneNumberValidation($newPhone)){
+    return errorPrompt(
+      'EDIT',
+      'Số điện thoại không hợp lệ!',
+      "../views/edit.php?{$_POST['queryStr']}"
+    );
+  }
+  else if(empty($newAddress)){
+    return errorPrompt(
+      'EDIT',
+      'Địa chỉ không hợp lệ!',
+      "../views/edit.php?{$_POST['queryStr']}"
+    );
+  }
+
   $updateSql = "
       update NGUOIDUNG
       set 
-        TENTK = '$newUsername',
         HOTEN = '$newFullname',
         EMAIL = '$newEmail',
         SDT = '$newPhone',
@@ -278,14 +305,14 @@ function updateInfo()
 
   if($db->query($updateSql)) {
     $_SESSION['USER']['INFO'] = $db->fetch($db->query("select MATK, TENTK, HOTEN, EMAIL, SDT, NGLAPTK, DCHI from NGUOIDUNG where MATK = $userId"));
-    successPrompt(
+    return successPrompt(
       'HOMEPAGE',
       'Cập nhật thành công',
       "../views/user.php"  
     );
   }
   else 
-    errorPrompt(
+    return errorPrompt(
       'EDIT',
       'Đã xảy ra lỗi, vui lòng thử lại sau!',
       "../views/edit.php?{$_POST['queryStr']}"
@@ -301,7 +328,7 @@ function updatePassword()
   $confirmPassword = $_POST['confirmPassword'];
 
   if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) 
-    errorPrompt(
+    return errorPrompt(
       'EDIT',
       'Vui lòng điền vào biểu mẫu này',
       "../views/edit.php?{$_POST['queryStr']}"
@@ -310,24 +337,24 @@ function updatePassword()
     $currentUserInfoSQL = "
         select *
         from NGUOIDUNG
-        where MATK = {$_SESSION['USER']['INFO']['MATK']}
+        where MATK = {$_SESSION['USER']['INFO']['MATK']} and MATKHAU = '".$currentPassword."'
       ";
     $currentUserInfo = $db->fetch($db->query($currentUserInfoSQL));
-
+    
     if ($currentUserInfo == 0)
-      errorPrompt(
+      return errorPrompt(
         'EDIT',
         'Mật khẩu không đúng!',
         "../views/edit.php?{$_POST['queryStr']}"  
       );
     else if (!passwordValidation($newPassword))
-      errorPrompt(
+      return errorPrompt(
         'EDIT',
         'Mật Khẩu mới không hợp lệ!',
         "../views/edit.php?{$_POST['queryStr']}"  
       );
     else if ($newPassword != $confirmPassword)
-      errorPrompt(
+      return errorPrompt(
         'EDIT',
         'Mật Khẩu mới không trùng khớp!',
         "../views/edit.php?{$_POST['queryStr']}"  
@@ -340,13 +367,13 @@ function updatePassword()
           where MATK = {$_SESSION['USER']['INFO']['MATK']}
         ";
       if($db->query($updatePassSQL)) 
-        successPrompt(
+        return successPrompt(
           'HOMEPAGE',
           'Cập nhật thành công',
           "../views/user.php"  
         );
       else
-        errorPrompt(
+        return errorPrompt(
           'EDIT',
           'Đã xảy ra lỗi, vui lòng thử lại sau!',
           "../views/editphp?{$_POST['queryStr']}"  
