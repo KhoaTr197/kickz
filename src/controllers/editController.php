@@ -383,7 +383,14 @@ function updatePassword()
 }
 
 function updateAdminInfo()
-{
+{ 
+  if(empty($_POST['username'])){
+    return errorPrompt(
+      'EDIT',
+      'Tên đăng nhập không hợp lệ!',
+      "../admin/edit_admin.php?{$_POST['queryStr']}"
+    );
+  }
   global $db;
   $updateInfoSQL = "
     update QUANTRIVIEN
@@ -425,7 +432,7 @@ function updateAdminPassword()
     $currentAdminInfoSQL = "
         select *
         from QUANTRIVIEN
-        where MAQTV = {$_POST['id']}
+        where MAQTV = {$_POST['id']} and MATKHAU = '".$currentPassword."'
       ";
     $adminInfo = $db->fetch($db->query($currentAdminInfoSQL));
 
