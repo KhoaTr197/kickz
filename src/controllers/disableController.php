@@ -137,7 +137,7 @@ function deleteImage() {
 
   $deleteImageSQL = "
     delete from HINHANH
-    where MAHA = {$_POST['id']} and MASP = {$_POST['productId']}
+    where MAHA = {$_GET['id']} and MASP = {$_GET['productId']}
   ";
 
   if($db->query($deleteImageSQL))
