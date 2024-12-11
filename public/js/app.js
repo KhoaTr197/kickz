@@ -34,7 +34,7 @@ $(document).ready(function() {
     $('.carousel-preview__img')[0].src = `${$(this)[0].src}`;
   })
 
-  $('.size-item').click(function() {
+  $('.size-item:not(.disabled)').click(function() {
     $(this).siblings().removeClass('active');
 
     if($(this).hasClass('active')) {

@@ -696,11 +696,6 @@ textarea.checkout-info__input {
   border: 1px solid #bcbcbc;
 }
 
-.receipt-list__item--disabled > * {
-  user-select: none;
-  filter: opacity(50%);
-}
-
 .receipt-list-item__header,
 .receipt-list-item__customer {
   justify-content: space-between;

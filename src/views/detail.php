@@ -166,8 +166,13 @@ function sizeList_render()
 
   $sizeSQLResult = $db->query($sizeSQL);
   while ($row = $db->fetch($sizeSQLResult)) {
+    $sizeStatus = "";
+
+    if($row['SOLUONG'] == 0)
+      $sizeStatus = "disabled";
+
     $html .= "
-      <li class='size-item btn flex-center' value={$row['MAKC']} >
+      <li class='size-item btn $sizeStatus flex-center' value={$row['MAKC']} >
         <span class='size-item__size '>{$row['COGIAY']}</span>
         <span class='size-item__quantity font-bold'>SL: {$row['SOLUONG']}</span>
       </li>

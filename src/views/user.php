@@ -178,7 +178,7 @@ function receiptList_render($result)
     }
 
     if($row['MATT'] == 10){
-      $receiptStatus = 'receipt-list__item--disabled';
+      $receiptStatus = 'disabled';
     } 
 
     $html .= "
