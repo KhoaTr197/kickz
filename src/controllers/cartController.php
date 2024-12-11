@@ -75,18 +75,30 @@ function addToCart($data)
     $checkResult = $db->query($checkCartSQL);
     
     if($db->rows_count($checkResult) > 0){
-      warningPrompt(
+      return warningPrompt(
         'HOMEPAGE',
-        'Đã tồn tại sản phẩm trong giỏ hàng!', //
+        'Đã tồn tại sản phẩm trong giỏ hàng!', 
         "../views/detail.php?id={$data['id']}"
       );
     }
-    else {
-      $insertCartSQL = "
-      insert into CHITIETGIOHANG (MAGH,MASP,MAKC,SOLUONG,GIA)
-      values ({$_SESSION['CART_ID']}, {$_POST['id']}, {$_POST['size']}, 1, {$_POST['price']})
-      ";
+
+    $checkQuantityOfSize = "
+      select * from KICHCO
+      where MASP = {$_POST['id']} and MAKC = {$_POST['size']}
+    ";
+
+    if($db->fetch($db->query($checkQuantityOfSize))['SOLUONG']==0){
+      return errorPrompt(
+        'HOMEPAGE',
+        'Đã hết hàng, vui lòng chọn kích cỡ khác!', 
+        "../views/detail.php?id={$data['id']}"
+      );
     }
+      
+    $insertCartSQL = "
+    insert into CHITIETGIOHANG (MAGH,MASP,MAKC,SOLUONG,GIA)
+    values ({$_SESSION['CART_ID']}, {$_POST['id']}, {$_POST['size']}, 1, {$_POST['price']})
+    ";
 
     if ($db->query($insertCartSQL))
       successPrompt(

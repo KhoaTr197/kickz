@@ -202,7 +202,7 @@ function getForm() {
           <input class='form-input' type='number' placeholder='Mã Sản Phẩm' name='id' value={$sizeData['MAKC']} hidden/>
           <input class='form-input' type='number' placeholder='Mã Sản Phẩm' name='productId' value={$sizeData['MASP']} readonly/>
           <input class='form-input' type='number' placeholder='Kích Cỡ' name='size' min=34 max=43 value={$sizeData['COGIAY']} readonly/>
-          <input class='form-input' type='number' placeholder='Số Lượng' name='quantity' value={$sizeData['SOLUONG']} required/>
+          <input class='form-input' type='number' placeholder='Số Lượng' name='quantity' min=0 value={$sizeData['SOLUONG']} required/>
         </div>
       ";
       break;
