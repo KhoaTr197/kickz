@@ -61,8 +61,21 @@ function addToCart($data)
 
   global $db;
 
+  $checkInOperation = "
+    select * from SANPHAM
+    where MASP = {$_POST['id']} and TRANGTHAI = 1
+  ";
+
+  if(empty($db->fetch($db->query($checkInOperation)))){
+    return errorPrompt(
+      'HOMEPAGE',
+      'Sản phẩm đã ngừng kinh doanh, vui lòng chọn sản phẩm khác!', 
+      "../views/detail.php?id={$data['id']}"
+    );
+  }
+
   if (empty($data['size']))
-    errorPrompt(
+    return errorPrompt(
       'HOMEPAGE',
       'Vui lòng chọn kích cỡ!',
       "../views/detail.php?id={$data['id']}"
