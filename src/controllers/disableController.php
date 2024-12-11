@@ -113,7 +113,8 @@ function deleteSize() {
   global $db;
 
   $deleteSizeSQL = "
-    delete from KICHCO
+    update KICHCO
+    set SOLUONG = 0
     where MASP = {$_GET['productId']} and MAKC = {$_GET['id']}
   ";
 
