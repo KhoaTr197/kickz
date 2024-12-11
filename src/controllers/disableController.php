@@ -86,11 +86,16 @@ function deleteCategory() {
   global $db;
 
   $deleteCategorySQL = "
-    delete from DANHMUC
-    where MADM = {$_GET['id']}
+    delete from PHANLOAI
+    where MADM = {$_GET['id']} ;
   ";
 
-  if($db->query($deleteCategorySQL))
+  $deleteCategorySQL .= "
+    delete from DANHMUC
+    where MADM = {$_GET['id']} ;
+  ";
+
+  if($db->multi_query($deleteCategorySQL))
     successPrompt(
       'ADMIN_HOMEPAGE',
       'Xóa thành công!',
