@@ -357,6 +357,16 @@ function userPanelHeader_render($mode)
           $searchBar
         </div>
       ";
+    case "image":
+      return "
+        <div class='user-panel__header flex flex-center'>
+          $addBtn
+          $searchBar
+        </div>
+        <div class='user-panel__header-reminder'>
+          *Những Hình Ảnh có Mã Hình Ảnh là 1 sẽ được làm Thumbnail cho thẻ Sản Phẩm
+        </div>
+      ";
     default:
       return "
         <div class='user-panel__header flex flex-center'>    
@@ -401,6 +411,25 @@ function tableActionBtn_render($mode, $queryStr, $row) {
           </td>
         ";
       break;
+    case 'image':
+        if($row['MAHA'] == 1)
+          $html .= "
+          <td class='table-action-wrap'>
+            <div class='table-action flex flex-center'>
+              $editBtn
+            </div>
+          </td>
+          ";
+        else
+          $html .= "
+            <td class='table-action-wrap'>
+              <div class='table-action flex flex-center'>
+                $editBtn
+                $disableBtn
+              </div>
+            </td>
+          ";
+        break;
     case 'receipt': {
       switch ($row['MATT']) {
         case 1:

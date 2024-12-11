@@ -821,6 +821,7 @@ footer {
 }
 
 #admin .user-panel__header {
+  flex-wrap: wrap;
   position: sticky;
   z-index: 997;
   top: 0;
@@ -828,6 +829,11 @@ footer {
   background-color: var(--primaryColor);
   padding: 1rem;
   justify-content: space-between;
+}
+
+#admin .user-panel__header-reminder {
+  padding: 1rem;
+  flex-basis: 100%;
 }
 
 #admin .user-panel__content {
