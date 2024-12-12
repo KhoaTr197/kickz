@@ -16,16 +16,16 @@
   /* CSS VARIABLE */
   --headerHeight: 100px;
 
-  --primaryColor: #FFFFFF;
+  --primaryColor: #ffffff;
   --secondaryColor: #000000;
-  --accentColor: #D2FF50;
+  --accentColor: #d2ff50;
   --footerBgColor: #242424;
   --successColor: #28a745;
   --warningColor: #ffc107;
   --errorColor: #ec4949;
 
   --primaryText: #000000;
-  --secondaryText: #BCBCBC;
+  --secondaryText: #bcbcbc;
   --accentText: #ffffff;
 }
 
@@ -36,7 +36,7 @@
 }
 
 button,
-input {  
+input {
   font-family: inherit;
   background: none;
   border: none;
@@ -47,8 +47,8 @@ button {
   cursor: pointer;
 }
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
 }
 
@@ -176,8 +176,8 @@ h2 {
   width: fit-content;
   padding: 16px;
   border-radius: 1rem;
-  border: 1px solid #BCBCBC;
-  background: #FFF;
+  border: 1px solid #bcbcbc;
+  background: #fff;
 }
 
 .form > * {
@@ -201,7 +201,7 @@ h2 {
   height: 48px;
   padding: 0.5rem;
   border-radius: 0.5rem;
-  border: 1px solid #BCBCBC;
+  border: 1px solid #bcbcbc;
   font-size: 1rem;
 }
 
@@ -212,7 +212,7 @@ textarea.form-input {
 .form-input::placeholder {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #BCBCBC;
+  color: #bcbcbc;
 }
 
 .form-error {
@@ -220,7 +220,7 @@ textarea.form-input {
   font-size: 0.875rem;
   min-height: 64px;
   padding: 8px 16px;
-  background: #FFF3F3;
+  background: #fff3f3;
   border: 1px solid var(--errorColor);
 }
 
@@ -273,7 +273,7 @@ textarea.form-input {
   width: 1.5rem;
   background-color: #fff;
   border-radius: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.50);
+  border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
 .checkbox input:checked ~ .checkmark {

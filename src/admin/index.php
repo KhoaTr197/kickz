@@ -484,6 +484,15 @@ function tableActionBtn_render($mode, $queryStr, $row) {
         </td>
       ";
       break;
+    case 'manufacturer':
+      $html .= "
+        <td class='table-action-wrap'>
+          <div class='table-action flex flex-center'>
+            $editBtn
+          </div>
+        </td>
+      ";
+      break;
     default:
       $html .= "
         <td class='table-action-wrap'>

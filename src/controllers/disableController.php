@@ -10,9 +10,6 @@ switch ($_GET['mode']) {
   case 'product':
     disableProduct();
     break;
-  case 'manufacturer':
-    deleteManufacturer();
-    break;
   case 'category':
     deleteCategory();
     break;
@@ -50,28 +47,6 @@ function disableProduct() {
     successPrompt(
       'ADMIN_HOMEPAGE',
       'Vô hiệu hóa thành công!',
-      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
-    );
-  else
-    errorPrompt(
-      'ADMIN_HOMEPAGE',
-      'Đã xảy ra lỗi, vui lòng thử lại sau!',
-      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
-    );
-}
-
-function deleteManufacturer() {
-  global $db;
-
-  $deleteManufacturerSQL = "
-    delete from HANGSANXUAT
-    where MAHSX = {$_GET['id']}
-  ";
-
-  if($db->query($deleteManufacturerSQL))
-    successPrompt(
-      'ADMIN_HOMEPAGE',
-      'Xóa thành công!',
       "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
     );
   else
