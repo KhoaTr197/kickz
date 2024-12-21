@@ -6,6 +6,7 @@ session_start();
 
 $db = new Database();
 
+//Xu ly tac vu theo mode
 switch ($_GET['mode']) {
   case 'product':
     enableProduct();
@@ -22,6 +23,7 @@ switch ($_GET['mode']) {
     break;
 }
 
+//Kich hoat San Pham
 function enableProduct() {
   global $db;
 
@@ -45,6 +47,7 @@ function enableProduct() {
     );
 }
 
+//Kich hoat Nguoi Dung
 function enableUser() {
   global $db;
   

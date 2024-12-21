@@ -44,6 +44,13 @@ if (!empty($_SESSION) && !empty($_SESSION['LOGIN']['PROMPT']['MSG'])) {
               <div class='form-control'>
                 <input class='form-input' type='text' placeholder='Tên Tài Khoản' name='username' />
                 <input class='form-input' type='password' placeholder='Mật Khẩu' name='password' />
+                <label class='checkbox'>
+                <div class='checkbox-wrap'>
+                  <input type='checkbox' name="isremember" value='1'>
+                  <span class='checkmark'></span>
+                </div>
+                <span class='checkbox-label'>Ghi nhớ lần đăng nhập này</span>
+                </label>
               </div>
             </div>
             <button class='form-submit-btn btn btn-primary' type='submit'>Đăng Nhập</button>

@@ -5,6 +5,7 @@ require_once("promptController.php");
 require_once("../models/Database.php");
 session_start();
 
+//Kiem tra request method
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
   errorPrompt(
     'UPLOAD',
@@ -15,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 
 $db = new Database();
 
+//Xu ly tac vu theo mode
 switch ($_POST['mode']) {
   case 'product':
     if(!isCSV($_FILES['data']['name'])) {
@@ -69,6 +71,7 @@ switch ($_POST['mode']) {
     break;
 }
 
+//Them San Pham
 function insertProduct($data, $ref)
 {
   global $db;
@@ -92,6 +95,7 @@ function insertProduct($data, $ref)
     );
 }
 
+//Them Danh Muc
 function insertCategorize($data, $ref) {
   global $db;
 
@@ -111,6 +115,7 @@ function insertCategorize($data, $ref) {
     );
 }
 
+//Them Hang
 function insertManufacturer($data, $ref)
 {
   global $db;
@@ -125,6 +130,7 @@ function insertManufacturer($data, $ref)
     );
 }
 
+//Them Kich Co
 function insertSize($data, $ref)
 {
   global $db;
@@ -145,6 +151,7 @@ function insertSize($data, $ref)
     );
 }
 
+//Them Danh Muc
 function insertCategory($data, $ref)
 {
   global $db;
@@ -165,6 +172,7 @@ function insertCategory($data, $ref)
     );
 }
 
+//Them Hinh Anh
 function insertImage($arrayImg)
 {
   global $db;
@@ -234,6 +242,7 @@ function insertImage($arrayImg)
   }
 }
 
+//Cap nhat HOADON
 function updateReceipt($data, $ref) {
   global $db;
 

@@ -6,11 +6,13 @@ require_once("imageController.php");
 require_once("../utils/utils.php");
 session_start();
 
+//Kiem tra request method
 if ($_SERVER['REQUEST_METHOD'] != 'POST')
   header("location: ../views/edit.php");
 
 $db = new Database();
 
+//Xu ly tac vu theo mode
 switch ($_POST['mode']) {
   case 'info':
     updateInfo();
@@ -49,6 +51,7 @@ switch ($_POST['mode']) {
     break;
 }
 
+//Cap nhat San Pham
 function updateProduct() {
   global $db;
   
@@ -127,6 +130,7 @@ function updateProduct() {
   );
 }
 
+//Cap nhat Hang
 function updateManufacturer() {
   global $db;
 
@@ -150,6 +154,7 @@ function updateManufacturer() {
     );
 }
 
+//Cap nhat Danh Muc
 function updateCategory() {
   global $db;
 
@@ -173,6 +178,7 @@ function updateCategory() {
     );
 }
 
+//Cap nhat Kich Co
 function updateSize() {
   global $db;
 
@@ -196,6 +202,7 @@ function updateSize() {
     );
 }
 
+//Cap nhat Hinh Anh
 function updateImage() {
   global $db;
 
@@ -254,6 +261,7 @@ function updateImage() {
   }
 }
 
+//Cap nhat Thong Tin Nguoi Dung
 function updateInfo()
 {
   global $db;
@@ -319,6 +327,7 @@ function updateInfo()
     );
 }
 
+//Cap nhat mat khau
 function updatePassword()
 {
   global $db;
@@ -382,6 +391,7 @@ function updatePassword()
   }
 }
 
+//Cap nhat thong tin Admin
 function updateAdminInfo()
 { 
   if(empty($_POST['username'])){
@@ -414,6 +424,7 @@ function updateAdminInfo()
     );
 }
 
+//Cap nhat mat khau Admin
 function updateAdminPassword()
 {
   global $db;

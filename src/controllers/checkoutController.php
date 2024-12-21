@@ -4,6 +4,7 @@ require_once("promptController.php");
 require_once("formValidation.php");
 session_start();
 
+//Kiem tra thong tin Nguoi Mua
 if(empty($_POST['name'])){
   return errorPrompt(
     'HOMEPAGE',
@@ -35,6 +36,7 @@ else if(empty($_POST['address'])){
 
 $db = new Database;
 
+//Kiem tra GIOHANG
 $searchCartSQL = "
   select *
   from CHITIETGIOHANG
@@ -49,6 +51,7 @@ $insertReceiptDetailSQL = "";
 $searchCartResult = $db->query($searchCartSQL);
 $totalPrice = 0;
 
+//Tao HOADON
 while ($data = $db->fetch($searchCartResult)) {
   $insertReceiptDetailSQL .= "
     insert into CHITIETHOADON (MASP,MAHD,MAKC,SOLUONG,GIA)

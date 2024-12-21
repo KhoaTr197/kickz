@@ -5,6 +5,7 @@ require_once("../models/Database.php");
 
 session_start();
 
+//Kiem tra request method
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
   errorPrompt(
     'UPLOAD',
@@ -15,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 
 $db = new Database();
 
+//Xu ly tac vu theo mode
 switch ($_POST['mode']) {
   case 'product':
     insertProduct();
@@ -41,7 +43,7 @@ switch ($_POST['mode']) {
     break;
 }
 
-
+//Them San Pham
 function insertProduct()
 {
   global $db;
@@ -82,6 +84,7 @@ function insertProduct()
   );
 }
 
+//Them Hang
 function insertManufacturer()
 {
   global $db;
@@ -96,6 +99,7 @@ function insertManufacturer()
     );
 }
 
+//Them Kich Co
 function insertSize()
 {
   global $db;
@@ -116,6 +120,7 @@ function insertSize()
     );
 }
 
+//Them Danh Muc
 function insertCategory()
 {
   global $db;
@@ -136,6 +141,7 @@ function insertCategory()
     );
 }
 
+//Them Hinh Anh
 function insertImage()
 {
   global $db;

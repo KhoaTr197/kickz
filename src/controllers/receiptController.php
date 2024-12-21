@@ -5,6 +5,7 @@ session_start();
 
 $db = new Database();
 
+//Xu ly tac vu theo trang thai
 switch($_GET['currStatus']) {
   case 1:
     approveReceipt();
@@ -22,6 +23,7 @@ switch($_GET['currStatus']) {
     break;
 }
 
+//Xac nhan Hoa Don
 function approveReceipt() {
   global $db;
 
@@ -44,6 +46,7 @@ function approveReceipt() {
     );
 }
 
+//Chuan bi San Pham, giao
 function prepareProduct() {
   global $db;
 
@@ -73,6 +76,7 @@ function prepareProduct() {
     );
 }
 
+//Tra hang
 function sendBack() {
   global $db;
 
@@ -102,6 +106,7 @@ function sendBack() {
     );
 }
 
+//Giao thanh cong
 function deliveryDone() {
   global $db;
 
