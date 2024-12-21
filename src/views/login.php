@@ -5,6 +5,7 @@ session_start();
 $header_html = header_render("login");
 $error = '';
 
+//Tao code HTML khi co loi
 if (!empty($_SESSION) && !empty($_SESSION['LOGIN']['PROMPT']['MSG'])) {
   $error = "<div class='form-error flex rounded'>" . $_SESSION['LOGIN']['PROMPT']['MSG'] . "</div>";
 }

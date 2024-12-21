@@ -3,6 +3,7 @@ require_once("../models/Database.php");
 include_once("components/components.php");
 session_start();
 
+//Tao code HTML nhung thanh phan
 $header_html = header_render("breadcrumb", false, 'browse.php');
 $footer_html = footer_render();
 
@@ -47,6 +48,7 @@ $cart_html = cart_render();
 </html>
 
 <?php
+//Tao code HTML Gio Hang
 function cart_render()
 {
   global $db;
@@ -132,6 +134,7 @@ function cart_render()
       </div>
     ";
 }
+//Tao code HTML nhung the Input de nhap thong tin Nguoi Mua
 function getInfoInputs()
 {
   if (isset($_SESSION['USER']))

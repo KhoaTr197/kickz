@@ -4,10 +4,12 @@ require_once("../utils/utils.php");
 include_once("components/components.php");
 session_start();
 
+//Tao code HTML nhung thanh phan
 $header_html = header_render("breadcrumb");
 $footer_html = footer_render();
 
 $db = new Database();
+//Lay du lieu HOADON
 $sql = "
     select *
     from HOADON
@@ -111,6 +113,7 @@ $receiptList_html = receiptList_render($result);
 </html>
 
 <?php
+//Tao code HTML cho DS HOADON
 function receiptList_render($result)
 {
   global $db;
@@ -124,6 +127,7 @@ function receiptList_render($result)
   $html = "<ul class='receipt__list'>";
 
   while ($row = $db->fetch($result)) {
+    //Lay CT noi dung HOADON
     $receiptDetailData = $db->query("
       select CHITIETHOADON.*, SANPHAM.TENSP, KICHCO.MAKC, KICHCO.COGIAY, HINHANH.FILE
       from CHITIETHOADON
@@ -136,6 +140,7 @@ function receiptList_render($result)
       where MAHD = {$row['MAHD']} and MAHA = 1
     ");
 
+    //In noi dung HOADON
     $receiptDetailList_html = "<ul class='receipt-list-item__detail-list'>";
 
     while ($detailRow = $db->fetch($receiptDetailData)) {
@@ -181,6 +186,7 @@ function receiptList_render($result)
       $receiptStatus = 'disabled';
     } 
 
+    //Chen noi dung Nguoi Mua
     $html .= "
       <li class='receipt-list__item $receiptStatus'>
         <div class='receipt-list-item__header flex'>
