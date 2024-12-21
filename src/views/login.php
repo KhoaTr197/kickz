@@ -1,9 +1,7 @@
 <?php
 include_once("components/components.php");
-include_once("../models/Database.php");
-session_start();
 
-$db = new Database();
+session_start();
 
 $header_html = header_render("login");
 $error = '';
