@@ -1,4 +1,5 @@
 <?php
+//Tao code thanh lọc (filter panel)
 function filterPanel_render(
   $filterListData=[],
   $mode='button',
@@ -15,6 +16,7 @@ function filterPanel_render(
   }
 
   switch($mode) {
+    //Cho Admin
     case 'button': {
       $filterItems="";
       
@@ -38,6 +40,7 @@ function filterPanel_render(
       ";
       break;
     }
+    //Cho User
     case 'checkbox': {
       $filterItems="";
       

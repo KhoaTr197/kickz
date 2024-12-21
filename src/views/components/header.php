@@ -1,8 +1,9 @@
 <?php
+//Tao code HTML Header
 function header_render($mode, $hasLogon = false, $prev_link = "homepage.php")
 {
-  
   switch ($mode) {
+    //Che do Navbar
     case 'navbar':
       $manufacturerList_html = categoryList_render('manufacturer');
       $categoryList_html = categoryList_render('category');
@@ -56,6 +57,7 @@ function header_render($mode, $hasLogon = false, $prev_link = "homepage.php")
         ($hasLogon ? $userBtn : $loginBtn)
         . "</div>
           </header>";
+    //Che do breadcrumb
     case 'breadcrumb':
       return "
           <header class='header-container'>
@@ -66,6 +68,7 @@ function header_render($mode, $hasLogon = false, $prev_link = "homepage.php")
             </div>
           </header>
         ";
+    //Che do Login
     case 'login':
       return "
         <header class='header-container'>
@@ -78,6 +81,7 @@ function header_render($mode, $hasLogon = false, $prev_link = "homepage.php")
       ";
   }
 }
+//Tao code HTML DS Danh Muc
 function categoryList_render($mode) {
   $newQueryStr="";
   $html = "";
