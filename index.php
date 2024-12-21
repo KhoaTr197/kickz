@@ -5,41 +5,20 @@
   $db = new Database();
 
   //Kiem tra $_COOKIE va lay du lieu cho $_SESSION
-  if(isset($_COOKIE['kickz_session_id'])) {
-    $getUserSQL = "
-      select *
-      from NGUOIDUNG inner join SESSION
-      on NGUOIDUNG.MATK = SESSION.MATK
-      where MASS = '{$_COOKIE['kickz_session_id']}'
+  if(isset($_COOKIE['REMEMBER'])){
+    $getUserDataSQL = "
+      select * from NGUOIDUNG 
+      where MAXACTHUC = '".$_COOKIE['REMEMBER']."'
     ";
-
-    $userData = $db->fetch($db->query($getUserSQL));
-
+    $userData = $db->fetch($db->query($getUserDataSQL));
     $_SESSION['USER']['HAS_LOGON'] = true;
     $_SESSION['USER']['INFO'] = $userData;
-
-    $checkCartSQL = "
-      select *
+    $selectCartSQL = "
+      select MAGH
       from GIOHANG
       where MATK = {$userData['MATK']}
     ";
-    $cartResult = $db->rows_count($db->query($checkCartSQL));
-
-    if($cartResult == 0) {
-      $createCartSQL = "
-        insert into GIOHANG (MAGH, MATK)
-        values (NULL, {$userData['MATK']})
-      ";
-      $db->query($createCartSQL);
-      $_SESSION['CART_ID']=$db->get_last_id();
-    } else {
-      $selectCartSQL = "
-        select MAGH
-        from GIOHANG
-        where MATK = {$userData['MATK']}
-      ";
-      $_SESSION['CART_ID']=$db->fetch($db->query($selectCartSQL))['MAGH'];
-    }
+    $_SESSION['CART_ID']=$db->fetch($db->query($selectCartSQL))['MAGH'];
   }
 
   //Truy van 1 so du lieu cho Danh Muc cua Header
