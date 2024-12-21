@@ -3,6 +3,7 @@
   ini_set('max_file_uploads', '200');
   session_start();
 
+  //Kiem tra mode va Lay code HTML Edit Form
   if(!isset($_GET['mode']) || !getForm())
     header("location: index.php?mode=admin-info");
 
@@ -13,6 +14,7 @@
 
   $error='';
 
+  //Tao code HTML khi co loi
   if(!empty($_SESSION) && !empty($_SESSION['UPLOAD']['PROMPT'])) {
     $error="<div class='form-error flex rounded'>".$_SESSION['UPLOAD']['PROMPT']."</div>";
   }
@@ -60,7 +62,7 @@
 </html>
 
 <?php
-
+//Lay Form theo mode
 function getForm() {
   global $formTitle, $formInputs;
 
@@ -115,6 +117,15 @@ function getForm() {
           <div class='form-reminder'>Cần đặt tền file theo đúng định dạng:</div>
           <div class='form-reminder'>+ Sản Phẩm: product-[MASP]-[BEN].jpg</div>
           <input class='form-input flex-center' type='file' name='image[]' multiple>
+        </div>
+      ";
+      break;
+    case 'receipt':
+      $formTitle='Cập nhật Danh Sách Đơn Hàng Đã Giao';
+      $formInputs = "
+        <div class='form-control'>
+          <div class='form-reminder'>Tải file chứa Danh Sách Đơn Hàng Đã Giao (Chỉ hỗ trợ file CSV)</div>
+          <input class='form-input flex-center' type='file' name='data'>
         </div>
       ";
       break;

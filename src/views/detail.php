@@ -1,13 +1,16 @@
 <?php
 require_once("../models/Database.php");
+require_once("../utils/utils.php");
 include_once("components/components.php");
 session_start();
 
+//Kiem tra id cua giay
 if(!isset($_GET['id']))
   header("location: browse.php");
 
 $db = new Database();
 
+//Tao code HTML nhung thanh phan
 $header_html = header_render("breadcrumb", false, "{$_SESSION['URL_BACKUP']}");
 $footer_html = footer_render();
 
@@ -18,9 +21,9 @@ $ratings_html = rating_render();
 
 $oldPrice = $productData['KHUYENMAI'] != 0 ? formatPrice($productData['GIA']) : '';
 
-$newPrice = formatPrice($productData['GIA'] - $productData['KHUYENMAI']);
+$newPrice = formatPrice($productData['GIA'] * (1 - $productData['KHUYENMAI']/100));
 
-$newPriceNoFormat = $productData['GIA'] - $productData['KHUYENMAI'];
+$newPriceNoFormat = $productData['GIA'] * (1 - $productData['KHUYENMAI']/100);
 
 ?>
 
@@ -43,11 +46,12 @@ $newPriceNoFormat = $productData['GIA'] - $productData['KHUYENMAI'];
 
 <body>
   <div id="app" class="grid">
-    <?php echo $header_html;?>
+    <?php echo notify('HOMEPAGE'); ?>
+    <?php echo $header_html; ?>
     <main class='main'>
       <div class='wide'>
         <?php
-          echo "
+        echo "
             <div class='product-detail row'>
               <div class='col c-7'>
                 <div class='detail-carousel'>
@@ -93,7 +97,7 @@ $newPriceNoFormat = $productData['GIA'] - $productData['KHUYENMAI'];
                   <div class='detail-description__title'>Mô Tả Chi Tiết</div>
                   <div class='detail-description__info'>
                     <div class='brand'>Hãng: {$productData['TENHSX']}</div>
-                    <div class='date'>Ngày Ra Mắt: {$productData['NGSX']}</div>
+                    <div class='date'>Ngày Ra Mắt: ".formatDate($productData['NGSX'])."</div>
                   </div>
                   <div class='detail-description__description font-normal'>{$productData['MOTA']}</div>
                 </div>
@@ -102,15 +106,17 @@ $newPriceNoFormat = $productData['GIA'] - $productData['KHUYENMAI'];
           ";
         ?>
       </div>
-  </div>
   </main>
-  <?php echo $footer_html;?>
+  <?php echo $footer_html; ?>
   </div>
 </body>
+
 </html>
 
 <?php
-function getProductData() {
+//Lay du lieu Giay
+function getProductData()
+{
   global $db;
 
   $productSQL = "
@@ -122,7 +128,9 @@ function getProductData() {
 
   return $db->fetch($db->query($productSQL));
 }
-function carousel_render() {
+//Tao code HTML Carousel Hinh Anh Giay
+function carousel_render()
+{
   global $db;
   $imageSQL = "
     select *
@@ -133,16 +141,15 @@ function carousel_render() {
   $imageSQLResult = $db->query($imageSQL);
   $previewImage = "";
   $images = "";
-  while($row = $db->fetch($imageSQLResult)) {
+  while ($row = $db->fetch($imageSQLResult)) {
     $imageData = base64_encode($row['FILE']);
 
-    if($row['MAHA'] == 1) {
+    if ($row['MAHA'] == 1) {
       $previewImage = "<img class='carousel-preview__img' id='carousel-{$row['MAHA']}' src='data:image/jpeg;base64,$imageData'>";
       $images .= "<img class='carousel-gallery__img active' id='carousel-{$row['MAHA']}' src='data:image/jpeg;base64,$imageData'>";
     } else {
       $images .= "<img class='carousel-gallery__img' id='carousel-{$row['MAHA']}' src='data:image/jpeg;base64,$imageData'>";
     }
-
   }
 
   return [
@@ -150,7 +157,9 @@ function carousel_render() {
     'images' => $images
   ];
 }
-function sizeList_render() {
+//Tao code HTML DS Kich Co
+function sizeList_render()
+{
   global $db;
 
   $sizeSQL = "
@@ -161,9 +170,14 @@ function sizeList_render() {
   $html = "";
 
   $sizeSQLResult = $db->query($sizeSQL);
-  while($row = $db->fetch($sizeSQLResult)) {
+  while ($row = $db->fetch($sizeSQLResult)) {
+    $sizeStatus = "";
+
+    if($row['SOLUONG'] == 0)
+      $sizeStatus = "disabled";
+
     $html .= "
-      <li class='size-item btn flex-center' value={$row['MAKC']} >
+      <li class='size-item btn $sizeStatus flex-center' value={$row['MAKC']} >
         <span class='size-item__size '>{$row['COGIAY']}</span>
         <span class='size-item__quantity font-bold'>SL: {$row['SOLUONG']}</span>
       </li>
@@ -172,12 +186,14 @@ function sizeList_render() {
 
   return $html;
 }
-function rating_render() {
+//Tao code HTML Danh Gia
+function rating_render()
+{
   global $productData;
   $html = "";
 
-  for($i=0; $i < 5; $i++) {
-    if($i < $productData['SOSAO'])
+  for ($i = 0; $i < 5; $i++) {
+    if ($i < $productData['SOSAO'])
       $html .= "<img src='../../public/img/star_icon.svg'>";
     else
       $html .= "<img src='../../public/img/faded-star_icon.svg'>";

@@ -1,10 +1,42 @@
 <?php
 require_once("../models/Database.php");
 require_once("promptController.php");
+require_once("formValidation.php");
 session_start();
+
+//Kiem tra thong tin Nguoi Mua
+if(empty($_POST['name'])){
+  return errorPrompt(
+    'HOMEPAGE',
+    'Họ tên không hợp lệ!',
+    "../views/cart.php"
+  );
+}
+else if(!phoneNumberValidation($_POST['phone'])){
+  return errorPrompt(
+    'HOMEPAGE',
+    'Số điện thoại không hợp lệ!',
+    "../views/cart.php"
+  );
+}
+else if(!emailValidation($_POST['email'])){
+  return errorPrompt(
+    'HOMEPAGE',
+    'Email không hợp lệ!',
+    "../views/cart.php"
+  );
+}
+else if(empty($_POST['address'])){
+  return errorPrompt(
+    'HOMEPAGE',
+    'Địa chỉ không hợp lệ!',
+    "../views/cart.php"
+  );
+}
 
 $db = new Database;
 
+//Kiem tra GIOHANG
 $searchCartSQL = "
   select *
   from CHITIETGIOHANG
@@ -19,6 +51,7 @@ $insertReceiptDetailSQL = "";
 $searchCartResult = $db->query($searchCartSQL);
 $totalPrice = 0;
 
+//Tao HOADON
 while ($data = $db->fetch($searchCartResult)) {
   $insertReceiptDetailSQL .= "
     insert into CHITIETHOADON (MASP,MAHD,MAKC,SOLUONG,GIA)
@@ -40,7 +73,6 @@ if($db->query($createReceiptSQL)) {
   $insertReceiptDetailSQL .= $clearCartSQL;
 
   if($db->multi_query($insertReceiptDetailSQL)) {
-    $db->multi_query($clearCartSQL);
     successPrompt(
       'HOMEPAGE',
       'Mua hàng thành công!',

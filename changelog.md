@@ -1,13 +1,7 @@
-- còn thiếu liệt kê đơn hàng (giao diện) trong cửa sổ user
+- còn thiếu phần xử lí tìm trạng thái sản phẩm (do lưu csdl bằng bit ko phải chuỗi) nên tìm kiếm chuỗi ko ra kq đúng
 
 - test & tìm bug các chức năng trong admin
 
-- thiếu phần checkout
-
-- thiếu phần xử lý danh sách danh mục
-
-- thiêu phần xử lý filter panel
-
-- thiếu phần vô hiệu hóa(xóa) ở trang Admin
-
 - còn thiếu phần URL ở footer
+
+- nên tối ưu lại phần tìm kiếm ở admin

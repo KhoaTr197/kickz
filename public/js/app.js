@@ -3,6 +3,14 @@ $(document).ready(function() {
     $("#menu-modal").toggle();
   })
 
+  setTimeout(function() {
+    $(".notification").animate({
+      top: '-5rem'
+    }, 500, function() {
+      $('.notification').remove();
+    });
+  }, 2000);
+
   $('.filter-list__item input').click(function(e) {
     e.stopPropagation();
 
@@ -11,7 +19,6 @@ $(document).ready(function() {
 
     if(url.searchParams.has(queryStr[0])) {
       url.searchParams.delete(queryStr[0]);
-      console.log(url.toString());
       if($(this)[0].checked)
         url.searchParams.append(queryStr[0], queryStr[1]);
     } else {
@@ -27,7 +34,7 @@ $(document).ready(function() {
     $('.carousel-preview__img')[0].src = `${$(this)[0].src}`;
   })
 
-  $('.size-item').click(function() {
+  $('.size-item:not(.disabled)').click(function() {
     $(this).siblings().removeClass('active');
 
     if($(this).hasClass('active')) {
@@ -47,6 +54,30 @@ $(document).ready(function() {
 
     $(`.user-panel__item`).removeClass('active');
     $(`#${sidebarItem[0]}_modal`).addClass('active');
+  })
+
+  $('.table-action__disable-btn').click(function(event) {
+    event.preventDefault();
+
+    if (confirm("Bạn có chắc chắn muốn tiếp tục không? (Đối với Sản Phẩm, Người Dùng sẽ chỉ vô hiệu hóa)")) {
+      window.location.href = $(this).attr('href');
+    }
+  })
+
+  $('.table-action--receipt a').click(function(event) {
+    event.preventDefault();
+
+    if (confirm("Bạn có chắc chắn muốn tiếp tục không")) {
+      window.location.href = $(this).attr('href');
+    }
+  })
+
+  $('.receipt-list-item__cancel-btn').click(function(event) {
+    event.preventDefault();
+
+    if (confirm("Bạn có chắc chắn muốn hủy đơn hàng không")) {
+      window.location.href = $(this).attr('href');
+    }
   })
 
   $('.gallery-list__item').hover(

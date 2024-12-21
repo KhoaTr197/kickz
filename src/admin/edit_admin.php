@@ -2,6 +2,8 @@
   require_once("../models/Database.php");
   include_once("../views/components/components.php");
   session_start();
+
+  //Kiem tra mode va Lay code HTML Edit Form
   if(!isset($_GET['mode']) || !getForm())
     header("location: index.php?mode=admin-info");
 
@@ -16,8 +18,9 @@
  
   $error='';
 
-  if(!empty($_SESSION) && !empty($_SESSION['EDIT']['PROMPT'])) {
-    $error="<div class='form-error flex rounded'>".$_SESSION['EDIT']['PROMPT']."</div>";
+  //Tao code HTML khi co loi
+  if(!empty($_SESSION) && !empty($_SESSION['EDIT']['PROMPT']['MSG'])) {
+    $error="<div class='form-error flex rounded'>".$_SESSION['EDIT']['PROMPT']['MSG']."</div>";
   }
 ?>
 
@@ -64,6 +67,7 @@
 </html>
 
 <?php
+//Lay Form theo mode
 function getForm() {
   global $formTitle, $formInputs;
 
@@ -139,8 +143,8 @@ function getForm() {
           <h3 class='form-title font-medium'>Thông Tin Sản Phẩm</h3>
           <input class='form-input' name='id' value='{$productData['MASP']}' hidden/>
           <input class='form-input' type='text' placeholder='Tên Sản Phẩm' name='name' value='{$productData['TENSP']}' required/>
-          <input class='form-input' type='number' placeholder='Giá Tiền' name='price' value='{$productData['GIA']}' required/>
-          <input class='form-input' type='number' placeholder='Khuyến Mãi' name='discount' value='{$productData['KHUYENMAI']}' />
+          <input class='form-input' type='number' min=0 placeholder='Giá Tiền' name='price' value='{$productData['GIA']}'/>
+          <input class='form-input' type='number' min=0 max=100 placeholder='Khuyến Mãi' name='discount' value='{$productData['KHUYENMAI']}'/>
           <textarea class='form-input' type='text' placeholder='Mô Tả Chi Tiết' name='description'>{$productData['MOTA']}</textarea>
           <input class='form-input' type='number' min='0' max='5' placeholder='Đánh Giá' name='rating' value='{$productData['SOSAO']}'/>
           <input class='form-input' type='date' placeholder='Ngày Sản Xuất' name='date' value='{$productData['NGSX']}'/>
@@ -201,7 +205,7 @@ function getForm() {
           <input class='form-input' type='number' placeholder='Mã Sản Phẩm' name='id' value={$sizeData['MAKC']} hidden/>
           <input class='form-input' type='number' placeholder='Mã Sản Phẩm' name='productId' value={$sizeData['MASP']} readonly/>
           <input class='form-input' type='number' placeholder='Kích Cỡ' name='size' min=34 max=43 value={$sizeData['COGIAY']} readonly/>
-          <input class='form-input' type='number' placeholder='Số Lượng' name='quantity' value={$sizeData['SOLUONG']} required/>
+          <input class='form-input' type='number' placeholder='Số Lượng' name='quantity' min=0 value={$sizeData['SOLUONG']} required/>
         </div>
       ";
       break;

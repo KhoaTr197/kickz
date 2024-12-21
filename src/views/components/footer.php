@@ -1,6 +1,8 @@
 <?php
-    function footer_render() {
-        return "
+//tạo code footer
+function footer_render()
+{
+  return "
             <footer class='footer'>
               <div class='main-footer'>
                 <div class='wide'>
@@ -14,17 +16,17 @@
                             <div class='footer-link flex'>
                                 <div class='footer-link__icon'>
                                     <a href='#' target='_blank'>
-                                        <img src='../../public/img/facebook_icon.svg' alt='Verification Icon'>
+                                        <img src='../../public/img/facebook_icon.svg'>
                                     </a>
                                 </div>
                                 <div class='footer-link__icon'>
                                     <a href='#' target='_blank'>
-                                        <img src='../../public/img/zalo_icon.svg' alt='Verification Icon'>
+                                        <img src='../../public/img/zalo_icon.svg'>
                                     </a>
                                 </div>
                                 <div class='footer-link__icon'>
-                                    <a href='#' target='_blank'>
-                                        <img src='../../public/img/mail_icon.svg' alt='Verification Icon'>
+                                    <a href='mailto:0306231298@caothang.edu.vn' target='_blank'>
+                                        <img src='../../public/img/mail_icon.svg'>
                                     </a>
                                 </div>
                             </div>
@@ -34,22 +36,22 @@
                             <div class='footer-link flex'>
                                 <div class='footer-link__icon'>
                                     <a href='#' target='_blank'>
-                                        <img src='../../public/img/facebook_icon.svg' alt='Verification Icon'>
+                                        <img src='../../public/img/facebook_icon.svg'>
                                     </a>
                                 </div>
                                 <div class='footer-link__icon'>
                                     <a href='#' target='_blank'>
-                                        <img src='../../public/img/zalo_icon.svg' alt='Verification Icon'>
+                                        <img src='../../public/img/zalo_icon.svg'>
                                     </a>
                                 </div>
                                 <div class='footer-link__icon'>
-                                    <a href='#' target='_blank'>
-                                        <img src='../../public/img/mail_icon.svg' alt='Verification Icon'>
+                                    <a href='mailto:0306231298@caothang.edu.vn' target='_blank'>
+                                        <img src='../../public/img/mail_icon.svg'>
                                     </a>
                                 </div>
                                 <div class='footer-link__icon'>
-                                    <a href='#' target='_blank'>
-                                        <img src='../../public/img/linkedin_icon.svg' alt='Verification Icon'>
+                                    <a href='http://linkedin.com/in/khoa-tran-77967b2b3' target='_blank'>
+                                        <img src='../../public/img/linkedin_icon.svg'>
                                     </a>
                                 </div>
                             </div>
@@ -69,5 +71,4 @@
               </div>          
             </footer>
         ";
-    }
-?>
+}

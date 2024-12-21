@@ -5,6 +5,7 @@ require_once("promptController.php");
 require_once("../models/Database.php");
 session_start();
 
+//Kiem tra request method
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
   errorPrompt(
     'UPLOAD',
@@ -15,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 
 $db = new Database();
 
+//Xu ly tac vu theo mode
 switch ($_POST['mode']) {
   case 'product':
     if(!isCSV($_FILES['data']['name'])) {
@@ -56,6 +58,10 @@ switch ($_POST['mode']) {
   case 'image':
     insertImage($_FILES['image']);
     break;
+  case 'receipt':
+    $handler = handleCSV($_FILES['data']['tmp_name']);
+    readCSV($handler, "updateReceipt");
+    break;
   default:
     errorPrompt(
       'UPLOAD',
@@ -65,6 +71,7 @@ switch ($_POST['mode']) {
     break;
 }
 
+//Them San Pham
 function insertProduct($data, $ref)
 {
   global $db;
@@ -76,7 +83,7 @@ function insertProduct($data, $ref)
 
   if($db->query($productSQL))
     successPrompt(
-      'HOMEPAGE',
+      'ADMIN_HOMEPAGE',
       'Thêm thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  
     );
@@ -88,6 +95,7 @@ function insertProduct($data, $ref)
     );
 }
 
+//Them Danh Muc
 function insertCategorize($data, $ref) {
   global $db;
 
@@ -95,7 +103,7 @@ function insertCategorize($data, $ref) {
 
   if($db->query($categorizeSQL))
     successPrompt(
-      'HOMEPAGE',
+      'ADMIN_HOMEPAGE',
       'Thêm thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  
     );
@@ -107,6 +115,7 @@ function insertCategorize($data, $ref) {
     );
 }
 
+//Them Hang
 function insertManufacturer($data, $ref)
 {
   global $db;
@@ -121,6 +130,7 @@ function insertManufacturer($data, $ref)
     );
 }
 
+//Them Kich Co
 function insertSize($data, $ref)
 {
   global $db;
@@ -129,7 +139,7 @@ function insertSize($data, $ref)
 
   if($db->query($sizeSQL))
     successPrompt(
-      'HOMEPAGE',
+      'ADMIN_HOMEPAGE',
       'Thêm thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  
     );
@@ -141,6 +151,7 @@ function insertSize($data, $ref)
     );
 }
 
+//Them Danh Muc
 function insertCategory($data, $ref)
 {
   global $db;
@@ -149,7 +160,7 @@ function insertCategory($data, $ref)
 
   if($db->query($categorySQL))
     successPrompt(
-      'HOMEPAGE',
+      'ADMIN_HOMEPAGE',
       'Thêm thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  
     );
@@ -161,6 +172,7 @@ function insertCategory($data, $ref)
     );
 }
 
+//Them Hinh Anh
 function insertImage($arrayImg)
 {
   global $db;
@@ -191,7 +203,7 @@ function insertImage($arrayImg)
 
         if($db->stmt_execute($stmt))
           successPrompt(
-            'HOMEPAGE',
+            'ADMIN_HOMEPAGE',
             'Thêm thành công!',
             "../admin/index.php?mode={$_POST['mode']}&page=1"  
           );
@@ -214,7 +226,7 @@ function insertImage($arrayImg)
 
         if($db->stmt_execute($stmt))
           successPrompt(
-            'HOMEPAGE',
+            'ADMIN_HOMEPAGE',
             'Thêm thành công!',
             "../admin/index.php?mode={$_POST['mode']}&page=1"  
           );
@@ -229,3 +241,29 @@ function insertImage($arrayImg)
     }
   }
 }
+
+//Cap nhat HOADON
+function updateReceipt($data, $ref) {
+  global $db;
+
+  $updateSQL = "
+    update HOADON
+    set MATT = 4
+    where MAHD = {$data[$ref['MAHD']]}
+  ";
+  
+  if($db->query($updateSQL))
+    successPrompt(
+      'ADMIN_HOMEPAGE',
+      'Cập nhật thành công!',
+      "../admin/index.php?mode={$_POST['mode']}&page=1"  
+    );
+  else
+    errorPrompt(
+      'UPLOAD',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/import_admin.php?mode={$_POST['mode']}"
+    );
+
+}
+?>

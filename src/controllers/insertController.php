@@ -5,6 +5,7 @@ require_once("../models/Database.php");
 
 session_start();
 
+//Kiem tra request method
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
   errorPrompt(
     'UPLOAD',
@@ -15,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 
 $db = new Database();
 
+//Xu ly tac vu theo mode
 switch ($_POST['mode']) {
   case 'product':
     insertProduct();
@@ -41,7 +43,7 @@ switch ($_POST['mode']) {
     break;
 }
 
-
+//Them San Pham
 function insertProduct()
 {
   global $db;
@@ -76,12 +78,13 @@ function insertProduct()
   }
 
   successPrompt(
-    'HOMEPAGE',
+    'ADMIN_HOMEPAGE',
     'Thêm thành công!',
     "../admin/index.php?mode={$_POST['mode']}&page=1"  
   );
 }
 
+//Them Hang
 function insertManufacturer()
 {
   global $db;
@@ -96,6 +99,7 @@ function insertManufacturer()
     );
 }
 
+//Them Kich Co
 function insertSize()
 {
   global $db;
@@ -104,7 +108,7 @@ function insertSize()
 
   if($db->query($sizeSQL))
     successPrompt(
-      'HOMEPAGE',
+      'ADMIN_HOMEPAGE',
       'Thêm thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  
     );
@@ -116,6 +120,7 @@ function insertSize()
     );
 }
 
+//Them Danh Muc
 function insertCategory()
 {
   global $db;
@@ -124,7 +129,7 @@ function insertCategory()
 
   if($db->query($categorySQL))
     successPrompt(
-      'HOMEPAGE',
+      'ADMIN_HOMEPAGE',
       'Thêm thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  
     );
@@ -136,6 +141,7 @@ function insertCategory()
     );
 }
 
+//Them Hinh Anh
 function insertImage()
 {
   global $db;
@@ -176,7 +182,7 @@ function insertImage()
 
   if($db->stmt_execute($stmt))
     successPrompt(
-      'HOMEPAGE',
+      'ADMIN_HOMEPAGE',
       'Thêm thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  
     );

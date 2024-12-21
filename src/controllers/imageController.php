@@ -1,4 +1,5 @@
 <?php
+  //Kiem tra file Hinh co phai .jpg
   function isJPG($files) {
     if(gettype($files) == 'array') {
       foreach($files as $file) {

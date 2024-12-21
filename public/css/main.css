@@ -71,6 +71,10 @@
   background: #f4f4f4;
 }
 
+.search-bar:focus {
+  background: none;
+}
+
 .search-bar__label {
   padding: 1rem;
   height: 100%;
@@ -83,6 +87,10 @@
 
 #search-bar-input::placeholder {
   color: #bcbcbc;
+}
+
+.nav-btn:hover {
+  transform: scale(95%);
 }
 
 /* LOGIN/SIGNUP FORM */
@@ -106,7 +114,7 @@
 }
 
 .other-cta__link {
-  color: #BCBCBC;
+  color: #bcbcbc;
   text-decoration: underline;
 }
 
@@ -185,17 +193,31 @@
 }
 
 /* FILTER PANEL */
+.filter-panel {
+
+}
+
 .filter-list {
-  margin-bottom: 2rem;
+  gap: 8px;
+  margin-bottom: 1rem;
 }
 
 .filter-list__item {
   margin: 0.5rem 0;
 }
 
+.filter-panel--row .filter-list__item {
+  border: 1px solid #bcbcbc;
+}
+
+.filter-panel--row .filter-list__item--active {
+  background-color: var(--accentColor);
+  border: none;
+}
+
 .filter-list__title {
   font-size: 1.5rem;
-  border-bottom: solid 1px black;
+  border-bottom: solid 1px #bcbcbc;
   padding-bottom: 0.5rem;
 }
 
@@ -228,6 +250,10 @@
   margin: 0.5rem 0;
   background: var(--primaryColor);
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.product-card:hover {
+  transform: scale(99%);
 }
 
 .product-card__img-wrap {
@@ -284,7 +310,7 @@
 
 .product-detail__overview {
   padding: 1rem 0;
-  border-bottom: 1px solid #BCBCBC;
+  border-bottom: 1px solid #bcbcbc;
 }
 
 .product-detail__description-wrap {
@@ -362,7 +388,7 @@
   font-weight: 400;
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid #BCBCBC;
+  border: 1px solid #bcbcbc;
 }
 
 .size-item.active {
@@ -374,7 +400,7 @@
 }
 
 .detail-panel__price .price--old {
-  color: #BCBCBC;
+  color: #bcbcbc;
   font-size: 1.25rem;
   text-decoration: line-through;
 }
@@ -398,7 +424,7 @@
 .detail-panel__action-btn .wishlist-btn {
   width: 64px;
   height: 64px;
-  background: #C4C4C4;
+  background: #c4c4c4;
 }
 
 .detail-panel__action-btn .wishlist-btn img {
@@ -411,7 +437,7 @@
   padding-top: 16px;
   flex-direction: column;
   gap: 16px;
-  border-top: 1px solid #BCBCBC;
+  border-top: 1px solid #bcbcbc;
 }
 
 .detail-description__title {
@@ -424,6 +450,7 @@
 
 /* CART */
 .cart-reminder {
+  margin-top: 4rem;
   text-align: center;
 }
 
@@ -469,10 +496,10 @@
   height: 48px;
   gap: 8px;
   background: var(--primaryColor);
-  border: 1px solid #BCBCBC;
+  border: 1px solid #bcbcbc;
 }
 
-.quantity-btn>* {
+.quantity-btn > * {
   height: 100%;
 }
 
@@ -531,7 +558,7 @@
   flex: 0 0 80%;
   border-radius: 0;
   border: none;
-  border-bottom: 1px solid #BCBCBC;
+  border-bottom: 1px solid #bcbcbc;
 }
 
 textarea.checkout-info__input {
@@ -665,27 +692,37 @@ textarea.checkout-info__input {
   margin: 16px 0;
   padding: 1rem;
   border-radius: 1rem;
+  background-color: white;
   border: 1px solid #bcbcbc;
 }
 
-.reicept-list-item__header {
+.receipt-list-item__header,
+.receipt-list-item__customer {
   justify-content: space-between;
+}
+
+.receipt-list-item__header {
   align-items: flex-end;
 }
 
-.reicept-list-item__title {
-  
+.receipt-list-item__cancel-btn {
+  color: var(--accentText);
+  margin-top: 2rem;
 }
 
-.reicept-status--pending {
+.receipt-list-item__customer {
+  align-items: center;
+}
+
+.receipt-status--pending {
   color: var(--warningColor);
 }
 
-.reicept-status--success {
+.receipt-status--success {
   color: var(--successColor);
 }
 
-.reicept-status--error {
+.receipt-status--error {
   color: var(--errorColor);
 }
 
@@ -753,12 +790,20 @@ footer {
   gap: 8px;
 }
 
+.footer-link__icon:hover {
+  filter: brightness(2);
+}
+
 .footer-copyright {
   height: 32px;
   justify-content: flex-end;
 }
 
 /* ADMIN */
+#admin {
+  position: relative;
+}
+
 #admin .sidebar {
   flex-direction: column;
   min-height: 100vh;
@@ -776,12 +821,19 @@ footer {
 }
 
 #admin .user-panel__header {
+  flex-wrap: wrap;
   position: sticky;
-  z-index: 999;
+  z-index: 997;
   top: 0;
+  height: 5rem;
   background-color: var(--primaryColor);
   padding: 1rem;
   justify-content: space-between;
+}
+
+#admin .user-panel__header-reminder {
+  padding: 1rem;
+  flex-basis: 100%;
 }
 
 #admin .user-panel__content {
@@ -815,6 +867,10 @@ footer {
   font-size: 16px;
 }
 
+#admin a.table-action__enable-btn {
+  color: #000;
+}
+
 #admin .table td img {
   max-height: 160px;
 }
@@ -835,4 +891,8 @@ footer {
 
 #admin .preview img {
   max-width: 320px;
+}
+
+#admin .notification {
+  top: 1rem;
 }

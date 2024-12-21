@@ -1,9 +1,31 @@
 <?php
+//Thêm dấu thập phân và đơn vị tiền tệ
 function formatPrice($price)
 {
   $newPrice = number_format($price, 0, '', '.');
   return "$newPrice" . "đ";
 }
+//Định dạng lại ngày
+function formatDate($date) {
+  $dateObj = date_create($date);
+  return date_format($dateObj,"d/m/Y");
+}
+//Định dạng lại trạng thái
+function formatStatus($bool, $mode=null) {
+  if($mode == 'user')
+    return $bool ? "Đang kích hoạt" : "Tạm khóa";
+  else
+    return $bool ? "Đang kinh doanh" : "Ngừng kinh doanh";
+}
+//Định dạng lại 1 số tên
+function formatName($col)
+{
+  $ref = [
+    'price' => 'Giá'
+  ];
+  return $ref[$col];
+}
+//Định dạng lại tên cột SQL
 function formatSQLColumnsName($col)
 {
   $ref = [
@@ -15,7 +37,7 @@ function formatSQLColumnsName($col)
     'SOSAO' => 'Đánh Giá',
     'TENHSX' => 'Tên Hãng',
     'NGSX' => 'Ngày Sản Xuất',
-    'KHUYENMAI' => 'Khuyến Mãi',
+    'KHUYENMAI' => 'Khuyến Mãi (%)',
     'TRANGTHAI' => 'Trạng Thái',
     //HSX
     'MAHSX' => 'Mã HSX',
@@ -31,9 +53,10 @@ function formatSQLColumnsName($col)
     'MAHA' => 'Mã Hình Ảnh',
     'FILE' => 'Hình',
     //HOADON
-    'MAHD' => '',
-    'MATK' => '',
-    'HOTENKH' => '',
+    'MAHD' => 'Mã Đơn Hàng',
+    'MATK' => 'Mã Tài Khoản',
+    'TONGTIEN' => 'Tổng Tiền',
+    'HOTENKH' => 'Họ Tên',
     'EMAIL' => 'Email',
     'SDT' => 'SĐT',
     'DCHI' => 'Địa Chỉ',
@@ -44,6 +67,8 @@ function formatSQLColumnsName($col)
     'TENTK' => 'Tên Tài Khoản',
     'HOTEN' => 'Họ Tên',
     'NGLAPTK' => 'Ngày Lập Tài Khoản',
+    //TRANGTHAI
+    'TENTT' => 'Trạng Thái'
   ];
   return $ref[$col];
 }

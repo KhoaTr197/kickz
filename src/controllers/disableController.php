@@ -1,0 +1,183 @@
+<?php
+require_once("promptController.php");
+require_once("../models/Database.php");
+
+session_start();
+
+$db = new Database();
+
+//Xu ly tac vu theo mode
+switch ($_GET['mode']) {
+  case 'product':
+    disableProduct();
+    break;
+  case 'category':
+    deleteCategory();
+    break;
+  case 'size':
+    deleteSize();
+    break;
+  case 'image':
+    deleteImage();
+    break;
+  case 'order':
+    updateOrder();
+    break;
+  case 'user':
+    disableUser();
+    break;
+  default:
+    errorPrompt(
+      'ADMIN_HOMEPAGE',
+      'Đã xảy ra lỗi, vui lòng thử lại sau!',
+      "../admin/index.php?mode=admin-info"
+    );
+    break;
+}
+
+//Vo hieu hoa San Pham
+function disableProduct() {
+  global $db;
+
+  $disableProductSQL = "
+    update SANPHAM
+    set TRANGTHAI = 0
+    where MASP = {$_GET['id']}
+  ";
+
+  if($db->query($disableProductSQL))
+    successPrompt(
+      'ADMIN_HOMEPAGE',
+      'Vô hiệu hóa thành công!',
+      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
+    );
+  else
+    errorPrompt(
+      'ADMIN_HOMEPAGE',
+      'Đã xảy ra lỗi, vui lòng thử lại sau!',
+      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
+    );
+}
+
+//Xoa Danh Muc
+function deleteCategory() {
+  global $db;
+
+  $deleteCategorySQL = "
+    delete from PHANLOAI
+    where MADM = {$_GET['id']} ;
+  ";
+
+  $deleteCategorySQL .= "
+    delete from DANHMUC
+    where MADM = {$_GET['id']} ;
+  ";
+
+  if($db->multi_query($deleteCategorySQL))
+    successPrompt(
+      'ADMIN_HOMEPAGE',
+      'Xóa thành công!',
+      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
+    );
+  else
+    errorPrompt(
+      'ADMIN_HOMEPAGE',
+      'Đã xảy ra lỗi, vui lòng thử lại sau!',
+      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
+    );
+}
+
+//Xoa Kich Co
+function deleteSize() {
+  global $db;
+
+  $deleteSizeSQL = "
+    update KICHCO
+    set SOLUONG = 0
+    where MASP = {$_GET['productId']} and MAKC = {$_GET['id']}
+  ";
+
+  if($db->query($deleteSizeSQL))
+    successPrompt(
+      'ADMIN_HOMEPAGE',
+      'Xóa thành công!',
+      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
+    );
+  else
+    errorPrompt(
+      'ADMIN_HOMEPAGE',
+      'Đã xảy ra lỗi, vui lòng thử lại sau!',
+      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
+    );
+}
+
+//Xoa Hinh Anh
+function deleteImage() {
+  global $db;
+
+  $deleteImageSQL = "
+    delete from HINHANH
+    where MAHA = {$_GET['id']} and {$_GET['id']} > 1 and MASP = {$_GET['productId']}
+  ";
+
+  if($db->query($deleteImageSQL))
+    successPrompt(
+      'ADMIN_HOMEPAGE',
+      'Xóa thành công!',
+      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
+    );
+  else
+    errorPrompt(
+      'ADMIN_HOMEPAGE',
+      'Đã xảy ra lỗi, vui lòng thử lại sau!',
+      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
+    );
+}
+
+//Huy Don Hang
+function updateOrder() {
+  global $db;
+
+  $updateOrderSQL = "
+    update HOADON
+    set MATT = 10
+    where MAHD = {$_GET['id']} and MATK = {$_SESSION['USER']['INFO']['MATK']}
+  ";
+
+  if($db->query($updateOrderSQL))
+    successPrompt(
+      'HOMEPAGE',
+      'Hủy đơn hàng thành công!',
+      "../views/user.php"
+    );
+  else
+    errorPrompt(
+      'HOMEPAGE',
+      'Đã xảy ra lỗi, vui lòng thử lại sau!',
+      "../views/index.php"
+    );
+}
+
+//Vo hieu hoa Nguoi Dung
+function disableUser() {
+  global $db;
+
+  $disableUserSQL = "
+    update NGUOIDUNG
+    set TRANGTHAI = 0
+    where MATK = {$_GET['id']}
+  ";
+
+  if($db->query($disableUserSQL))
+    successPrompt(
+      'HOMEPAGE',
+      'Vô hiệu hóa thành công!',
+      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
+    );
+  else
+    errorPrompt(
+      'HOMEPAGE',
+      'Đã xảy ra lỗi, vui lòng thử lại sau!',
+      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
+    );
+}

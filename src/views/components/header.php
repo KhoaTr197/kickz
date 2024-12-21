@@ -1,8 +1,9 @@
 <?php
+//Tao code HTML Header
 function header_render($mode, $hasLogon = false, $prev_link = "homepage.php")
 {
-  
   switch ($mode) {
+    //Che do Navbar
     case 'navbar':
       $manufacturerList_html = categoryList_render('manufacturer');
       $categoryList_html = categoryList_render('category');
@@ -22,20 +23,20 @@ function header_render($mode, $hasLogon = false, $prev_link = "homepage.php")
         </div>
       ";
       $searchBar = "
-        <div class='search-bar rounded'>
+        <form class='search-bar rounded'>
           <label class='search-bar__label flex-center' for='search-bar-input'>
             <img class='search-bar__icon' src='../../public/img/search_icon.svg' alt='Search Bar'>
           </label>
-          <input type='text' name='search' id='search-bar-input' placeholder='Tìm Kiếm'/>
-        </div>
+          <input type='text' name='search' id='search-bar-input' placeholder='Tìm Kiếm' />
+        </form>
       ";
       $cartBtn = "
-        <a class='cartBtn' id='cart' href='cart.php'>
+        <a class='nav-btn cartBtn' id='cart' href='cart.php'>
           <img src='../../public/img/cart_icon.svg' alt='Cart Button'>
         </a>  
       ";
       $userBtn = "
-        <a class='userBtn' id='user' href='user.php'>
+        <a class='nav-btn userBtn' id='user' href='user.php'>
           <img src='../../public/img/user_icon.svg' alt='User Button'>
         </a>
       ";
@@ -56,6 +57,7 @@ function header_render($mode, $hasLogon = false, $prev_link = "homepage.php")
         ($hasLogon ? $userBtn : $loginBtn)
         . "</div>
           </header>";
+    //Che do breadcrumb
     case 'breadcrumb':
       return "
           <header class='header-container'>
@@ -66,6 +68,7 @@ function header_render($mode, $hasLogon = false, $prev_link = "homepage.php")
             </div>
           </header>
         ";
+    //Che do Login
     case 'login':
       return "
         <header class='header-container'>
@@ -78,6 +81,7 @@ function header_render($mode, $hasLogon = false, $prev_link = "homepage.php")
       ";
   }
 }
+//Tao code HTML DS Danh Muc
 function categoryList_render($mode) {
   $newQueryStr="";
   $html = "";

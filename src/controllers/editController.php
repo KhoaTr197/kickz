@@ -6,11 +6,13 @@ require_once("imageController.php");
 require_once("../utils/utils.php");
 session_start();
 
+//Kiem tra request method
 if ($_SERVER['REQUEST_METHOD'] != 'POST')
   header("location: ../views/edit.php");
 
 $db = new Database();
 
+//Xu ly tac vu theo mode
 switch ($_POST['mode']) {
   case 'info':
     updateInfo();
@@ -49,8 +51,18 @@ switch ($_POST['mode']) {
     break;
 }
 
+//Cap nhat San Pham
 function updateProduct() {
   global $db;
+  
+  if(!isset($_POST['price']) || !isset($_POST['discount']) || !isset($_POST['rating']))
+    return errorPrompt(
+      'EDIT',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/edit_admin.php?{$_POST['queryStr']}"
+    );
+
+  if(empty($_POST['date'])) $_POST['date'] = date('Y-m-d');
 
   $updateProductSQL = "
     update SANPHAM
@@ -64,13 +76,14 @@ function updateProduct() {
       MAHSX = {$_POST['manufacturer']}
     where MASP = {$_POST['id']}
   ";
-  if(!$db->query($updateProductSQL))
-    errorPrompt(
+  if(!$db->query($updateProductSQL)) {
+    return errorPrompt(
       'EDIT',
       'Đã có lỗi xảy ra, xin vui lòng thử lại!',
       "../admin/edit_admin.php?{$_POST['queryStr']}"
     );
-
+  }
+   
   $selectCategorizeSQL = "
     select MADM
     from PHANLOAI
@@ -110,8 +123,14 @@ function updateProduct() {
       );
   }
 
+  successPrompt(
+    'ADMIN_HOMEPAGE',
+    'Cập nhật thành công!',
+    "../admin/index.php?mode={$_POST['mode']}&page=1"  
+  );
 }
 
+//Cap nhat Hang
 function updateManufacturer() {
   global $db;
 
@@ -121,7 +140,13 @@ function updateManufacturer() {
     where MAHSX = {$_POST['id']}
   ";
 
-  if(!$db->query($updateManufacturerSQL))
+  if($db->query($updateManufacturerSQL))
+    successPrompt(
+      'ADMIN_HOMEPAGE',
+      'Cập nhật thành công!',
+      "../admin/index.php?mode={$_POST['mode']}&page=1"  
+    );
+  else
     errorPrompt(
       'EDIT',
       'Đã có lỗi xảy ra, xin vui lòng thử lại!',
@@ -129,6 +154,7 @@ function updateManufacturer() {
     );
 }
 
+//Cap nhat Danh Muc
 function updateCategory() {
   global $db;
 
@@ -140,8 +166,8 @@ function updateCategory() {
 
   if($db->query($updateCategorySQL))
     successPrompt(
-      'HOMEPAGE',
-      'Thêm thành công!',
+      'ADMIN_HOMEPAGE',
+      'Cập nhật thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  
     );
   else
@@ -152,6 +178,7 @@ function updateCategory() {
     );
 }
 
+//Cap nhat Kich Co
 function updateSize() {
   global $db;
 
@@ -163,8 +190,8 @@ function updateSize() {
 
   if($db->query($updateSizeSQL))
     successPrompt(
-      'HOMEPAGE',
-      'Thêm thành công!',
+      'ADMIN_HOMEPAGE',
+      'Cập nhật thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  
     );
   else
@@ -175,6 +202,7 @@ function updateSize() {
     );
 }
 
+//Cap nhat Hinh Anh
 function updateImage() {
   global $db;
 
@@ -195,8 +223,8 @@ function updateImage() {
 
       if($db->stmt_execute($stmt))
           successPrompt(
-            'HOMEPAGE',
-            'Thêm thành công!',
+            'ADMIN_HOMEPAGE',
+            'Cập nhật thành công!',
             "../admin/index.php?mode={$_POST['mode']}&page=1"  
           );
         else
@@ -218,8 +246,8 @@ function updateImage() {
 
       if($db->stmt_execute($stmt))
           successPrompt(
-            'HOMEPAGE',
-            'Thêm thành công!',
+            'ADMIN_HOMEPAGE',
+            'Cập nhật thành công!',
             "../admin/index.php?mode={$_POST['mode']}&page=1"  
           );
         else
@@ -233,21 +261,49 @@ function updateImage() {
   }
 }
 
+//Cap nhat Thong Tin Nguoi Dung
 function updateInfo()
 {
   global $db;
 
   $userId = $_SESSION['USER']['INFO']['MATK'];
-  $newUsername = $_POST['username'];
   $newFullname = $_POST['fullname'];
   $newEmail = $_POST['email'];
   $newPhone = $_POST['phone'];
   $newAddress = $_POST['address'];
 
+  if(empty($newFullname)){
+    return errorPrompt(
+      'EDIT',
+      'Họ tên không hợp lệ!',
+      "../views/edit.php?{$_POST['queryStr']}"
+    );
+  }
+  else if(!emailValidation($newEmail)){
+    return errorPrompt(
+      'EDIT',
+      'Email không hợp lệ!',
+      "../views/edit.php?{$_POST['queryStr']}"
+    );
+  }
+  else if(!phoneNumberValidation($newPhone)){
+    return errorPrompt(
+      'EDIT',
+      'Số điện thoại không hợp lệ!',
+      "../views/edit.php?{$_POST['queryStr']}"
+    );
+  }
+  else if(empty($newAddress)){
+    return errorPrompt(
+      'EDIT',
+      'Địa chỉ không hợp lệ!',
+      "../views/edit.php?{$_POST['queryStr']}"
+    );
+  }
+
   $updateSql = "
       update NGUOIDUNG
       set 
-        TENTK = '$newUsername',
         HOTEN = '$newFullname',
         EMAIL = '$newEmail',
         SDT = '$newPhone',
@@ -257,20 +313,21 @@ function updateInfo()
 
   if($db->query($updateSql)) {
     $_SESSION['USER']['INFO'] = $db->fetch($db->query("select MATK, TENTK, HOTEN, EMAIL, SDT, NGLAPTK, DCHI from NGUOIDUNG where MATK = $userId"));
-    successPrompt(
+    return successPrompt(
       'HOMEPAGE',
       'Cập nhật thành công',
       "../views/user.php"  
     );
   }
   else 
-    errorPrompt(
+    return errorPrompt(
       'EDIT',
       'Đã xảy ra lỗi, vui lòng thử lại sau!',
       "../views/edit.php?{$_POST['queryStr']}"
     );
 }
 
+//Cap nhat mat khau
 function updatePassword()
 {
   global $db;
@@ -280,7 +337,7 @@ function updatePassword()
   $confirmPassword = $_POST['confirmPassword'];
 
   if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) 
-    errorPrompt(
+    return errorPrompt(
       'EDIT',
       'Vui lòng điền vào biểu mẫu này',
       "../views/edit.php?{$_POST['queryStr']}"
@@ -289,24 +346,24 @@ function updatePassword()
     $currentUserInfoSQL = "
         select *
         from NGUOIDUNG
-        where MATK = {$_SESSION['USER']['INFO']['MATK']}
+        where MATK = {$_SESSION['USER']['INFO']['MATK']} and MATKHAU = '".$currentPassword."'
       ";
     $currentUserInfo = $db->fetch($db->query($currentUserInfoSQL));
-
+    
     if ($currentUserInfo == 0)
-      errorPrompt(
+      return errorPrompt(
         'EDIT',
         'Mật khẩu không đúng!',
         "../views/edit.php?{$_POST['queryStr']}"  
       );
     else if (!passwordValidation($newPassword))
-      errorPrompt(
+      return errorPrompt(
         'EDIT',
         'Mật Khẩu mới không hợp lệ!',
         "../views/edit.php?{$_POST['queryStr']}"  
       );
     else if ($newPassword != $confirmPassword)
-      errorPrompt(
+      return errorPrompt(
         'EDIT',
         'Mật Khẩu mới không trùng khớp!',
         "../views/edit.php?{$_POST['queryStr']}"  
@@ -319,13 +376,13 @@ function updatePassword()
           where MATK = {$_SESSION['USER']['INFO']['MATK']}
         ";
       if($db->query($updatePassSQL)) 
-        successPrompt(
+        return successPrompt(
           'HOMEPAGE',
           'Cập nhật thành công',
           "../views/user.php"  
         );
       else
-        errorPrompt(
+        return errorPrompt(
           'EDIT',
           'Đã xảy ra lỗi, vui lòng thử lại sau!',
           "../views/editphp?{$_POST['queryStr']}"  
@@ -334,8 +391,16 @@ function updatePassword()
   }
 }
 
+//Cap nhat thong tin Admin
 function updateAdminInfo()
-{
+{ 
+  if(empty($_POST['username'])){
+    return errorPrompt(
+      'EDIT',
+      'Tên đăng nhập không hợp lệ!',
+      "../admin/edit_admin.php?{$_POST['queryStr']}"
+    );
+  }
   global $db;
   $updateInfoSQL = "
     update QUANTRIVIEN
@@ -344,9 +409,9 @@ function updateAdminInfo()
   ";
   
   if ($db->query($updateInfoSQL)) {
-    $_SESSION['ADMIN']['INFO']['TENTK'] = $_POST['name'];
+    $_SESSION['ADMIN']['INFO']['TENTK'] = $_POST['username'];
     successPrompt(
-      'HOMEPAGE',
+      'ADMIN_HOMEPAGE',
       'Cập nhật thành công',
       "../admin/index.php?mode=admin-info"  
     );
@@ -359,6 +424,7 @@ function updateAdminInfo()
     );
 }
 
+//Cap nhat mat khau Admin
 function updateAdminPassword()
 {
   global $db;
@@ -377,7 +443,7 @@ function updateAdminPassword()
     $currentAdminInfoSQL = "
         select *
         from QUANTRIVIEN
-        where MAQTV = {$_POST['id']}
+        where MAQTV = {$_POST['id']} and MATKHAU = '".$currentPassword."'
       ";
     $adminInfo = $db->fetch($db->query($currentAdminInfoSQL));
 
@@ -408,7 +474,7 @@ function updateAdminPassword()
       ";
       if($db->query($updatePassSQL)) 
         successPrompt(
-          'HOMEPAGE',
+          'ADMIN_HOMEPAGE',
           'Cập nhật thành công',
           "../admin/index.php?mode=admin-info"  
         );
