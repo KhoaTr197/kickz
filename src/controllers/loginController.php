@@ -25,11 +25,10 @@
     $_SESSION['USER']['INFO'] = $userData;
 
     if(isset($_POST['isremember'])) {
-      $token = bin2hex(random_bytes(16));
-      $hashed_token = password_hash($token, PASSWORD_DEFAULT);
+      $token = bin2hex(random_bytes(32)).bin2hex($username);
       $updateUserSQL = "
         update NGUOIDUNG
-        set MAXACTHUC = '".$hashed_token."'
+        set MAXACTHUC = '".$token."'
         where tentk = '".$username."'
       ";
       $db->query($updateUserSQL);
