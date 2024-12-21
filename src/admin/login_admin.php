@@ -35,6 +35,7 @@
 
   $error='';
 
+  //Tao code HTML khi co loi
   if(!empty($_SESSION) && !empty($_SESSION['ADMIN']['LOGIN_ERROR_PROMPT'] )) {
     $error="<div class='form-error flex rounded'>".$_SESSION['ADMIN']['LOGIN_ERROR_PROMPT']."</div>";
   }
