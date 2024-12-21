@@ -1,6 +1,9 @@
 <?php
 include_once("components/components.php");
+include_once("../models/Database.php");
 session_start();
+
+$db = new Database();
 
 $header_html = header_render("login");
 $error = '';
@@ -8,6 +11,7 @@ $error = '';
 if (!empty($_SESSION) && !empty($_SESSION['LOGIN']['PROMPT']['MSG'])) {
   $error = "<div class='form-error flex rounded'>" . $_SESSION['LOGIN']['PROMPT']['MSG'] . "</div>";
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -41,10 +45,15 @@ if (!empty($_SESSION) && !empty($_SESSION['LOGIN']['PROMPT']['MSG'])) {
             <h2 class='form-title font-medium'>Đăng Nhập</h2>
             <div class='form-control-wrap'>
               <div class='form-control'>
-                <input class='form-input' type='text' placeholder='Tên Tài Khoản' name='username' />
-                <input class='form-input' type='password' placeholder='Mật Khẩu' name='password' />
+                <input class='form-input' type='text' placeholder='Tên Tài Khoản' name='username'/>
+                <input class='form-input' type='password' placeholder='Mật Khẩu' name='password'/>
+                <div class="form-">
+                <input type="checkbox" name="isremember" value='1' checked/>
+                <span>Nhớ mật khẩu?</span>
+                </div>
               </div>
             </div>
+            
             <button class='form-submit-btn btn btn-primary' type='submit'>Đăng Nhập</button>
             <div class='other-cta-container'>
               <span>Chưa có tài khoản?</span>

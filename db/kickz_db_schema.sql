@@ -144,3 +144,5 @@ INSERT INTO `trangthai` (`MATT`, `TENTT`) VALUES
 (3, 'Đang giao'),
 (4, 'Đã giao'),
 (10, 'Đã hủy');
+
+ALTER TABLE `NGUOIDUNG` ADD COLUMN MAXACTHUC VARCHAR(255) DEFAULT NULL;
