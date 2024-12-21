@@ -18,12 +18,23 @@
           TRANGTHAI = 1
   ";
   $userData = $db->fetch($db->query($checkUserSQL));
-
     
   if($userData != 0) {
+    //tao session
+    $sessionId = session_id();
+    $currDate = date('Y-m-d H:i:s');
+
+    $createSessionSQL = "
+      insert into SESSION (MASS, MATK, LAN_CUOI_DANG_NHAP)
+      values ('$sessionId', {$userData['MATK']}, '$currDate')
+    ";
+    $db->query($createSessionSQL);
+    setcookie('kickz_session_id', $sessionId, time() + (86400 * 3), "/");
+
     $_SESSION['USER']['HAS_LOGON'] = true;
     $_SESSION['USER']['INFO'] = $userData;
 
+    //tao/lay gio hang
     $checkCartSQL = "
       select *
       from GIOHANG
