@@ -156,19 +156,19 @@ function disableUser() {
 
   $disableUserSQL = "
     update NGUOIDUNG
-    set TRANGTHAI = 0
+    set TRANGTHAI = 0, MAXACTHUC = NULL
     where MATK = {$_GET['id']}
   ";
 
   if($db->query($disableUserSQL))
     successPrompt(
-      'HOMEPAGE',
+      'ADMIN_HOMEPAGE',
       'Vô hiệu hóa thành công!',
       "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
     );
   else
     errorPrompt(
-      'HOMEPAGE',
+      'ADMIN_HOMEPAGE',
       'Đã xảy ra lỗi, vui lòng thử lại sau!',
       "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
     );
