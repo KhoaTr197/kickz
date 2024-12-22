@@ -10,7 +10,10 @@
       select * from NGUOIDUNG 
       where MAXACTHUC = '".$_COOKIE['REMEMBER']."'
     ";
-    $userData = $db->fetch($db->query($getUserDataSQL));
+    $result = $db->query($getUserDataSQL);
+    
+    if($db->rows_count($result) > 0){
+    $userData = $db->fetch($result);
     $_SESSION['USER']['HAS_LOGON'] = true;
     $_SESSION['USER']['INFO'] = $userData;
     $selectCartSQL = "
@@ -19,6 +22,11 @@
       where MATK = {$userData['MATK']}
     ";
     $_SESSION['CART_ID']=$db->fetch($db->query($selectCartSQL))['MAGH'];
+    }
+    else{
+      setcookie("REMEMBER", "", time() - (24 * 60 * 60 * 3), "/kickz");
+    }
+    
   }
 
   //Truy van 1 so du lieu cho Danh Muc cua Header
