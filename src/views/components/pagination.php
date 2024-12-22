@@ -46,12 +46,32 @@ function paging(
     $html .= "<a class='pagination__btn btn flex-center' href='?{$newQueryStr}page=" . ($current_page - 1) . "'>Prev</a>";
   }
 
-  for ($i = 1; $i <= $total_page; $i++) {
-    if ($i == $current_page) {
-      $html .= "<span class='pagination__btn btn btn-primary flex-center'>" . $i . "</span>";
-    } else {
-      $html .= "<a class='pagination__btn btn flex-center' href='?{$newQueryStr}page=" . $i . "'>" . $i . "</a>";
+  $html.= ($current_page == 1)
+  ? "<span class='pagination__btn btn btn-primary flex-center'>1</span>"
+  : "<a class='pagination__btn btn flex-center' href='?{$newQueryStr}page=1'>1</a>" ;
+  
+  if($total_page > 1){
+    if($current_page > 3){
+      $html .= "<span class='pagination__btn btn flex-center'>...</span>";
     }
+
+    if($current_page - 1 > 1){
+      $html .= "<a class='pagination__btn btn flex-center' href='?{$newQueryStr}page=" . $current_page-1 . "'>" . $current_page-1 . "</a>";
+    }
+    if($current_page !=1 && $current_page != $total_page){
+      $html .= "<span class='pagination__btn btn btn-primary flex-center'>".$current_page."</span>";
+    }
+    if($current_page + 1 < $total_page){
+      $html .= "<a class='pagination__btn btn flex-center' href='?{$newQueryStr}page=" . $current_page+1 . "'>" . $current_page+1 . "</a>";
+    }
+
+    if($current_page <= $total_page - 3){
+      $html .= "<span class='pagination__btn btn flex-center'>...</span>";
+    }
+
+    $html.= ($current_page == $total_page)
+    ? "<span class='pagination__btn btn btn-primary flex-center'>" . $total_page . "</span>"
+    : "<a class='pagination__btn btn flex-center' href='?{$newQueryStr}page=" . $total_page . "'>" . $total_page . "</a>";
   }
 
   if ($current_page < $total_page && $total_page > 1) {
