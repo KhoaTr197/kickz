@@ -126,5 +126,11 @@ function addToCart($data)
         'Thêm thành công!',
         "../views/detail.php?id={$data['id']}"
       );
-   }
+    else
+      return errorPrompt(
+        'HOMEPAGE',
+        'Đã có lỗi xảy ra, vui lòng thử lại!', 
+        "../views/detail.php?id={$data['id']}"
+      );
+  }
 }
