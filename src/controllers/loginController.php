@@ -16,12 +16,18 @@
     select *
     from NGUOIDUNG
     where TENTK = '$username' and
-          MATKHAU = '$password' and
-          TRANGTHAI = 1
+          MATKHAU = '$password'
   ";
   $userData = $db->fetch($db->query($checkUserSQL));
   
   if($userData != 0 ) {
+    if(!$userData['TRANGTHAI'])
+      return errorPrompt(
+        'LOGIN',
+        'Tài Khoản đã bị tạm khóa!',
+        "../views/login.php"
+      );
+
     $_SESSION['USER']['HAS_LOGON'] = true;
     $_SESSION['USER']['INFO'] = $userData;
 

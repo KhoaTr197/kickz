@@ -49,13 +49,26 @@ function insertProduct()
 {
   global $db;
 
+  if(!isset($_POST['category']) || !isset($_POST['manufacturer']))
+    return errorPrompt(
+      'UPLOAD',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/insert_admin.php?mode={$_POST['mode']}"
+    );
+  
+  if(empty($_POST['rating'])) $_POST['rating'] = 0;
+  if(empty($_POST['price'])) $_POST['price'] = 0;
+  if(empty($_POST['discount'])) $_POST['discount'] = 0;
+  if(empty($_POST['date'])) $_POST['date'] = date('Y-m-d');
+
   $newName = $db->escape_str($_POST['name']);
   $newDescription = $db->escape_str($_POST['description']);
   $newManufacturer = isset($_POST['manufacturer']) ? $_POST['manufacturer'] : 'NULL';
 
   $productSQL = "insert ignore into SANPHAM (MASP,TENSP,GIA,KHUYENMAI,MOTA,SOSAO,NGSX,MAHSX,TRANGTHAI) values(NULL, '{$newName}',{$_POST['price']},{$_POST['discount']}, '{$newDescription}',{$_POST['rating']}, '{$_POST['date']}', {$newManufacturer}, 1)";
 
-  echo $productSQL;
+  
+
   if (!$db->query($productSQL))
     return errorPrompt(
       'UPLOAD',
@@ -85,12 +98,7 @@ function insertProduct()
   );
 }
 
-<<<<<<< HEAD
 function insertManufacturer($id)
-=======
-//Them Hang
-function insertManufacturer()
->>>>>>> origin/main
 {
   global $db;
 
@@ -154,12 +162,7 @@ function insertCategory()
     );
 }
 
-<<<<<<< HEAD
 function insertImage($cb=NULL)
-=======
-//Them Hinh Anh
-function insertImage()
->>>>>>> origin/main
 {
   global $db;
 
@@ -179,6 +182,17 @@ function insertImage()
 
   switch ($_POST['mode']) {
     case 'image':
+      $checkImageSQL = "
+        select MASP, MAHA
+        from HINHANH
+        where MASP = {$id} and MAHA = {$idx[$filename[2]]}
+      ";
+      if($db->rows_count($db->query($checkImageSQL)) > 0)
+        return errorPrompt(
+          'UPLOAD',
+          'Đã tồn tại hình ảnh này!',
+          "../admin/insert_admin.php?mode={$_POST['mode']}"
+        );
       $imageSQL = "
         insert ignore into HINHANH (MASP, MAHA, FILE)
         values(?, ?, ?)

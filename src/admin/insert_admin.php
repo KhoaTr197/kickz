@@ -14,8 +14,6 @@
 
   $error='';
 
-  print_r($_SESSION['UPLOAD']);
-
   if(!empty($_SESSION) && !empty($_SESSION['UPLOAD']['PROMPT']['MSG'])) {
     $error="<div class='form-error flex rounded'>".$_SESSION['UPLOAD']['PROMPT']['MSG']."</div>";
   }
@@ -108,7 +106,7 @@ function getForm() {
           <input class='form-input' type='number' min='0' max='5' placeholder='Đánh Giá' name='rating' />
           <input class='form-input' type='date' placeholder='Ngày Sản Xuất' name='date'/>
           <select class='form-input' name='manufacturer' required>
-            <option  disabled selected hidden>-- Chọn Hãng --</option>
+            <option disabled selected hidden>-- Chọn Hãng --</option>
             $manufactureInputs
           </select>
         </div>

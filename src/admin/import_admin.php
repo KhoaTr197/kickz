@@ -14,14 +14,8 @@
 
   $error='';
 
-<<<<<<< HEAD
   if(!empty($_SESSION) && !empty($_SESSION['UPLOAD']['PROMPT']['MSG'])) {
     $error="<div class='form-error flex rounded'>".$_SESSION['UPLOAD']['PROMPT']['MSG']."</div>";
-=======
-  //Tao code HTML khi co loi
-  if(!empty($_SESSION) && !empty($_SESSION['UPLOAD']['PROMPT'])) {
-    $error="<div class='form-error flex rounded'>".$_SESSION['UPLOAD']['PROMPT']."</div>";
->>>>>>> origin/main
   }
 ?>
 
@@ -107,7 +101,7 @@ function getForm() {
         <div class='form-control'>
           <div class='form-reminder'>Tải file chứa thông tin Danh Sách Hãng (Chỉ hỗ trợ file CSV)</div>
           <input class='form-input flex-center' type='file' name='data'>
-          <div class='form-reminder'>Tải Danh Sách Hình Ảnh Hãng (Chỉ hỗ trợ file JPG, Tối đa 100 file mỗi lượt)</div>
+          <div class='form-reminder'>Tải Danh Sách Hình Ảnh Hãng (Chỉ hỗ trợ file JPG, Tối đa 20 file mỗi lượt)</div>
           <div class='form-reminder'>Cần đặt tền file theo đúng định dạng:</div>
           <div class='form-reminder'>+ Hãng: manufacturer-[MAHSX].jpg</div>                        
           <input class='form-input flex-center' type='file' name='image[]' multiple>
@@ -118,7 +112,7 @@ function getForm() {
       $formTitle='Thêm Danh Sách Hình Ảnh';
       $formInputs = "
         <div class='form-control'>
-          <div class='form-reminder'>Tải Danh Sách Hình Ảnh (Chỉ hỗ trợ file JPG, Tối đa 100 file mỗi lượt)</div>
+          <div class='form-reminder'>Tải Danh Sách Hình Ảnh (Chỉ hỗ trợ file JPG, Tối đa 20 file mỗi lượt)</div>
           <div class='form-reminder'>Cần đặt tền file theo đúng định dạng:</div>
           <div class='form-reminder'>+ Sản Phẩm: product-[MASP]-[BEN].jpg</div>
           <input class='form-input flex-center' type='file' name='image[]' multiple>
