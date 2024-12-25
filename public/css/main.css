@@ -193,9 +193,7 @@
 }
 
 /* FILTER PANEL */
-.filter-panel {
-
-}
+.filter-panel {}
 
 .filter-list {
   gap: 8px;
@@ -499,7 +497,7 @@
   border: 1px solid #bcbcbc;
 }
 
-.quantity-btn > * {
+.quantity-btn>* {
   height: 100%;
 }
 
@@ -758,7 +756,9 @@ textarea.checkout-info__input {
 
 .receipt-list-item__price {
   justify-content: space-between;
+  margin-bottom: 16px;
 }
+
 /* FOOTER */
 footer {
   color: var(--accentText);
