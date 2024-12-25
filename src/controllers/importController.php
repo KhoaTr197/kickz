@@ -19,8 +19,17 @@ $db = new Database();
 //Xu ly tac vu theo mode
 switch ($_POST['mode']) {
   case 'product':
-    if(!isCSV($_FILES['data']['name'])) {
-      errorPrompt(
+    //Kiem tra phai co ca 2 file
+    if(empty($_FILES['data']['tmp_name'][0]) || empty($_FILES['data']['tmp_name'][1])){
+      return errorPrompt(
+        'UPLOAD',
+        'Thiếu 1 trong 2 File!',
+        "../admin/import_admin.php?mode={$_POST['mode']}"
+      );
+    }
+    //Kiem tra dinh dang cua ca 2 file
+    if(!isCSV($_FILES['data']['name'][0]) || !isCSV($_FILES['data']['name'][1])) {
+      return errorPrompt(
         'UPLOAD',
         'File không đúng định dạng!',
         "../admin/import_admin.php?mode={$_POST['mode']}"
@@ -34,8 +43,17 @@ switch ($_POST['mode']) {
     readCSV($handler, "insertCategorize");
     break;
   case 'manufacturer':
+    //Kiem tra phai co ca file csv va hinh anh ($_FILES['image']['tmp_name'] = [0 => ])
+    if(empty($_FILES['data']['tmp_name']) || empty($_FILES['image']['tmp_name'][0])){
+      return errorPrompt(
+        'UPLOAD',
+        'Thiếu File!',
+        "../admin/import_admin.php?mode={$_POST['mode']}"
+      );
+    }
+    //Kiem tra dinh dang cua file csv va hinh anh
     if(!isCSV($_FILES['data']['name']) || !isJPG($_FILES['image']['tmp_name'])) {
-      errorPrompt(
+      return errorPrompt(
         'UPLOAD',
         'File không đúng định dạng!',
         "../admin/import_admin.php?mode={$_POST['mode']}"
@@ -48,17 +66,81 @@ switch ($_POST['mode']) {
 
     break;
   case 'category':
+    //kiem tra co ton tai file
+    if(empty($_FILES['data']['tmp_name'])){
+      return errorPrompt(
+        'UPLOAD',
+        'Thiếu File!',
+        "../admin/import_admin.php?mode={$_POST['mode']}"
+      );
+    }
+    //kiem tra dinh dang file
+    if(!isCSV($_FILES['data']['name'])) {
+      return errorPrompt(
+        'UPLOAD',
+        'File không đúng định dạng!',
+        "../admin/import_admin.php?mode={$_POST['mode']}"
+      );
+    }
     $handler = handleCSV($_FILES['data']['tmp_name']);
     readCSV($handler, "insertCategory");
     break;
   case 'size':
+    //kiem tra co ton tai file
+    if(empty($_FILES['data']['tmp_name'])){
+      return errorPrompt(
+        'UPLOAD',
+        'Thiếu File!',
+        "../admin/import_admin.php?mode={$_POST['mode']}"
+      );
+    }
+    //kiem tra dinh dang file
+    if(!isCSV($_FILES['data']['name'])) {
+      return errorPrompt(
+        'UPLOAD',
+        'File không đúng định dạng!',
+        "../admin/import_admin.php?mode={$_POST['mode']}"
+      );
+    }
     $handler = handleCSV($_FILES['data']['tmp_name']);
     readCSV($handler, "insertSize");
     break;
   case 'image':
+    //Kiem tra phai co hinh anh ($_FILES['image']['tmp_name'] = [0 => ])
+    if(empty($_FILES['image']['tmp_name'][0])){
+      return errorPrompt(
+        'UPLOAD',
+        'Thiếu File!',
+        "../admin/import_admin.php?mode={$_POST['mode']}"
+      );
+    }
+    //Kiem tra dinh dang hinh anh
+    if(!isJPG($_FILES['image']['tmp_name'])) {
+      return errorPrompt(
+        'UPLOAD',
+        'File không đúng định dạng!',
+        "../admin/import_admin.php?mode={$_POST['mode']}"
+      );
+    }
     insertImage($_FILES['image']);
     break;
   case 'receipt':
+    //Kiem tra phai co file
+    if(empty($_FILES['data']['tmp_name'])){
+      return errorPrompt(
+        'UPLOAD',
+        'Thiếu File!',
+        "../admin/import_admin.php?mode={$_POST['mode']}"
+      );
+    }
+    //Kiem tra dinh dang file
+    if(!isCSV($_FILES['data']['name'])) {
+      return errorPrompt(
+        'UPLOAD',
+        'File không đúng định dạng!',
+        "../admin/import_admin.php?mode={$_POST['mode']}"
+      );
+    }
     $handler = handleCSV($_FILES['data']['tmp_name']);
     readCSV($handler, "updateReceipt");
     break;

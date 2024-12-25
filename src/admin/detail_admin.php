@@ -1,11 +1,14 @@
 <?php
 require_once("../models/Database.php");
 require_once("../utils/utils.php");
-include_once("components/components.php");
+include_once("../views/components/components.php");
 session_start();
 
+if (!isset($_GET['id']))
+  header("location: index.php?mode=receipt");
+
 //Tao code HTML nhung thanh phan
-$header_html = header_render("breadcrumb");
+$header_html = header_render("breadcrumb", false, "index.php?mode=receipt");
 $footer_html = footer_render();
 
 $db = new Database();
@@ -15,12 +18,12 @@ $sql = "
     from HOADON
     inner join TRANGTHAI
     on HOADON.MATT = TRANGTHAI.MATT
-    where MATK = {$_SESSION['USER']['INFO']['MATK']}
+    where MAHD = {$_GET['id']}
     order by HOADON.MATT asc
   ";
 $result = $db->query($sql);
 
-$receiptList_html = receiptList_render($result);
+$receiptDetail_html = receiptDetail_render($result);
 ?>
 
 <!DOCTYPE html>
@@ -42,67 +45,13 @@ $receiptList_html = receiptList_render($result);
 
 <body>
   <div id="app" class="grid">
-    <?php echo notify('HOMEPAGE'); ?>
     <?php echo $header_html; ?>
     <main class='main'>
       <div class='wide'>
         <div class='row' id="user-modal">
-          <div class="col c-3">
-            <ul class="sidebar rounded-lg flex">
-              <li class="sidebar__item active" id="personal-info_sidebar">
-                <img class='sidebar-item__icon' src="../../public/img/user_icon.svg">
-                Thông Tin Cá Nhân
-              </li>
-              <li class="sidebar__item" id="receipt_sidebar">
-                <img class='sidebar-item__icon' src="../../public/img/receipt_icon.svg">
-                Đơn Hàng
-              </li>
-              <a href="../controllers/logoutController.php?mode=user" class='sidebar__item'>
-                <img class='sidebar-item__icon' src="../../public/img/logout_icon.svg">
-                Đăng Xuất
-              </a>
-            </ul>
-          </div>
-          <div class="col c-9">
-            <div class="user-panel">
-              <li class="user-panel__item active" id="personal-info_modal">
-                <div class="personal-info-wrap">
-                  <h2 class="personal-info__title flex">
-                    Thông Tin Cá Nhân
-                    <a href="edit.php?mode=info" class="personal-title__edit-btn rounded font-medium flex-center">Sửa</a>
-                  </h2>
-                  <ul class="personal-info__list">
-                    <li class="personal-list__item">
-                      <div class="personal-list-item__key">Tên Tài Khoản:</div>
-                      <div class="personal-list-item__value"><?php echo $_SESSION['USER']['INFO']['TENTK']; ?></div>
-                    </li>
-                    <li class="personal-list__item">
-                      <div class="personal-list-item__key">Họ Tên:</div>
-                      <div class="personal-list-item__value"><?php echo $_SESSION['USER']['INFO']['HOTEN']; ?></div>
-                    </li>
-                    <li class="personal-list__item">
-                      <div class="personal-list-item__key">Email:</div>
-                      <div class="personal-list-item__value"><?php echo $_SESSION['USER']['INFO']['EMAIL']; ?></div>
-                    </li>
-                    <li class="personal-list__item">
-                      <div class="personal-list-item__key">SĐT:</div>
-                      <div class="personal-list-item__value"><?php echo $_SESSION['USER']['INFO']['SDT']; ?></div>
-                    </li>
-                    <li class="personal-list__item">
-                      <div class="personal-list-item__key">Mật Khẩu:</div>
-                      <a href="edit.php?mode=password" class="personal-list-item__change-pass-btn btn rounded-lg font-medium">Đổi Mật Khẩu</a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="user-panel__item " id="receipt_modal">
-                <div class="receipt-wrap">
-                  <h2 class="receipt__title">Đơn Hàng</h2>
-                  <?php echo $receiptList_html; ?>
-                </div>
-              </li>
+            <div class="col c-12">
+            <?=$receiptDetail_html;?>
             </div>
-          </div>
         </div>
       </div>
     </main>
@@ -111,10 +60,9 @@ $receiptList_html = receiptList_render($result);
 </body>
 
 </html>
-
 <?php
 //Tao code HTML cho DS HOADON
-function receiptList_render($result)
+function receiptDetail_render($result)
 {
   global $db;
   $status = [
@@ -174,22 +122,9 @@ function receiptList_render($result)
 
     $receiptPrice = formatPrice($row['TONGTIEN']);
 
-    $receiptStatus = '';
-    $btnDisable = '';
-
-    if($row['MATT'] == 1){
-      $btnDisable = "
-        <a href='../controllers/disableController.php?mode=order&id={$row['MAHD']}' class='receipt-list-item__cancel-btn btn btn-error rounded font-medium flex-center'>Huỷ đơn hàng</a>
-      ";
-    }
-
-    if($row['MATT'] == 10){
-      $receiptStatus = 'disabled';
-    } 
-
     //Chen noi dung Nguoi Mua
     $html .= "
-      <li class='receipt-list__item $receiptStatus'>
+      <li class='receipt-list__item'>
         <div class='receipt-list-item__header flex'>
           <div class='receipt-list-item__title'>
             <h3 class='receipt-list-item-title__id'>Đơn Hàng #{$row['MAHD']}</h3>
@@ -198,8 +133,7 @@ function receiptList_render($result)
           <div class='receipt-list-item__status'>
             Trạng thái: 
             <span class='receipt-status--{$status[$row['MATT']]}'>{$row['TENTT']}<span>
-          </div>
-        </div>
+          </div></div>
         <div class='receipt-list-item__customer flex'>
           <div class='receipt-list-item__customer-info'>
             <p class='font-normal'>
@@ -227,7 +161,6 @@ function receiptList_render($result)
           <span>Tổng Tiền</span>
           <span>$receiptPrice</span>
         </div>
-        $btnDisable
       </li>
     ";
   }

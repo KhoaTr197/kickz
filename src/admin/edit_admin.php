@@ -170,7 +170,7 @@ function getForm() {
       $formInputs = "
         <div class='form-control'>
           <input name='id' value={$manufacturerData['MAHSX']} hidden/>
-          <input class='form-input' type='text' placeholder='Tên Hãng' name='name' value={$manufacturerData['TENHSX']} required/>
+          <input class='form-input' type='text' placeholder='Tên Hãng' name='name' value='{$manufacturerData['TENHSX']}' required/>
           <div class='preview'>
             <h4>Hình ảnh hiện tại</h4>
             <img src='data:image/jpeg;base64,$imageData'>
@@ -191,7 +191,7 @@ function getForm() {
       $formInputs = "
         <div class='form-control'>
           <input name='id' value={$_GET['id']} hidden/>
-          <input class='form-input' type='text' placeholder='Tên Danh Mục' name='name' value={$categoryData['TENDM']} required/>
+          <input class='form-input' type='text' placeholder='Tên Danh Mục' name='name' value='{$categoryData['TENDM']}' required/>
         </div>
       ";
       break;
@@ -225,7 +225,7 @@ function getForm() {
           </div>
           <div class='form-reminder'>Tải Hình Ảnh (Chỉ hỗ trợ file JPG)</div>
           <div class='form-reminder'>Cần đặt tền file theo đúng định dạng:</div>
-          <div class='form-reminder'>+ Sản Phẩm: product-[MASP]-[BEN].jpg</div>
+          <div class='form-reminder'>+ Sản Phẩm: filename.jpg</div>
           <input class='form-input flex-center' type='file' name='image' required>
         </div>
       ";

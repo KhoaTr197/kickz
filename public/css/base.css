@@ -224,6 +224,15 @@ textarea.form-input {
   border: 1px solid var(--errorColor);
 }
 
+.form-success {
+  align-items: center;
+  font-size: 0.875rem;
+  min-height: 64px;
+  padding: 8px 16px;
+  background: #fff3f3;
+  border: 1px solid var(--successColor);
+}
+
 .form-reminder {
   max-width: 400px;
   margin-top: 0.5rem;

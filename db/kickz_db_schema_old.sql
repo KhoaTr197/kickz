@@ -129,6 +129,8 @@ ALTER TABLE `GIOHANG` ADD FOREIGN KEY (`MATK`) REFERENCES `NGUOIDUNG` (`MATK`);
 
 ALTER TABLE `HOADON` ADD FOREIGN KEY (`MATT`) REFERENCES `TRANGTHAI` (`MATT`);
 
+ALTER TABLE `NGUOIDUNG` ADD COLUMN MAXACTHUC VARCHAR(255) DEFAULT NULL;
+
 INSERT INTO `nguoidung` (`MATK`, `TENTK`, `HOTEN`, `EMAIL`, `SDT`, `MATKHAU`, `NGLAPTK`, `DCHI`, `TRANGTHAI`) VALUES
 (1, 'mkhoa', 'Trần Hoàng Minh Khoa', '0306231298@caothang.edu.vn', '0306231298', 'a4a6f167cfba8b8c4ba43436619ebafd', '2024-11-23', '159 Nam Kỳ Khởi Nghĩa, Phường Võ Thị Sáu, Quận 3, Hồ Chí Minh', b'1'),
 (2, 'khuy', 'Huỳnh Khắc Huy', '0306231291@caothang.edu.vn', '0306231291', '0c9300550669a652d36c86dadfb9b843', '2024-11-13', '65 Đ. Huỳnh Thúc Kháng, Bến Nghé, Quận 1, Hồ Chí Minh', b'1');
@@ -143,6 +145,5 @@ INSERT INTO `trangthai` (`MATT`, `TENTT`) VALUES
 (2, 'Đã xác nhận'),
 (3, 'Đang giao'),
 (4, 'Đã giao'),
+(5, 'Trả hàng')
 (10, 'Đã hủy');
-
-ALTER TABLE `NGUOIDUNG` ADD COLUMN MAXACTHUC VARCHAR(255) DEFAULT NULL;

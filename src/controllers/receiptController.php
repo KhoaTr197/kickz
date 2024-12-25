@@ -8,7 +8,10 @@ $db = new Database();
 //Xu ly tac vu theo trang thai
 switch($_GET['currStatus']) {
   case 1:
-    approveReceipt();
+    if($_GET['isCancel'] == 0)
+      approveReceipt();
+    else if ($_GET['isCancel'] == 1)
+      cancelReceipt();
     break;
   case 2:
     prepareProduct();
@@ -23,7 +26,28 @@ switch($_GET['currStatus']) {
     break;
 }
 
-//Xac nhan Hoa Don
+function cancelReceipt(){
+  global $db;
+
+  $updateSQL = "
+    update HOADON
+    set MATT = 10
+    where MAHD = {$_GET['id']} and MATT = 1
+  ";
+  if($db->query($updateSQL))
+    successPrompt(
+      'ADMIN_HOMEPAGE',
+      'Huỷ thành công!',
+      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}&status={$_GET['currStatus']}"
+    );
+  else
+    errorPrompt(
+      'ADMIN_HOMEPAGE',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}&status={$_GET['currStatus']}"
+    );
+}
+
 function approveReceipt() {
   global $db;
 
@@ -111,18 +135,12 @@ function deliveryDone() {
   global $db;
 
   $updateSQL = "
-    update KICHCO R1
-    inner join CHITIETHOADON R2
-    on R1.MASP = R2.MASP
-    set R1.SOLUONG = R1.SOLUONG + R2.SOLUONG
-    where R2.MAHD = {$_GET['id']} and R1.MAKC = R2.MAKC;
-
     update HOADON
     set MATT = 4
     where MAHD = {$_GET['id']} and MATT = 3;
   ";
 
-  if($db->multi_query($updateSQL))
+  if($db->query($updateSQL))
     successPrompt(
       'ADMIN_HOMEPAGE',
       'Giao hàng thành công!',

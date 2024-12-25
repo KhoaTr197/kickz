@@ -4,10 +4,14 @@ session_start();
 
 $header_html = header_render("login");
 $error = '';
+$success = '';
 
 //Tao code HTML khi co loi
-if (!empty($_SESSION) && !empty($_SESSION['LOGIN']['PROMPT']['MSG'])) {
+if (!empty($_SESSION) && !empty($_SESSION['LOGIN']['PROMPT']['MSG']) && $_SESSION['LOGIN']['PROMPT']['TYPE'] == 'error') {
   $error = "<div class='form-error flex rounded'>" . $_SESSION['LOGIN']['PROMPT']['MSG'] . "</div>";
+}
+if (!empty($_SESSION) && !empty($_SESSION['LOGIN']['PROMPT']['MSG']) && $_SESSION['LOGIN']['PROMPT']['TYPE'] == 'success') {
+  $success = "<div class='form-success flex rounded'>" . $_SESSION['LOGIN']['PROMPT']['MSG'] . "</div>";
 }
 ?>
 
@@ -37,6 +41,7 @@ if (!empty($_SESSION) && !empty($_SESSION['LOGIN']['PROMPT']['MSG'])) {
           <form class='form' id='login-form' action='../controllers/loginController.php' method='post'>
             <?php
             echo $error;
+            echo $success;
             unset($_SESSION['LOGIN']['PROMPT']);
             ?>
             <h2 class='form-title font-medium'>Đăng Nhập</h2>

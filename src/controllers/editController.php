@@ -55,22 +55,27 @@ switch ($_POST['mode']) {
 function updateProduct() {
   global $db;
   
-  if(!isset($_POST['price']) || !isset($_POST['discount']) || !isset($_POST['rating']))
+  if(!isset($_POST['category']))
     return errorPrompt(
       'EDIT',
       'Đã có lỗi xảy ra, xin vui lòng thử lại!',
       "../admin/edit_admin.php?{$_POST['queryStr']}"
     );
-
+  
+  if(empty($_POST['rating'])) $_POST['rating'] = 0;
+  if(empty($_POST['price'])) $_POST['price'] = 0;
+  if(empty($_POST['discount'])) $_POST['discount'] = 0;
   if(empty($_POST['date'])) $_POST['date'] = date('Y-m-d');
 
+  $newName = $db->escape_str($_POST['name']);
+  $newDescription = $db->escape_str($_POST['description']);
   $updateProductSQL = "
     update SANPHAM
     set 
-      TENSP = '{$_POST['name']}',
+      TENSP = '{$newName}',
       GIA = {$_POST['price']},
       KHUYENMAI = {$_POST['discount']},
-      MOTA = '{$_POST['description']}',
+      MOTA = '{$newDescription}',
       SOSAO = {$_POST['rating']},
       NGSX = '{$_POST['date']}',
       MAHSX = {$_POST['manufacturer']}

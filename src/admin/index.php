@@ -406,6 +406,10 @@ function tableActionBtn_render($mode, $queryStr, $row) {
     <a class='table-action__enable-btn btn btn-primary' href='../controllers/enableController.php?$queryStr'>Kích hoạt</a>
   ";
 
+  $detailBtn="
+    <a class='table-action__detail-btn btn btn-primary' href='detail_admin.php?$queryStr'>Chi tiết</a>
+  ";
+
   switch($mode) {
     case 'product':
       if(isset($row['TRANGTHAI']) and $row['TRANGTHAI'] == 0)
@@ -452,7 +456,9 @@ function tableActionBtn_render($mode, $queryStr, $row) {
           $html .= "
             <td class='table-action-wrap table-action--receipt'>
               <div class='table-action flex flex-center'>
-                <a class='btn btn-secondary' href='../controllers/receiptController.php?$queryStr' >Phê Duyệt</a>
+                $detailBtn
+                <a class='btn btn-secondary' href='../controllers/receiptController.php?$queryStr&isCancel=1' >Từ chối</a>
+                <a class='btn btn-secondary' href='../controllers/receiptController.php?$queryStr&isCancel=0' >Phê Duyệt</a>
               </div>
             </td>
           ";
@@ -461,6 +467,7 @@ function tableActionBtn_render($mode, $queryStr, $row) {
           $html .= "
             <td class='table-action-wrap table-action--receipt'>
               <div class='table-action flex flex-center'>
+                $detailBtn
                 <a class='btn btn-secondary' href='../controllers/receiptController.php?$queryStr' >Chuẩn bị hàng</a>
               </div>
             </td>
@@ -470,14 +477,23 @@ function tableActionBtn_render($mode, $queryStr, $row) {
           $html .= "
             <td class='table-action-wrap table-action--receipt'>
               <div class='table-action flex flex-center'>
+                $detailBtn
                 <a class='btn btn-secondary' href='../controllers/receiptController.php?$queryStr&nextStatus=5' >Trả hàng</a>
                 <a class='btn btn-secondary' href='../controllers/receiptController.php?$queryStr&nextStatus=4' >Đã giao</a>
               </div>
             </td>
           ";
           break;
+        case 4:
         case 5:
         case 10:
+          $html .= "
+            <td class='table-action-wrap table-action--receipt'>
+              <div class='table-action flex flex-center'>
+                $detailBtn
+              </div>
+            </td>
+          ";
           break;
       }
       break;

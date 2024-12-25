@@ -127,13 +127,13 @@ function getSQL()
 
     switch ($price[0]) {
       case 'less':
-        $filter .= "and SANPHAM.GIA < {$price[1]}";
+        $filter .= "and (SANPHAM.GIA * (1 - SANPHAM.KHUYENMAI / 100)) < {$price[1]}";
         break;
       case 'more':
-        $filter .= "and SANPHAM.GIA > {$price[1]}";
+        $filter .= "and (SANPHAM.GIA * (1 - SANPHAM.KHUYENMAI / 100)) > {$price[1]}";
         break;
       default:
-        $filter .= "and SANPHAM.GIA between {$price[0]} and {$price[1]}";
+        $filter .= "and (SANPHAM.GIA * (1 - SANPHAM.KHUYENMAI / 100)) between {$price[0]} and {$price[1]}";
         break;
     }
   }
