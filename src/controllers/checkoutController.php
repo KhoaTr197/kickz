@@ -78,7 +78,7 @@ while ($data = $db->fetch($searchCartResult)) {
     insert into CHITIETHOADON (MASP,MAHD,MAKC,SOLUONG,GIA)
     values ({$data['MASP']},?,{$data['MAKC']},{$data['SOLUONG']},{$data['GIA']});
   ";
-  $totalPrice += $data['GIA']*$data['SOLUONG'];
+  $totalPrice += $data['GIA']*$data['SOLUONG'] + 100000;
 }
 
 $currentDate = date('Y-m-d');
