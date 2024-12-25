@@ -17,7 +17,6 @@ $sql = "
     inner join TRANGTHAI
     on HOADON.MATT = TRANGTHAI.MATT
     where MAHD = {$_GET['id']}
-    order by HOADON.MATT asc
   ";
 $result = $db->query($sql);
 
