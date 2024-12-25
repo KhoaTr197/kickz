@@ -1,7 +1,9 @@
 <?php
   include_once('../utils/utils.php');
+  //Tao The San Pham
   function productCard_render($data, $mode='browse') {
     switch($mode) {
+      //Che do Duyet San Pham
       case 'browse':
         $id = $data['MASP'];
         $name = $data['TENSP'];
@@ -29,6 +31,7 @@
             </a>
           </div>
         ";
+      //Che do Gio Hang
       case 'cart':
         $productId = $data['MASP'];
         $sizeId = $data['MAKC'];

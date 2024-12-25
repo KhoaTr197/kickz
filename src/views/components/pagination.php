@@ -1,4 +1,5 @@
 <?php
+//Tao/Xu ly Phân Trang
 function paging(
   $db,
   $sql,

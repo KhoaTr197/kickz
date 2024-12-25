@@ -1,4 +1,5 @@
 <?php
+//Gui noi dung thong bao loi
 function errorPrompt($prompt, $msg, $redirect)
 {
   $_SESSION[$prompt]['PROMPT'] = [
@@ -8,6 +9,7 @@ function errorPrompt($prompt, $msg, $redirect)
   header("location: $redirect");
   session_write_close();
 }
+//Gui noi dung thong bao thanh cong
 function successPrompt($prompt, $msg, $redirect)
 {
   $_SESSION[$prompt]['PROMPT'] = [
@@ -17,6 +19,7 @@ function successPrompt($prompt, $msg, $redirect)
   header("location: $redirect");
   session_write_close();
 }
+//Gui noi dung thong bao cảnh báo
 function warningPrompt($prompt, $msg, $redirect)
 {
   $_SESSION[$prompt]['PROMPT'] = [

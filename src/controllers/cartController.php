@@ -5,23 +5,28 @@ session_start();
 
 $db = new Database();
 
+//Thuc thi tac vu dua tren phuong thuc request
 if (isset($_SERVER['REQUEST_METHOD'])) {
   switch ($_SERVER['REQUEST_METHOD']) {
+    //Them San Pham vao Gio Hang
     case 'POST':
       addToCart($_POST);
       break;
+    //Dieu chinh so luong trong Gio Hang
     case 'GET':
       cartHandle($_GET);
       break;
   }
 }
 
+//Xu li thay doi so luong trong Gio Hang
 function cartHandle()
 {
   global $db;
 
   $sql = "";
   switch ($_GET['mode']) {
+    //Tang so luong
     case 'increase':
       $sql = "
         update CHITIETGIOHANG
@@ -29,6 +34,7 @@ function cartHandle()
         where MAGH = {$_SESSION['CART_ID']} and MASP = {$_GET['id']} and MAKC = {$_GET['sizeId']}
       ";
       break;
+    //Giam so luong
     case 'decrease':
       $sql = "
         update CHITIETGIOHANG
@@ -39,6 +45,7 @@ function cartHandle()
         where SOLUONG = 0;
       ";
       break;
+    //Xoa San Pham khoi Gio Hang
     case 'delete':
       $sql = "
         delete from CHITIETGIOHANG
@@ -49,7 +56,7 @@ function cartHandle()
   if ($db->multi_query($sql))
     header('location: ../views/cart.php');
 }
-
+//Xu ly them San Pham vao Gio Hang
 function addToCart($data)
 {
   if(!isset($_SESSION['CART_ID']))

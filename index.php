@@ -4,6 +4,7 @@
 
   $db = new Database();
 
+  //Kiem tra $_COOKIE va lay du lieu cho $_SESSION
   if(isset($_COOKIE['REMEMBER'])){
     $getUserDataSQL = "
       select * from NGUOIDUNG 
@@ -15,7 +16,6 @@
     $userData = $db->fetch($result);
     $_SESSION['USER']['HAS_LOGON'] = true;
     $_SESSION['USER']['INFO'] = $userData;
-
     $selectCartSQL = "
       select MAGH
       from GIOHANG
@@ -29,6 +29,7 @@
     
   }
 
+  //Truy van 1 so du lieu cho Danh Muc cua Header
   $categorySQL = "select * from DANHMUC";
   $manufacturerSQL = "select MAHSX, TENHSX from HANGSANXUAT";
   $categoryListArr = [];
@@ -50,7 +51,9 @@
   
   $_SESSION['MANUFACTURER_LIST'] = $manufacturerListArr;
 
+  //Gan URL cho nut chuyen huong trang truoc (Back to Previous)
   $_SESSION['URL_BACKUP'] = "src/views/homepage.php";
 
+  //Chuyen huong toi trang chu
   header("location: src/views/homepage.php");
 ?>

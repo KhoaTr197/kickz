@@ -2,6 +2,8 @@
   require_once("../models/Database.php");
   include_once("../views/components/components.php");
   session_start();
+
+  //Kiem tra mode va Lay code HTML Edit Form
   if(!isset($_GET['mode']) || !getForm())
     header("location: index.php?mode=admin-info");
 
@@ -16,7 +18,7 @@
  
   $error='';
 
-
+  //Tao code HTML khi co loi
   if(!empty($_SESSION) && !empty($_SESSION['EDIT']['PROMPT']['MSG'])) {
     $error="<div class='form-error flex rounded'>".$_SESSION['EDIT']['PROMPT']['MSG']."</div>";
   }
@@ -65,6 +67,7 @@
 </html>
 
 <?php
+//Lay Form theo mode
 function getForm() {
   global $formTitle, $formInputs;
 

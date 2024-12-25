@@ -6,6 +6,7 @@
 
   $db = new Database();
 
+  //Kiem tra request method
   if($_SERVER['REQUEST_METHOD'] != 'POST') 
     header("location: ../views/login.php");
 
@@ -13,6 +14,7 @@
   $password = $_POST['password'];
   $confirm_password = $_POST['confirm_password'];
 
+  //Kiem tra Ten Nguoi Dung hop le
   if(!usernameValidation($_POST['username'])){
     errorPrompt(
       'SIGNUP',
@@ -27,6 +29,7 @@
       "../views/signup.php"  
     );
   }
+  //Kiem tra Email hop le
   else if(!emailValidation($_POST['email'])){
     errorPrompt(
       'SIGNUP',
@@ -34,6 +37,7 @@
       "../views/signup.php"  
     );
   }
+  //Kiem tra SDT hop le
   else if(!phoneNumberValidation($_POST['phone'])){
     errorPrompt(
       'SIGNUP',
@@ -41,6 +45,7 @@
       "../views/signup.php"  
     );
   }
+  //Kiem tra Mat Khau hop le
   else if(!passwordValidation($password)) {
     errorPrompt(
       'SIGNUP',
@@ -48,6 +53,7 @@
       "../views/signup.php"  
     );
   }
+  //Kiem tra Mat Khau Trung Khop
   else if($password != $confirm_password) {
     errorPrompt(
       'SIGNUP',
@@ -58,6 +64,7 @@
   else {
     global $db;
 
+    //Kiem tra Ten Dang Nhap ton tai
     $checkUserSQL = "
     select * from NGUOIDUNG where TENTK = '".$_POST['username']."'
     ";
@@ -70,6 +77,7 @@
       );
     }
 
+    //Kiem tra Email ton tai
     $checkUserSQL = "
     select * from NGUOIDUNG where EMAIL = '".$_POST['email']."'
     ";
@@ -82,6 +90,7 @@
       );
     }
 
+    //Kiem tra Sdt ton tai
     $checkUserSQL = "
     select * from NGUOIDUNG where SDT = '".$_POST['phone']."'
     ";
@@ -94,6 +103,7 @@
       );
     }
 
+    //Them Nguoi Dung
     $insertSQL = "
     insert into NGUOIDUNG (MATK, TENTK, HOTEN, EMAIL, SDT, MATKHAU, NGLAPTK, TRANGTHAI)
     values ('NULL', '".$_POST['username']."', '".$_POST['fullname']."', '".$_POST['email']."', 

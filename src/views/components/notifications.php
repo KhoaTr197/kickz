@@ -1,4 +1,5 @@
 <?php
+//Tao Thong Bao
 function notify($key, $path = '../../public/img')
 {
   if (!isset($_SESSION[$key]['PROMPT']) || empty($_SESSION[$key]['PROMPT'])) {
@@ -13,14 +14,17 @@ function notify($key, $path = '../../public/img')
   $html = "";
 
   switch ($notification['TYPE']) {
+    //Thanh cong
     case 'success':
       $class = "notification--success";
       $icon = "<img src='$path/success_icon.svg' />";
       break;
+    //That Bai
     case 'error':
       $class = "notification--error";
       $icon = "<img src='$path/error_icon.svg' />";
       break;
+    //Cảnh Báo
     case 'warning':
       $class = "notification--warning";
       $icon = "<img src='$path/warning_icon.svg' />";

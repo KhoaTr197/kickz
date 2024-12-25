@@ -1,15 +1,14 @@
 <?php
 include_once("components/components.php");
-
 session_start();
 
 $header_html = header_render("login");
 $error = '';
 
+//Tao code HTML khi co loi
 if (!empty($_SESSION) && !empty($_SESSION['LOGIN']['PROMPT']['MSG'])) {
   $error = "<div class='form-error flex rounded'>" . $_SESSION['LOGIN']['PROMPT']['MSG'] . "</div>";
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -43,15 +42,17 @@ if (!empty($_SESSION) && !empty($_SESSION['LOGIN']['PROMPT']['MSG'])) {
             <h2 class='form-title font-medium'>Đăng Nhập</h2>
             <div class='form-control-wrap'>
               <div class='form-control'>
-                <input class='form-input' type='text' placeholder='Tên Tài Khoản' name='username'/>
-                <input class='form-input' type='password' placeholder='Mật Khẩu' name='password'/>
-                <div class="form-">
-                <input type="checkbox" name="isremember" value='1' checked/>
-                <span>Nhớ mật khẩu?</span>
+                <input class='form-input' type='text' placeholder='Tên Tài Khoản' name='username' />
+                <input class='form-input' type='password' placeholder='Mật Khẩu' name='password' />
+                <label class='checkbox'>
+                <div class='checkbox-wrap'>
+                  <input type='checkbox' name="isremember" value='1'>
+                  <span class='checkmark'></span>
                 </div>
+                <span class='checkbox-label'>Ghi nhớ lần đăng nhập này</span>
+                </label>
               </div>
             </div>
-            
             <button class='form-submit-btn btn btn-primary' type='submit'>Đăng Nhập</button>
             <div class='other-cta-container'>
               <span>Chưa có tài khoản?</span>

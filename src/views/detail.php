@@ -4,11 +4,13 @@ require_once("../utils/utils.php");
 include_once("components/components.php");
 session_start();
 
+//Kiem tra id cua giay
 if(!isset($_GET['id']))
   header("location: browse.php");
 
 $db = new Database();
 
+//Tao code HTML nhung thanh phan
 $header_html = header_render("breadcrumb", false, "{$_SESSION['URL_BACKUP']}");
 $footer_html = footer_render();
 
@@ -112,6 +114,7 @@ $newPriceNoFormat = $productData['GIA'] * (1 - $productData['KHUYENMAI']/100);
 </html>
 
 <?php
+//Lay du lieu Giay
 function getProductData()
 {
   global $db;
@@ -125,6 +128,7 @@ function getProductData()
 
   return $db->fetch($db->query($productSQL));
 }
+//Tao code HTML Carousel Hinh Anh Giay
 function carousel_render()
 {
   global $db;
@@ -153,6 +157,7 @@ function carousel_render()
     'images' => $images
   ];
 }
+//Tao code HTML DS Kich Co
 function sizeList_render()
 {
   global $db;
@@ -181,6 +186,7 @@ function sizeList_render()
 
   return $html;
 }
+//Tao code HTML Danh Gia
 function rating_render()
 {
   global $productData;

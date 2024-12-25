@@ -5,6 +5,7 @@ include_once("../utils/utils.php");
 
 session_start();
 
+//Kiem tra session
 if (empty($_SESSION['ADMIN']) && empty($_SESSION['ADMIN']['HAS_LOGON'])) {
   header("location: login_admin.php");
 }
@@ -64,6 +65,7 @@ $sql = [
   "
 ];
 
+//Tao code HTML cửa sổ nội dung chính
 $userPanel_html = userPanel_render(isset($_GET['mode']) ? $_GET['mode'] : "admin-info");
 ?>
 
@@ -89,6 +91,7 @@ $userPanel_html = userPanel_render(isset($_GET['mode']) ? $_GET['mode'] : "admin
     <div class="row no-gutters" id="admin">
       <?php echo notify('ADMIN_HOMEPAGE'); ?>
       <div class='col c-2'>
+        <!-- Thanh bên (Sidebar) -->
         <ul class="sidebar flex">
           <a href="../views/homepage.php" class="homepage-btn flex-center">
             <img src="../../public/img/logo_icon.svg">
@@ -135,6 +138,7 @@ $userPanel_html = userPanel_render(isset($_GET['mode']) ? $_GET['mode'] : "admin
 
 
 <?php
+//Tạo code HTML cho User Panel
 function userPanel_render($mode)
 {
   $userPanelHeader_html = userPanelHeader_render($mode);
@@ -147,11 +151,12 @@ function userPanel_render($mode)
     </div>
   ";
 }
-
+//Tạo code HTML nội dung cho User Panel
 function userPanelContent_render($mode)
 {
   $html = "";
   switch ($mode) {
+    //In thông tin Admin
     case "admin-info": {
         $html .= "
         <div class='user-panel__content active' id='admin-info_modal'>
@@ -175,6 +180,7 @@ function userPanelContent_render($mode)
       ";
         break;
       }
+    //In ra bảng liệt kê
     default:
       $html .= userPanelTable_render($mode);
       break;
@@ -185,7 +191,7 @@ function userPanelContent_render($mode)
     </div>
   ";
 }
-
+//Tạo code HTML bảng cho User Panel Content
 function userPanelTable_render($mode)
 {
   global $db, $sql;
@@ -198,6 +204,7 @@ function userPanelTable_render($mode)
   ];
 
   switch($mode) {
+    //San Pham
     case 'product': {
       $filterListName = 'status';
 
@@ -222,6 +229,7 @@ function userPanelTable_render($mode)
       }
       break;
     }
+    //Hoa Don
     case 'receipt': {
       $filterListName = 'status';
       
@@ -235,6 +243,7 @@ function userPanelTable_render($mode)
       }
       break;
     }
+    //Nguoi Dung
     case 'user': {
       $filterListName = 'status';
       
@@ -253,6 +262,7 @@ function userPanelTable_render($mode)
   $newSQL = $paging['sql'];
   $result = $db->query($newSQL);
 
+  //Tao Table Heading
   $tableRows_html .= "<tr>";
   while ($column = $db->fetch_field($result)) {
     if($column->name == 'MATT')
@@ -262,6 +272,8 @@ function userPanelTable_render($mode)
   $tableRows_html .= "
     <th colspan='2'>Thao Tác</th>
   </tr>";
+
+  //Tao cac dong du lieu
   while ($row = $db->fetch($result)) {
     $tableRows_html .= "<tr>";
     foreach ($row as $key => $value) {
@@ -296,6 +308,7 @@ function userPanelTable_render($mode)
     $tableRows_html .= "</tr>";
   }
 
+  //Tao thanh lọc (Filter Panel)
   $filterList_html = filterPanel_render([$filterListName=>$filterList], 'button', 'row');
 
   return "
@@ -307,6 +320,7 @@ function userPanelTable_render($mode)
   ";
 }
 
+//Tạo code HTML cho User Panel Header
 function userPanelHeader_render($mode)
 {
   $addBtn = "
@@ -333,6 +347,7 @@ function userPanelHeader_render($mode)
     </form>
   ";
 
+  //Tạo các nút chức nằng tùy mode
   switch ($mode) {
     case "admin-info":
       return '';
@@ -377,6 +392,7 @@ function userPanelHeader_render($mode)
   }
 }
 
+//Tao nút action tùy mode, dữ liệu
 function tableActionBtn_render($mode, $queryStr, $row) {
   $html="";
 
@@ -508,6 +524,7 @@ function tableActionBtn_render($mode, $queryStr, $row) {
   return $html;
 }
 
+//Xu ly query str dua vao du lieu, mode
 function getQueryStr($row, $mode)
 {
   $prevQueryStr="";

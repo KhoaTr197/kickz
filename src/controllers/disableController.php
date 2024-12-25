@@ -6,6 +6,7 @@ session_start();
 
 $db = new Database();
 
+//Xu ly tac vu theo mode
 switch ($_GET['mode']) {
   case 'product':
     disableProduct();
@@ -34,6 +35,7 @@ switch ($_GET['mode']) {
     break;
 }
 
+//Vo hieu hoa San Pham
 function disableProduct() {
   global $db;
 
@@ -57,6 +59,7 @@ function disableProduct() {
     );
 }
 
+//Xoa Danh Muc
 function deleteCategory() {
   global $db;
 
@@ -84,6 +87,7 @@ function deleteCategory() {
     );
 }
 
+//Xoa Kich Co
 function deleteSize() {
   global $db;
 
@@ -107,6 +111,7 @@ function deleteSize() {
     );
 }
 
+//Xoa Hinh Anh
 function deleteImage() {
   global $db;
 
@@ -128,6 +133,8 @@ function deleteImage() {
       "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}"
     );
 }
+
+//Huy Don Hang
 function updateOrder() {
   global $db;
 
@@ -151,6 +158,7 @@ function updateOrder() {
     );
 }
 
+//Vo hieu hoa Nguoi Dung
 function disableUser() {
   global $db;
 

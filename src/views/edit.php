@@ -2,6 +2,7 @@
 include_once("../views/components/components.php");
 session_start();
 
+//Kiem tra mode va Lay code HTML Edit Form
 if (!isset($_GET['mode']) || !getForm())
   header("location: user.php");
 
@@ -13,6 +14,7 @@ $queryStr = urldecode($_SERVER['QUERY_STRING']);
 
 $error = '';
 
+//Tao code HTML khi co loi
 if (!empty($_SESSION) && !empty($_SESSION['EDIT']['PROMPT']['MSG'])) {
   $error = "<div class='form-error flex rounded'>" . $_SESSION['EDIT']['PROMPT']['MSG'] . "</div>";
 }
@@ -43,6 +45,7 @@ if (!empty($_SESSION) && !empty($_SESSION['EDIT']['PROMPT']['MSG'])) {
         <div class='row'>
           <div class="col c-o-3 c-6 flex-center">
             <form class='form' id='edit-form' action='../controllers/editController.php' method='post'>
+              <!-- Gui che do cho Controller xu ly -->
               <input name="queryStr" value=<?php echo $queryStr ?> hidden />
               <?php
               echo $error;
@@ -64,6 +67,7 @@ if (!empty($_SESSION) && !empty($_SESSION['EDIT']['PROMPT']['MSG'])) {
 </html>
 
 <?php
+//Lay Form theo mode
 function getForm()
 {
   global $formTitle, $formInputs;

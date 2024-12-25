@@ -3,12 +3,14 @@ require_once("../models/Database.php");
 include_once("components/components.php");
 session_start();
 
+//Kiem tra $_SESSION
 if (!isset($_SESSION['CATEGORY_LIST']) || !isset($_SESSION['MANUFACTURER_LIST']))
   header("location: ../../index.php");
 
 if ($_SESSION['URL_BACKUP'] != $_SERVER['REQUEST_URI'])
   $_SESSION['URL_BACKUP'] = $_SERVER['REQUEST_URI'];
 
+//Tao code HTML nhung thanh phan
 $header_html = header_render("navbar", isset($_SESSION['USER']['HAS_LOGON']) ? $_SESSION['USER']['HAS_LOGON'] : false);
 $breadcrumbsNav_html = breadcrumbsNav_render();
 $filterPanel = filterPanel_render(
@@ -91,6 +93,7 @@ $result = $db->query($newSQl);
 </html>
 
 <?php
+//Tao chuoi truy van SQL
 function getSQL()
 {
   $result = "
@@ -149,6 +152,7 @@ function getSQL()
 
   return $result . $filter;
 }
+//Tao code HTML breadcrumbs
 function breadcrumbsNav_render()
 {
   $nav = "";

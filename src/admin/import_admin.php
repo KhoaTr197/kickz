@@ -3,6 +3,7 @@
   ini_set('max_file_uploads', '200');
   session_start();
 
+  //Kiem tra mode va Lay code HTML Edit Form
   if(!isset($_GET['mode']) || !getForm())
     header("location: index.php?mode=admin-info");
 
@@ -13,8 +14,14 @@
 
   $error='';
 
+<<<<<<< HEAD
   if(!empty($_SESSION) && !empty($_SESSION['UPLOAD']['PROMPT']['MSG'])) {
     $error="<div class='form-error flex rounded'>".$_SESSION['UPLOAD']['PROMPT']['MSG']."</div>";
+=======
+  //Tao code HTML khi co loi
+  if(!empty($_SESSION) && !empty($_SESSION['UPLOAD']['PROMPT'])) {
+    $error="<div class='form-error flex rounded'>".$_SESSION['UPLOAD']['PROMPT']."</div>";
+>>>>>>> origin/main
   }
 ?>
 
@@ -60,7 +67,7 @@
 </html>
 
 <?php
-
+//Lay Form theo mode
 function getForm() {
   global $formTitle, $formInputs;
 

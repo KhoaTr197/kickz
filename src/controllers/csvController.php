@@ -1,4 +1,5 @@
 <?php
+//Kiem tra file co phai .csv
   function isCSV($filenames) {
     if(gettype($filenames) == 'array') {
       foreach($filenames as $filename) {
@@ -18,9 +19,11 @@
 
     return true;
   }
+  //Mo file
   function handleCSV($filepath) {
     return fopen($filepath, "r");
   }
+  //Doc file
   function readCSV($handler, $callback) {
     $columns=[];
     $rowIdx = 1;
@@ -35,6 +38,8 @@
       }
       $rowIdx++;
     }
+
+    //Dong file
     fclose($handler);
   }
 ?>
