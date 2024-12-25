@@ -46,6 +46,7 @@ if (!empty($_SESSION) && !empty($_SESSION['SIGNUP']['PROMPT']['MSG'])) {
                 <input class='form-input' type='text' placeholder='Họ Tên' name='fullname' />
                 <input class='form-input' type='email' placeholder='Email' name='email' />
                 <input class='form-input' type='tel' placeholder='Số Điện Thoại' name='phone' />
+                <input class='form-input' type='text' placeholder='Địa chỉ' name='address' />
                 <input class='form-input' type='password' placeholder='Mật Khẩu' name='password' />
                 <input class='form-input' type='password' placeholder='Xác Nhận Mật Khẩu' name='confirm_password' />
                 <div class='form-reminder'>Mật khẩu dài ít nhất 8 ký tự, chứa số, chữ cái in hoa, không chứa khoảng trắng, ký tự đặc biệt</div>

@@ -14,16 +14,10 @@
 
   $error='';
 
-<<<<<<< HEAD
   print_r($_SESSION['UPLOAD']);
 
   if(!empty($_SESSION) && !empty($_SESSION['UPLOAD']['PROMPT']['MSG'])) {
     $error="<div class='form-error flex rounded'>".$_SESSION['UPLOAD']['PROMPT']['MSG']."</div>";
-=======
-  //Tao code HTML khi co loi
-  if(!empty($_SESSION) && !empty($_SESSION['UPLOAD']['PROMPT'])) {
-    $error="<div class='form-error flex rounded'>".$_SESSION['UPLOAD']['PROMPT']."</div>";
->>>>>>> origin/main
   }
 ?>
 

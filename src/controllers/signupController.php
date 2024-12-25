@@ -45,6 +45,13 @@
       "../views/signup.php"  
     );
   }
+  else if(empty($_POST['address'])){
+    errorPrompt(
+      'SIGNUP',
+      'Địa chỉ không hợp lệ!',
+      "../views/signup.php"  
+    );
+  }
   //Kiem tra Mat Khau hop le
   else if(!passwordValidation($password)) {
     errorPrompt(
@@ -104,10 +111,11 @@
     }
 
     //Them Nguoi Dung
+    $address = $db->escape_str($_POST['address']);
     $insertSQL = "
-    insert into NGUOIDUNG (MATK, TENTK, HOTEN, EMAIL, SDT, MATKHAU, NGLAPTK, TRANGTHAI)
+    insert into NGUOIDUNG (MATK, TENTK, HOTEN, EMAIL, SDT, MATKHAU, NGLAPTK, TRANGTHAI, DCHI)
     values ('NULL', '".$_POST['username']."', '".$_POST['fullname']."', '".$_POST['email']."', 
-    '".$_POST['phone']."', '".md5($password)."', '".date('Y-m-d')."', 1)
+    '".$_POST['phone']."', '".md5($password)."', '".date('Y-m-d')."', 1, '{$address}')
     ";
 
     if($db->query($insertSQL)){

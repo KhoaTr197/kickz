@@ -74,6 +74,7 @@ function getForm()
 
   switch ($_GET['mode']) {
     case 'info':
+      $_SESSION['USER']['INFO']['DCHI'] = "abc, hcm";
       $formTitle = 'Sửa Thông Tin Cá Nhân';
       $formInputs = "
         <div class='form-control'>
