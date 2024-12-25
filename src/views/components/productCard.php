@@ -40,6 +40,7 @@
         $price = formatPrice($data['GIA']);
         $productImageData = base64_encode($data['FILE']);
         $quantity = $data['SOLUONG'];
+        $quantityInStock = $data['SLTON'];
 
         return "
         <div class='cart-list__item flex rounded' id='product-$productId'>
@@ -67,6 +68,9 @@
             <a class='cart-info__delete-btn' href='../controllers/cartController.php?mode=delete&id=$productId&sizeId=$sizeId'>
               <img src='../../public/img/trashcan_icon.svg'>
             </a>
+            <div class='cart-info__quantity-in-stock font-medium'>
+              số lượng còn lại: $quantityInStock
+            </div>
             <div class='cart-info__price font-medium'>$price</div>
           </div>
         </div>";

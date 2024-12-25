@@ -19,7 +19,6 @@ $sql = "
     inner join TRANGTHAI
     on HOADON.MATT = TRANGTHAI.MATT
     where MAHD = {$_GET['id']}
-    order by HOADON.MATT asc
   ";
 $result = $db->query($sql);
 
@@ -156,6 +155,10 @@ function receiptDetail_render($result)
         </div>
         <div class='receipt-list-item__detail'>
           $receiptDetailList_html
+        </div>
+        <div class='receipt-list-item__price flex'>
+          <span>Phí Vận Chuyển</span>
+          <span>100.000đ</span>
         </div>
         <div class='receipt-list-item__price flex'>
           <span>Tổng Tiền</span>
