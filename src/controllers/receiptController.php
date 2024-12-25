@@ -26,7 +26,6 @@ switch($_GET['currStatus']) {
     break;
 }
 
-<<<<<<< HEAD
 function cancelReceipt(){
   global $db;
 
@@ -49,9 +48,6 @@ function cancelReceipt(){
     );
 }
 
-=======
-//Xac nhan Hoa Don
->>>>>>> origin/main
 function approveReceipt() {
   global $db;
 
