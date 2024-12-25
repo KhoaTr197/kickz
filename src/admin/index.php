@@ -436,7 +436,8 @@ function tableActionBtn_render($mode, $queryStr, $row) {
           $html .= "
             <td class='table-action-wrap table-action--receipt'>
               <div class='table-action flex flex-center'>
-                <a class='btn btn-secondary' href='../controllers/receiptController.php?$queryStr' >Phê Duyệt</a>
+                <a class='btn btn-secondary' href='../controllers/receiptController.php?$queryStr&isCancel=1' >Từ chối</a>
+                <a class='btn btn-secondary' href='../controllers/receiptController.php?$queryStr&isCancel=0' >Phê Duyệt</a>
               </div>
             </td>
           ";

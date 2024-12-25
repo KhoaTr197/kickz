@@ -13,8 +13,8 @@
 
   $error='';
 
-  if(!empty($_SESSION) && !empty($_SESSION['UPLOAD']['PROMPT'])) {
-    $error="<div class='form-error flex rounded'>".$_SESSION['UPLOAD']['PROMPT']."</div>";
+  if(!empty($_SESSION) && !empty($_SESSION['UPLOAD']['PROMPT']['MSG'])) {
+    $error="<div class='form-error flex rounded'>".$_SESSION['UPLOAD']['PROMPT']['MSG']."</div>";
   }
 ?>
 

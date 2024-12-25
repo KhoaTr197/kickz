@@ -7,7 +7,10 @@ $db = new Database();
 
 switch($_GET['currStatus']) {
   case 1:
-    approveReceipt();
+    if($_GET['isCancel'] == 0)
+      approveReceipt();
+    else if ($_GET['isCancel'] == 1)
+      cancelReceipt();
     break;
   case 2:
     prepareProduct();
@@ -20,6 +23,28 @@ switch($_GET['currStatus']) {
     break;
   default:
     break;
+}
+
+function cancelReceipt(){
+  global $db;
+
+  $updateSQL = "
+    update HOADON
+    set MATT = 10
+    where MAHD = {$_GET['id']} and MATT = 1
+  ";
+  if($db->query($updateSQL))
+    successPrompt(
+      'ADMIN_HOMEPAGE',
+      'Huỷ thành công!',
+      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}&status={$_GET['currStatus']}"
+    );
+  else
+    errorPrompt(
+      'ADMIN_HOMEPAGE',
+      'Đã có lỗi xảy ra, xin vui lòng thử lại!',
+      "../admin/index.php?mode={$_GET['mode']}&page={$_GET['page']}&status={$_GET['currStatus']}"
+    );
 }
 
 function approveReceipt() {

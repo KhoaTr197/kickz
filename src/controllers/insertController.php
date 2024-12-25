@@ -19,9 +19,10 @@ switch ($_POST['mode']) {
   case 'product':
     insertProduct();
     break;
-  case 'manufacturer':
-    insertManufacturer();
-    insertImage('manufacturer');
+  case 'manufacturer': {
+    insertImage('insertManufacturer');
+  }
+    
     break;
   case 'category':
     insertCategory();
@@ -30,10 +31,10 @@ switch ($_POST['mode']) {
     insertSize();
     break;
   case 'image':
-    insertImage($_FILES['image']);
+    insertImage();
     break;
   default:
-    errorPrompt(
+    return errorPrompt(
       'UPLOAD',
       'Đã xảy ra lỗi, vui lòng thử lại sau!',
       "../admin/insert_admin.php?mode={$_POST['mode']}"
@@ -54,7 +55,7 @@ function insertProduct()
 
   echo $productSQL;
   if (!$db->query($productSQL))
-    errorPrompt(
+    return errorPrompt(
       'UPLOAD',
       'Đã có lỗi xảy ra, xin vui lòng thử lại!',
       "../admin/insert_admin.php?mode={$_POST['mode']}"
@@ -67,7 +68,7 @@ function insertProduct()
       $categorizeSQL = "insert ignore into PHANLOAI (MADM, MASP) values($categoryId, $lastestProductId)";
   
       if (!$db->query($categorizeSQL))
-        errorPrompt(
+        return errorPrompt(
           'UPLOAD',
           'Đã có lỗi xảy ra, xin vui lòng thử lại!',
           "../admin/insert_admin.php?mode={$_POST['mode']}"
@@ -82,14 +83,14 @@ function insertProduct()
   );
 }
 
-function insertManufacturer()
+function insertManufacturer($id)
 {
   global $db;
 
-  $manufacturerSQL = "insert ignore into HANGSANXUAT (MAHSX, TENHSX, LOGO) values(NULL, '{$_POST['name']}', NULL)";
+  $manufacturerSQL = "insert ignore into HANGSANXUAT (MAHSX, TENHSX, LOGO) values($id, '{$_POST['name']}', NULL)";
 
   if(!$db->query($manufacturerSQL))
-    errorPrompt(
+    return errorPrompt(
       'UPLOAD',
       'Đã có lỗi xảy ra, xin vui lòng thử lại!',
       "../admin/insert_admin.php?mode={$_POST['mode']}"
@@ -99,11 +100,19 @@ function insertManufacturer()
 function insertSize()
 {
   global $db;
-
+  $checkSizeSQL = "select * from KICHCO where MASP = '{$_POST['id']}' and COGIAY = {$_POST['size']}";
+  $result = $db->query($checkSizeSQL);
+  if($db->rows_count($result) > 0){
+    return errorPrompt(
+      'UPLOAD',
+      'Đã tồn tại kích cỡ này!',
+      "../admin/insert_admin.php?mode={$_POST['mode']}"
+    );
+  }
   $sizeSQL = "insert ignore into KICHCO (MAKC, MASP, COGIAY, SOLUONG) values(NULL, {$_POST['id']}, {$_POST['size']}, {$_POST['quantity']})";
 
   if($db->query($sizeSQL))
-    successPrompt(
+    return successPrompt(
       'ADMIN_HOMEPAGE',
       'Thêm thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  
@@ -123,7 +132,7 @@ function insertCategory()
   $categorySQL = "insert ignore into DANHMUC (MADM, TENDM) values(NULL, '{$_POST['name']}')";
 
   if($db->query($categorySQL))
-    successPrompt(
+    return successPrompt(
       'ADMIN_HOMEPAGE',
       'Thêm thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  
@@ -136,7 +145,7 @@ function insertCategory()
     );
 }
 
-function insertImage()
+function insertImage($cb=NULL)
 {
   global $db;
 
@@ -164,6 +173,7 @@ function insertImage()
       mysqli_stmt_bind_param($stmt, 'iis', $id, $idx[$filename[2]], $image);
       break;
     case 'manufacturer':
+      $cb($id);
       $imageSQL = "
         update HANGSANXUAT
         set LOGO = ?
@@ -175,7 +185,7 @@ function insertImage()
   }
 
   if($db->stmt_execute($stmt))
-    successPrompt(
+    return successPrompt(
       'ADMIN_HOMEPAGE',
       'Thêm thành công!',
       "../admin/index.php?mode={$_POST['mode']}&page=1"  

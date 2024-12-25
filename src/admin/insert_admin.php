@@ -13,8 +13,10 @@
 
   $error='';
 
-  if(!empty($_SESSION) && !empty($_SESSION['UPLOAD']['PROMPT'])) {
-    $error="<div class='form-error flex rounded'>".$_SESSION['UPLOAD']['PROMPT']."</div>";
+  print_r($_SESSION['UPLOAD']);
+
+  if(!empty($_SESSION) && !empty($_SESSION['UPLOAD']['PROMPT']['MSG'])) {
+    $error="<div class='form-error flex rounded'>".$_SESSION['UPLOAD']['PROMPT']['MSG']."</div>";
   }
 ?>
 
@@ -141,7 +143,7 @@ function getForm() {
         <div class='form-control'>
           <input class='form-input' type='number' placeholder='Mã Sản Phẩm' name='id' required/>
           <input class='form-input' type='number' placeholder='Kích Cỡ' name='size' min=34 max=43 required/>
-          <input class='form-input' type='number' placeholder='Số Lượng' name='quantity' required/>
+          <input class='form-input' type='number' placeholder='Số Lượng' name='quantity' min=0 required/>
         </div>
       ";
       break;
