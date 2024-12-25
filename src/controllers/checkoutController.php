@@ -51,6 +51,27 @@ $insertReceiptDetailSQL = "";
 $searchCartResult = $db->query($searchCartSQL);
 $totalPrice = 0;
 
+//kiem tra du so luong khong
+while($data = $db->fetch($searchCartResult)){
+  $checkQuantitySQL = "
+  select SOLUONG
+  from SANPHAM inner join KICHCO
+  on SANPHAM.MASP = KICHCO.MASP
+  where KICHCO.MASP = ? and KICHCO.MAKC = ?
+  ";
+  $stmt = $db->prepare($checkQuantitySQL);
+  mysqli_stmt_bind_param($stmt, 'ii', $data['MASP'], $data['MAKC']);
+  $db->stmt_execute($stmt);
+  $productResult = $db->stmt_get_result($stmt);
+
+  if($db->fetch($productResult)['SOLUONG'] < $data['SOLUONG'])
+    return errorPrompt(
+      'HOMEPAGE',
+      'Sản phẩm không đủ số lượng để mua!',
+      "../views/cart.php"
+    );
+}
+$db->data_seek($searchCartResult, 0);
 //Tao HOADON
 while ($data = $db->fetch($searchCartResult)) {
   $insertReceiptDetailSQL .= "

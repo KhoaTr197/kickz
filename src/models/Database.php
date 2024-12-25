@@ -75,6 +75,14 @@ class Database {
   public function escape_str($str) {
     return mysqli_real_escape_string($this->conn, $str);
   }
+
+  public function stmt_get_result($stmt) {
+    return mysqli_stmt_get_result($stmt);
+  }
+
+  public function data_seek($result, $offset) {
+    return mysqli_data_seek($result, $offset);
+  }
 }
 
 ?>

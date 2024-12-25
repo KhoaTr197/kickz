@@ -135,18 +135,12 @@ function deliveryDone() {
   global $db;
 
   $updateSQL = "
-    update KICHCO R1
-    inner join CHITIETHOADON R2
-    on R1.MASP = R2.MASP
-    set R1.SOLUONG = R1.SOLUONG + R2.SOLUONG
-    where R2.MAHD = {$_GET['id']} and R1.MAKC = R2.MAKC;
-
     update HOADON
     set MATT = 4
     where MAHD = {$_GET['id']} and MATT = 3;
   ";
 
-  if($db->multi_query($updateSQL))
+  if($db->query($updateSQL))
     successPrompt(
       'ADMIN_HOMEPAGE',
       'Giao hàng thành công!',
