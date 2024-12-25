@@ -22,7 +22,7 @@ switch ($_POST['mode']) {
     if(empty($_FILES['data']['tmp_name'][0]) || empty($_FILES['data']['tmp_name'][1])){
       return errorPrompt(
         'UPLOAD',
-        'Thiếu 1 trong 2 File!',
+        'Thiếu File!',
         "../admin/import_admin.php?mode={$_POST['mode']}"
       );
     }
