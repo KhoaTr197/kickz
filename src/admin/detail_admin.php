@@ -7,10 +7,12 @@ session_start();
 if (!isset($_GET['id']))
   header("location: index.php?mode=receipt");
 
+//Tao code HTML nhung thanh phan
 $header_html = header_render("breadcrumb", false, "index.php?mode=receipt");
 $footer_html = footer_render();
 
 $db = new Database();
+//Lay du lieu HOADON
 $sql = "
     select *
     from HOADON

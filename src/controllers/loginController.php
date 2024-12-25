@@ -21,6 +21,7 @@
   $userData = $db->fetch($db->query($checkUserSQL));
   
   if($userData != 0 ) {
+    //kiem tra tinh trang tai khoan
     if(!$userData['TRANGTHAI'])
       return errorPrompt(
         'LOGIN',
