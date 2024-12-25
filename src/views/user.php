@@ -223,6 +223,10 @@ function receiptList_render($result)
         <div class='receipt-list-item__detail'>
           $receiptDetailList_html
         </div>
+        <div class='price-list__item'>
+          <div class='price-list-item__name'>Phí Vận Chuyển</div>
+          <div class='price-list-item__price'>100.000đ</div>
+        </div>
         <div class='receipt-list-item__price flex'>
           <span>Tổng Tiền</span>
           <span>$receiptPrice</span>
@@ -231,7 +235,6 @@ function receiptList_render($result)
       </li>
     ";
   }
-
   $html .= "</ul>";
 
 
